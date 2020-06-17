@@ -16,6 +16,7 @@ RUN set -x && \
       libc6-dev \
       libdb5.3-dev \
       libssl-dev \
+      libssl1.1 \
       m4 \
       make \
       netbase \
