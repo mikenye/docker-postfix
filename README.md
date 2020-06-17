@@ -18,3 +18,5 @@ This container is still under development.
 | `POSTFIX_MYNETWORKS`       | <http://www.postfix.org/postconf.5.html#mynetworks> |
 | `POSTFIX_MYORIGIN`         | <http://www.postfix.org/postconf.5.html#myorigin> |
 | `POSTFIX_PROXY_INTERFACES` | <http://www.postfix.org/postconf.5.html#proxy_interfaces> |
+| `POSTFIX_MYDOMAIN`         | <http://www.postfix.org/postconf.5.html#mydomain> |
+| `POSTFIX_MYHOSTNAME`       | <http://www.postfix.org/postconf.5.html#myhostname> |
