@@ -80,5 +80,5 @@ fi
 
 # http://www.postfix.org/postconf.5.html#smtpd_tls_chain_files
 if [ ! -z "${POSTFIX_SMTPD_TLS_CHAIN_FILES}" ]; then
-  echo "smtp_tls_chain_files = ${POSTFIX_SMTPD_TLS_CHAIN_FILES}" >> "${POSTFIX_MAINCF_FILE}"
+  echo "smtpd_tls_chain_files = ${POSTFIX_SMTPD_TLS_CHAIN_FILES}" >> "${POSTFIX_MAINCF_FILE}"
 fi
