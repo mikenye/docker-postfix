@@ -1,0 +1,20 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+POSTFIX_MAINCF_FILE="/etc/postfix/main.cf"
+echo "" > "${POSTFIX_MAINCF_FILE}"
+
+# http://www.postfix.org/postconf.5.html#myorigin
+if [ ! -z "${POSTFIX_MYORIGIN}" ]; then
+  echo "myorigin = ${POSTFIX_MYORIGIN}" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#proxy_interfaces
+if [ ! -z "${POSTFIX_PROXY_INTERFACES}" ]; then
+  echo "proxy_interfaces = ${POSTFIX_PROXY_INTERFACES}" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#mynetworks
+if [ ! -z "${POSTFIX_MYNETWORKS}" ]; then
+  echo "mynetworks = ${POSTFIX_MYNETWORKS}" >> "${POSTFIX_MAINCF_FILE}"
+fi
