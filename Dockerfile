@@ -14,6 +14,7 @@ RUN set -x && \
       gcc \
       gnupg2 \
       make \
+      netbase \
       && \
     mkdir -p /src/postfix && \
     # Get postfix source & signature & author key
