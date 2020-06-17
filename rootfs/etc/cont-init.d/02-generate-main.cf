@@ -42,3 +42,8 @@ fi
 if [ ! -z "${POSTFIX_MYHOSTNAME}" ]; then
   echo "myhostname = ${POSTFIX_MYHOSTNAME}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# http://www.postfix.org/postconf.5.html#mail_name
+if [ ! -z "${POSTFIX_MAIL_NAME}" ]; then
+  echo "myhostname = ${POSTFIX_MAIL_NAME}" >> "${POSTFIX_MAINCF_FILE}"
+fi

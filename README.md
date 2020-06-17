@@ -20,3 +20,4 @@ This container is still under development.
 | `POSTFIX_PROXY_INTERFACES` | <http://www.postfix.org/postconf.5.html#proxy_interfaces> |
 | `POSTFIX_MYDOMAIN`         | <http://www.postfix.org/postconf.5.html#mydomain> |
 | `POSTFIX_MYHOSTNAME`       | <http://www.postfix.org/postconf.5.html#myhostname> |
+| `POSTFIX_MAIL_NAME`        | <http://www.postfix.org/postconf.5.html#mail_name> |
