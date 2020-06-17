@@ -10,6 +10,9 @@ echo "maillog_file = /dev/stdout" >> "${POSTFIX_MAINCF_FILE}"
 # http://www.postfix.org/postconf.5.html#compatibility_level
 echo "compatibility_level = 2" >> "${POSTFIX_MAINCF_FILE}"
 
+# http://www.postfix.org/postconf.5.html#alias_maps
+echo "alias_maps = hash:/etc/aliases" >> "${POSTFIX_MAINCF_FILE}"
+
 # http://www.postfix.org/postconf.5.html#myorigin
 if [ ! -z "${POSTFIX_MYORIGIN}" ]; then
   echo "myorigin = ${POSTFIX_MYORIGIN}" >> "${POSTFIX_MAINCF_FILE}"
