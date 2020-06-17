@@ -59,6 +59,8 @@ RUN set -x && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
     # Install s6-overlay
     curl -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
+    # TEMPORARY STUFF FOR TROUBLESHOOTING
+    apt-get install -y net-tools procps && \
     # Clean up
     apt-get remove -y \
       ca-certificates \

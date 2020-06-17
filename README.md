@@ -4,13 +4,13 @@ This container is still under development.
 
 ## Environment Variables
 
-### For container configuration
+### Container configuration
 
 | Environment Variable | Description                                                                              |
 |----------------------|------------------------------------------------------------------------------------------|
 | `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld` |
 
-### For postfix configuration
+### Postfix configuration
 
 | Environment Variable               | Documentation Link                                                      |
 |------------------------------------|-------------------------------------------------------------------------|
