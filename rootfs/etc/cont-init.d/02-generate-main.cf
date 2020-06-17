@@ -47,3 +47,13 @@ fi
 if [ ! -z "${POSTFIX_MAIL_NAME}" ]; then
   echo "mail_name = ${POSTFIX_MAIL_NAME}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file
+if [ ! -z "${POSTFIX_SMTPD_TLS_CERT_FILE}" ]; then
+  echo "smtpd_tls_cert_file = ${POSTFIX_SMTPD_TLS_CERT_FILE}" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#smtpd_tls_key_file
+if [ ! -z "${POSTFIX_SMTPD_TLS_KEY_FILE}" ]; then
+  echo "smtpd_tls_key_file = ${POSTFIX_SMTPD_TLS_KEY_FILE}" >> "${POSTFIX_MAINCF_FILE}"
+fi
