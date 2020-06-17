@@ -57,3 +57,8 @@ fi
 if [ ! -z "${POSTFIX_SMTPD_TLS_KEY_FILE}" ]; then
   echo "smtpd_tls_key_file = ${POSTFIX_SMTPD_TLS_KEY_FILE}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# http://www.postfix.org/postconf.5.html#smtpd_tls_security_level
+if [ ! -z "${POSTFIX_SMTPD_TLS_SECURITY_LEVEL}" ]; then
+  echo "smtpd_tls_security_level = ${POSTFIX_SMTPD_TLS_SECURITY_LEVEL}" >> "${POSTFIX_MAINCF_FILE}"
+fi
