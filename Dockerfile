@@ -75,7 +75,8 @@ RUN set -x && \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /src /tmp/* /var/lib/apt/lists/*
+    rm -rf /src /tmp/* /var/lib/apt/lists/* && \
+    postconf mail_version
 
 COPY rootfs/ /
 
