@@ -4,5 +4,5 @@
 set -eo pipefail
 
 exec \
-    /usr/local/bin/postfix start-fg \
+    /usr/sbin/postfix start-fg \
     2>&1 | awk -W Interactive '{print "[postfix] " $0}'
