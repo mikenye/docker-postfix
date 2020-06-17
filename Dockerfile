@@ -31,7 +31,14 @@ RUN set -x && \
       libdb5.3-dev \
       m4 \
       && \
-    # Prepare postfix install opts
+    # Build postfix
+    cd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
+    make makefiles pie=yes shared=yes dynamicmaps=yes && \
+    make && \
+    # Create user/group
+    groupadd --system postdrop && \
+    useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
+    # Install postfix
     POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} -non-interactive" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} install_root=/" && \
@@ -50,15 +57,7 @@ RUN set -x && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} manpage_directory=/usr/share/man" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} meta_directory=/etc/postfix" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
-    # Build postfix
-    cd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
-    make makefiles pie=yes shared=yes dynamicmaps=yes POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
-    make && \
-    # Create user/group
-    groupadd --system postdrop && \
-    useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
-    # Install postfix
-    make install && \
+    make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
     # Install s6-overlay
     curl -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
