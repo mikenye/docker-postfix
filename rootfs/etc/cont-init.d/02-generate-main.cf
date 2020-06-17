@@ -27,3 +27,8 @@ fi
 if [ ! -z "${POSTFIX_MYNETWORKS}" ]; then
   echo "mynetworks = ${POSTFIX_MYNETWORKS}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# http://www.postfix.org/postconf.5.html#inet_protocols
+if [ ! -z "${POSTFIX_INET_PROTOCOLS}" ]; then
+  echo "inet_protocols = ${POSTFIX_INET_PROTOCOLS}" >> "${POSTFIX_MAINCF_FILE}"
+fi
