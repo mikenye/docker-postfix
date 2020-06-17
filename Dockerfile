@@ -13,6 +13,10 @@ RUN set -x && \
       file \
       gcc \
       gnupg2 \
+      libc6-dev \
+      libdb5.3-dev \
+      libssl-dev \
+      m4 \
       make \
       netbase \
       && \
@@ -26,15 +30,9 @@ RUN set -x && \
     gpg2 --verify /src/postfix.tar.gz.gpg2 /src/postfix.tar.gz || exit 1 && \
     # Extract postfix download
     tar xzf /src/postfix.tar.gz -C /src/postfix && \
-    # Get postfix build dependencies
-    apt-get install -y --no-install-recommends \
-      libc6-dev \
-      libdb5.3-dev \
-      m4 \
-      && \
     # Build postfix
     cd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
-    make makefiles pie=yes shared=yes dynamicmaps=yes && \
+    make makefiles pie=yes shared=yes dynamicmaps=yes CCARGS="-DUSE_TLS" AUXLIBS="-lssl -lcrypto" && \
     make && \
     # Create user/group
     groupadd --system postdrop && \
@@ -70,6 +68,7 @@ RUN set -x && \
       gnupg2 \
       libc6-dev \
       libdb5.3-dev \
+      libssl-dev \
       m4 \
       make \
       && \
