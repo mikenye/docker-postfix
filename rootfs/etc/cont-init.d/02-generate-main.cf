@@ -67,3 +67,8 @@ fi
 if [ ! -z "${POSTFIX_SMTPD_USE_TLS}" ]; then
   echo "smtpd_use_tls = ${POSTFIX_SMTPD_USE_TLS}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel
+if [ ! -z "${POSTFIX_SMTPD_TLS_LOGLEVEL}" ]; then
+  echo "smtpd_tls_loglevel = ${POSTFIX_SMTPD_TLS_LOGLEVEL}" >> "${POSTFIX_MAINCF_FILE}"
+fi
