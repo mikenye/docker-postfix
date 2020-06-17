@@ -20,6 +20,8 @@ RUN set -x && \
       m4 \
       make \
       netbase \
+      opendkim \
+      opendkim-tools \
       && \
     mkdir -p /src/postfix && \
     # Get postfix source & signature & author key
