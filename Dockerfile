@@ -75,3 +75,9 @@ RUN set -x && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/*
+
+COPY rootfs/ /
+
+EXPOSE 25/tcp
+
+ENTRYPOINT [ "/init" ]
