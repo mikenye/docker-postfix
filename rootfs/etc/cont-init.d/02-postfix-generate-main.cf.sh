@@ -82,3 +82,11 @@ fi
 if [ ! -z "${POSTFIX_SMTPD_TLS_CHAIN_FILES}" ]; then
   echo "smtpd_tls_chain_files = ${POSTFIX_SMTPD_TLS_CHAIN_FILES}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# Do we enable & configure DKIM?
+if [ "${ENABLE_OPENDKIM}" = "true" ]; then
+  echo "milter_default_action = accept" >> "${POSTFIX_MAINCF_FILE}"
+  echo "milter_protocol = 2" >> "${POSTFIX_MAINCF_FILE}"
+  echo "smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
+  echo "non_smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
+fi

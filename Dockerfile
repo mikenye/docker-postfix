@@ -1,6 +1,7 @@
 FROM debian:stable-slim
 
-ENV POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
+ENV ENABLE_OPENDKIM="false" \
+    POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2
@@ -80,6 +81,7 @@ RUN set -x && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
+    find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
     postconf mail_version
 
 COPY rootfs/ /

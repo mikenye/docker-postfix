@@ -5,8 +5,6 @@ set -eo pipefail
 
 exec \
     /usr/sbin/opendkim \
-      -u opendkim \
       -f \
-      -v \
       -x /etc/opendkim.conf \
     2>&1 | awk -W Interactive '{print "[opendkim] " $0}'
