@@ -38,6 +38,7 @@ This container is still under development.
 | `OPENDKIM_KEYFILE`                 | Gives the location (within the container) of a PEM-formatted private key to be used for signing all messages. |
 | `OPENDKIM_MODE`                    | Selects operating modes. The string is a concatenation of characters that indicate which mode(s) of operation are desired. Valid modes are s (signer) and v (verifier). The default is sv except in test mode (see the opendkim(8) man page) in which case the default is v. When signing mode is enabled, one of the following combinations must also be set: (a) Domain, KeyFile, Selector, no KeyTable, no SigningTable; (b) KeyTable, SigningTable, no Domain, no KeyFile, no Selector; (c) KeyTable, SetupPolicyScript, no Domain, no KeyFile, no Selector. |
 | `OPENDKIM_INTERNALHOSTS`           | Comma separated list of internal hosts whose mail should be signed rather than verified. |
+| `OPENDKIM_SELECTOR`                | Set to the selector specified when creating the Key File. |
 | `OPENDKIM_SUBDOMAINS`              | Set to `true` to sign subdomains of those listed by the Domain parameter as well as the actual domains. |
 
 
@@ -52,7 +53,19 @@ cd /path/to/dkim/keys
 Generate a key with the following command (replacing `your.domain.name` with your domain name):
 
 ```
-docker run --rm -it -v $(pwd):/workdir --entrypoint opendkim-genkey postfix --directory=/workdir -t -s mail -d your.domain.name
+docker run \
+    --rm \
+    -it \
+    -v $(pwd):/workdir \
+    --entrypoint opendkim-genkey \
+    mikenye/postfix \
+    --directory=/workdir \
+    --bits=1024 \
+    --selector=<selector> \
+    --restrict \
+    --domain=<your.domain.name>
 ```
 
-There should now be two files in your current directory, `mail.private` and `mail.txt`. This directory should be mapped through to the container, and the full path of the `mail.private` file (with respect to the container's filesystem) should be passed to `OPENDKIM_KEYFILE`.
+There should now be two files in your current directory, `<selector>.private` and `<selector>.txt`. This directory should be mapped through to the container, and the full path of the `<selector>.private` file (with respect to the container's filesystem) should be passed to `OPENDKIM_KEYFILE`. The `<selector>` should be passed to `OPENDKIM_SELECTOR`.
+
+As for a selector name, an example may be: “sales-201309-1024”. This example indicates that it belongs to the “sales” email stream, is intended to be rotated into active duty in September 2013 and references a 1024-bit key ([reference](https://www.m3aawg.org/sites/default/files/m3aawg-dkim-key-rotation-bp-2019-03.pdf)).

@@ -24,7 +24,9 @@ if [ ! -z "${OPENDKIM_KEYFILE}" ]; then
 fi
 
 # Set selector
-echo "Selector mail" >> "${OPENDKIM_CONF_FILE}"
+if [ ! -z "${OPENDKIM_SELECTOR}" ]; then
+    echo "Selector ${OPENDKIM_SELECTOR}" >> "${OPENDKIM_CONF_FILE}"
+fi
 
 # Set mode
 if [ ! -z "${OPENDKIM_MODE}" ]; then
