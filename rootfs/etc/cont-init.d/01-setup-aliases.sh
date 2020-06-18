@@ -14,7 +14,9 @@ fi
 # Exit on failure
 set -e
 
+# Write /etc/aliases
 echo "postmaster: ${POSTMASTER_EMAIL}" > /etc/aliases
 echo "root:       ${POSTMASTER_EMAIL}" >> /etc/aliases
 
+# Run newaliases
 newaliases

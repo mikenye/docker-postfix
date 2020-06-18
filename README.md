@@ -8,10 +8,11 @@ This container is still under development.
 
 ### Container configuration
 
-| Environment Variable | Description                                                                              |
-|----------------------|------------------------------------------------------------------------------------------|
-| `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld` |
+| Environment Variable | Description                                                                               |
+|----------------------|-------------------------------------------------------------------------------------------|
+| `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
 | `ENABLE_OPENDKIM`    | Optional. Set to "true" to enable OpenDKIM. Default is "false". If OpenDKIM is enabled, the "OpenDKIM Configuration" variables below will need to be set. |
+| `TZ`                 | Optional. Set the timezone for the container. Default is `UTC`. |
 
 ### Postfix Configuration
 
