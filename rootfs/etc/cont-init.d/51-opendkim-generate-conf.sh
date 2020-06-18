@@ -11,7 +11,7 @@ echo "Syslog false" >> "${OPENDKIM_CONF_FILE}"
 echo "Socket inet:8891@127.0.0.1" >> "${OPENDKIM_CONF_FILE}"
 
 # Run with same UID as postfix
-echo "UserID $(id -u postfix)" >> "${OPENDKIM_CONF_FILE}"
+#echo "UserID $(id -u postfix)" >> "${OPENDKIM_CONF_FILE}"
 
 # Set domains that we sign for
 if [ ! -z "${OPENDKIM_DOMAIN}" ]; then
