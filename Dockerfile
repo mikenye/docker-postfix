@@ -23,6 +23,7 @@ RUN set -x && \
       netbase \
       opendkim \
       opendkim-tools \
+      openssl \
       && \
     mkdir -p /src/postfix && \
     # Get postfix source & signature & author key
@@ -67,7 +68,6 @@ RUN set -x && \
     apt-get install -y net-tools procps && \
     # Clean up
     apt-get remove -y \
-      ca-certificates \
       curl \
       file \
       gcc \
