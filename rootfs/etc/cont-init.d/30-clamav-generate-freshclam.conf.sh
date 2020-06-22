@@ -18,3 +18,4 @@ fi
 echo "Foreground yes" >> "${CLAMAV_FRESHCLAMCONF_FILE}"
 echo "Bytecode yes" >> "${CLAMAV_FRESHCLAMCONF_FILE}"
 echo "DatabaseMirror database.clamav.net" >> "${CLAMAV_FRESHCLAMCONF_FILE}"
+echo "NotifyClamd /usr/local/etc/clamd.conf" >> "${CLAMAV_FRESHCLAMCONF_FILE}"

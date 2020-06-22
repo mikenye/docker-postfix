@@ -2,8 +2,16 @@
 # shellcheck shell=bash
 set -eo pipefail
 
-# Do we run freshclam?
+# Do we run clamav
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
+
+    pgrep clamd > /dev/null
+    if [ "$?" -ne "0" ]; then
+        echo "Waiting for clamd..."
+        sleep 1
+        exit 0
+    fi
+
     clamav-milter 2>&1 \
     | awk -W Interactive '{print "[clamav-milter] " $0}'
 else
