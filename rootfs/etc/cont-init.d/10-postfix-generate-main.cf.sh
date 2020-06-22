@@ -116,9 +116,9 @@ fi
 # Do we enable & configure ClamAV?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
   if [ "$SMTPDMILTERS" = "" ]; then
-    SMTPDMILTERS="unix:/run/clamav-milter/clamav-milter.socket"
+    SMTPDMILTERS="inet:localhost:7357"
   else
-    SMTPDMILTERS="$SMTPDMILTERS, unix:/run/clamav-milter/clamav-milter.socket"
+    SMTPDMILTERS="$SMTPDMILTERS, inet:localhost:7357"
   fi
 fi
 
