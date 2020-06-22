@@ -55,6 +55,7 @@ RUN set -x && \
       libpcre2-8-0 \
       libpcre2-posix0 \
       libcurl4-openssl-dev \
+      libcurl4 \
       && \
     ldconfig && \
     # Get clamav
