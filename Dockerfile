@@ -145,7 +145,7 @@ RUN set -x && \
       libbz2-dev \
       libpcre2-dev \
       libcurl4-openssl-dev \
-      libjson-c4 \
+      libjson-c3 \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \
