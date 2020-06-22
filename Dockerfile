@@ -56,6 +56,7 @@ RUN set -x && \
       libpcre2-posix0 \
       libcurl4-openssl-dev \
       libcurl4 \
+      libjson-c3 \
       && \
     ldconfig && \
     # Get clamav
@@ -145,7 +146,6 @@ RUN set -x && \
       libbz2-dev \
       libpcre2-dev \
       libcurl4-openssl-dev \
-      libjson-c3 \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \
