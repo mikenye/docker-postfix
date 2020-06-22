@@ -53,6 +53,7 @@ This container is still under development.
 | Environment Variable               | Detail                                                                  |
 |------------------------------------|-------------------------------------------------------------------------|
 | `FRESHCLAM_CHECKS_PER_DAY`         | Optional. Number of database checks per day. Default: 12 (every two hours). |
+| `CLAMAV_MILTER_REPORT_HOSTNAME`    | Optional. The hostname ClamAV will report in the `X-Virus-Scanned` header. If unset, defaults to the container's hostname. |
 
 
 ## Generating a DKIM key

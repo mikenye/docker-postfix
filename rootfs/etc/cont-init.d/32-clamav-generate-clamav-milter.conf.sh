@@ -13,6 +13,12 @@ echo "TemporaryDirectory /tmp" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "ClamdSocket tcp:127.0.0.1:7358" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "OnInfected Blackhole" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "AddHeader yes" >> "${CLAMAV_MILTERCONF_FILE}"
+
+# If CLAMAV_MILTER_REPORT_HOSTNAME, then set
+if [ ! -z "${CLAMAV_MILTER_REPORT_HOSTNAME}" ]; then
+    echo "ReportHostname ${CLAMAV_MILTER_REPORT_HOSTNAME}" >> "${CLAMAV_MILTERCONF_FILE}"
+fi
+
 echo "LogSyslog no" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "LogRotate no" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "LogClean Basic" >> "${CLAMAV_MILTERCONF_FILE}"
