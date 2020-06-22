@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
+echo "Waiting for opendkim milter to become ready..."
+
 EXITCODE=1
 while [ "$EXITCODE" -ne "0" ]; do
     cat << EOF | miltertest > /dev/null
         -- Echo that the test is starting 
         mt.echo("*** begin test ***") 
         -- try to connect to it 
-        conn = mt.connect("inet:7357@localhost") 
+        conn = mt.connect("inet:8891@localhost") 
         if conn == nil then
             error "mt.connect() failed"
         end

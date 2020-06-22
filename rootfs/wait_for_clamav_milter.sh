@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Waiting for clamav-milter to become ready..."
+
 EXITCODE=1
 while [ "$EXITCODE" -ne "0" ]; do
     cat << EOF | miltertest > /dev/null
