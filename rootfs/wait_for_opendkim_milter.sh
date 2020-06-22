@@ -57,7 +57,7 @@ while [ "$EXITCODE" -ne "0" ]; do
         mt.echo("*** disconnected ***")
 EOF
     EXITCODE=$?
-    sleep 1
+    sleep 2
 done
 
 echo "opendkim milter is ready!"
