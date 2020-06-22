@@ -4,8 +4,8 @@ ENV ENABLE_OPENDKIM="false" \
     POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-    POSTFIX_POLICY_SPF_TIME_LIMIT=3600s
+    S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+    #POSTFIX_POLICY_SPF_TIME_LIMIT=3600s
 
 RUN set -x && \
     apt-get update && \

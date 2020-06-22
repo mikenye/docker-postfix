@@ -45,6 +45,11 @@ This container is still under development.
 | `OPENDKIM_SELECTOR`                | Set to the selector specified when creating the Key File. |
 | `OPENDKIM_SUBDOMAINS`              | Set to `true` to sign subdomains of those listed by the Domain parameter as well as the actual domains. |
 
+### SPF Configuration
+
+| Environment Variable               | Detail                                                                  |
+|------------------------------------|-------------------------------------------------------------------------|
+
 
 ## Generating a DKIM key
 

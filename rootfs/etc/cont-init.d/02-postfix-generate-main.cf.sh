@@ -93,6 +93,6 @@ fi
 
 # Do we enable & configure spf-engine
 if [ "${ENABLE_SPF}" = "true" ]; then
-  echo "policy-spf_time_limit = ${POSTFIX_POLICY_SPF_TIME_LIMIT}" >> "${POSTFIX_MAINCF_FILE}"
+  #echo "policy-spf_time_limit = ${POSTFIX_POLICY_SPF_TIME_LIMIT}" >> "${POSTFIX_MAINCF_FILE}"
   echo "smtpd_recipient_restrictions = permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination,check_policy_service unix:private/policy" >> "${POSTFIX_MAINCF_FILE}"
 fi
