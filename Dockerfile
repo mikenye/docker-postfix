@@ -65,6 +65,8 @@ RUN set -x && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
     curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_SIG_URL}" && \
     # Verify clamav download
+    CLAMAV_RSA_KEY=$(gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz 2>&1 | grep "using RSA key")  && \
+    echo "${CLAMAV_RSA_KEY}" && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     # Extract clamav download
     tar xzf /src/clamav.tar.gz -C /src/clamav && \
