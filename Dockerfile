@@ -54,6 +54,7 @@ RUN set -x && \
       libpcre2-32-0 \
       libpcre2-8-0 \
       libpcre2-posix0 \
+      libcurl4-openssl-dev \
       && \
     ldconfig && \
     # Get clamav
@@ -62,7 +63,6 @@ RUN set -x && \
     tar xzf /src/clamav.tar.gz -C /src/clamav && \
     cd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
     ./configure \
-      --enable-check \
       --enable-milter \
       --enable-clamdtop \
       --enable-clamsubmit \
@@ -143,6 +143,7 @@ RUN set -x && \
       libmilter-dev \
       libbz2-dev \
       libpcre2-dev \
+      libcurl4-openssl-dev \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \
