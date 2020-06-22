@@ -83,6 +83,16 @@ if [ ! -z "${POSTFIX_SMTPD_TLS_CHAIN_FILES}" ]; then
   echo "smtpd_tls_chain_files = ${POSTFIX_SMTPD_TLS_CHAIN_FILES}" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
+# http://www.postfix.org/postconf.5.html#relayhost
+if [ ! -z "${POSTFIX_RELAYHOST}" ]; then
+  echo "relayhost = ${POSTFIX_RELAYHOST}" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#relay_domains
+if [ ! -z "${POSTFIX_RELAY_DOMAINS}" ]; then
+  echo "relay_domains = ${POSTFIX_RELAY_DOMAINS}" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
 # Do we enable & configure DKIM?
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   echo "milter_default_action = accept" >> "${POSTFIX_MAINCF_FILE}"
