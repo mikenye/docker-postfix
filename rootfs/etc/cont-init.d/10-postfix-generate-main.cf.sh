@@ -4,6 +4,8 @@
 POSTFIX_MAINCF_FILE="/etc/postfix/main.cf"
 echo "" > "${POSTFIX_MAINCF_FILE}"
 
+SMTPDMILTERS = ""
+
 # Logging to stdout: http://www.postfix.org/MAILLOG_README.html
 echo "maillog_file = /dev/stdout" >> "${POSTFIX_MAINCF_FILE}"
 
@@ -93,16 +95,34 @@ if [ ! -z "${POSTFIX_RELAY_DOMAINS}" ]; then
   echo "relay_domains = ${POSTFIX_RELAY_DOMAINS}" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
-# Do we enable & configure DKIM?
-if [ "${ENABLE_OPENDKIM}" = "true" ]; then
-  echo "milter_default_action = accept" >> "${POSTFIX_MAINCF_FILE}"
-  echo "milter_protocol = 2" >> "${POSTFIX_MAINCF_FILE}"
-  echo "smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
-  echo "non_smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
-fi
-
 # Do we enable & configure spf-engine
 if [ "${ENABLE_SPF}" = "true" ]; then
   #echo "policy-spf_time_limit = ${POSTFIX_POLICY_SPF_TIME_LIMIT}" >> "${POSTFIX_MAINCF_FILE}"
   echo "smtpd_recipient_restrictions = permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination,check_policy_service unix:private/policy" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# Do we enable & configure DKIM?
+if [ "${ENABLE_OPENDKIM}" = "true" ]; then
+  echo "milter_default_action = accept" >> "${POSTFIX_MAINCF_FILE}"
+  echo "milter_protocol = 2" >> "${POSTFIX_MAINCF_FILE}"
+  echo "non_smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
+  if [ "$SMTPDMILTERS" -ne "" ]; then
+    SMTPDMILTERS = "inet:localhost:8891"
+  else
+    SMTPDMILTERS = "$SMTPDMILTERS, inet:localhost:8891"
+  fi
+fi
+
+# Do we enable & configure ClamAV?
+if [ "${ENABLE_CLAMAV}" = "true" ]; then
+  if [ "$SMTPDMILTERS" -ne "" ]; then
+    SMTPDMILTERS = "unix:/run/clamav-milter/clamav-milter.socket"
+  else
+    SMTPDMILTERS = "$SMTPDMILTERS, unix:/run/clamav-milter/clamav-milter.socket"
+  fi
+fi
+
+# Write milters
+if [ "$SMTPDMILTERS" -ne "" ]; then
+  echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi

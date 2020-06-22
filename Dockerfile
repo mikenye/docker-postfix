@@ -2,6 +2,7 @@ FROM debian:stable-slim
 
 ENV ENABLE_OPENDKIM="false" \
     CLAMAV_DOWNLOAD_URL=https://www.clamav.net/downloads/production/clamav-0.102.3.tar.gz \
+    CLAMAV_SIG_URL=https://www.clamav.net/downloads/production/clamav-0.102.3.tar.gz.sig \
     POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp \
@@ -59,11 +60,16 @@ RUN set -x && \
       libjson-c3 \
       && \
     ldconfig && \
-    # Get clamav
+    # Download clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
+    curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_SIG_URL}" && \
+    # Verify clamav download
+    gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
+    # Extract clamav download
     tar xzf /src/clamav.tar.gz -C /src/clamav && \
     cd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
+    # Build clamav
     ./configure \
       --enable-milter \
       --enable-clamdtop \
@@ -76,6 +82,7 @@ RUN set -x && \
     ldconfig && \
     mkdir -p /var/lib/clamav && \
     mkdir -p /run/freshclam && \
+    mkdir -p /run/clamav-milter && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
