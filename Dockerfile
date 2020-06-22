@@ -34,6 +34,7 @@ RUN set -x && \
       libmail-spf-perl \
       libsys-hostname-long-perl \
       libunix-syslog-perl \
+      busybox-syslogd \
       && \
     mkdir -p /src/postfix && \
     # Get postfix-policyd-spf-perl
