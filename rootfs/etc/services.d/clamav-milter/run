@@ -5,12 +5,8 @@ set -eo pipefail
 # Do we run clamav
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
 
-    pgrep clamd > /dev/null
-    if [ "$?" -ne "0" ]; then
-        echo "Waiting for clamd..."
-        sleep 1
-        exit 0
-    fi
+    # Wait for clamd to start
+    bash /wait_for_clamd.sh
 
     clamav-milter 2>&1 \
     | awk -W Interactive '{print "[clamav-milter] " $0}'

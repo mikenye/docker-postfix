@@ -4,21 +4,11 @@
 set -eo pipefail
 
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
-    pgrep clamav-milter > /dev/null
-    if [ "$?" -ne "0" ]; then
-        echo "Waiting for clamav-milter..."
-        sleep 1
-        exit 0
-    fi
+    bash /wait_for_clamav_milter.sh
 fi
 
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
-    pgrep opendkim > /dev/null
-    if [ "$?" -ne "0" ]; then
-        echo "Waiting for opendkim..."
-        sleep 1
-        exit 0
-    fi
+    bash /wait_for_opendkim_milter.sh
 fi
 
 exec \

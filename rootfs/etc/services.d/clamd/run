@@ -2,9 +2,9 @@
 # shellcheck shell=bash
 set -eo pipefail
 
-# Do we run freshclam?
+# Do we run clamd?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
-    clamd \
+    /usr/local/sbin/clamd \
         --foreground 2>&1 \
     | awk -W Interactive '{print "[clamd] " $0}'
 else
