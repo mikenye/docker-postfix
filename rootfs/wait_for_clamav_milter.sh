@@ -4,7 +4,7 @@ echo "Waiting for clamav-milter to become ready..."
 
 EXITCODE=1
 while [ "$EXITCODE" -ne "0" ]; do
-    cat << EOF | miltertest > /dev/null
+    cat << EOF | miltertest > /dev/null 2>&1 
         -- Echo that the test is starting 
         mt.echo("*** begin test ***") 
         -- try to connect to it 
