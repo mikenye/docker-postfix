@@ -88,9 +88,7 @@ RUN set -x && \
     mkdir -p /run/freshclam && \
     mkdir -p /run/clamav-milter && \
     mkdir -p /run/clamd && \
-    cp -v /usr/local/etc/clamd.conf.sample /usr/local/etc/clamd.conf && \
-    /usr/local/sbin/clamd --version >> /VERSIONS && \
-    rm -v /usr/local/etc/clamd.conf && \
+    echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
