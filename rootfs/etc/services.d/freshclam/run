@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 set -eo pipefail
 
-# Do we enable & configure spf-engine
+# Do we run freshclam?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
     freshclam \
         --stdout \

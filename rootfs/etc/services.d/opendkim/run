@@ -3,8 +3,17 @@
 
 set -eo pipefail
 
-exec \
+# Do we run opendkim?
+if [ "${ENABLE_OPENDKIM}" = "true" ]; then
     /usr/sbin/opendkim \
       -f \
       -x /etc/opendkim.conf \
-    2>&1 | awk -W Interactive '{print "[opendkim] " $0}'
+      2>&1 | awk -W Interactive '{print "[opendkim] " $0}'
+else
+    sleep 3600
+    exit 0
+fi
+
+
+
+    
