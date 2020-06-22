@@ -4,7 +4,8 @@ ENV ENABLE_OPENDKIM="false" \
     POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    POSTFIX_POLICY_SPF_TIME_LIMIT=3600s
 
 RUN set -x && \
     apt-get update && \
@@ -27,34 +28,21 @@ RUN set -x && \
       opendkim-tools \
       openssl \
       procps \
-      python3 \
-      python3-pip \
-      python3-setuptools \
-      python3-wheel \
-      python3-dev \
-      libmilter-dev \
+      perl \
+      libperl-version-perl \
+      libnetaddr-ip-perl \
+      libmail-spf-perl \
+      libsys-hostname-long-perl \
+      libunix-syslog-perl \
       && \
     mkdir -p /src/postfix && \
-    # Get spf-engine & prereqs
-    pip3 install \
-      pyspf \
-      dnspython \
-      authres \
-      pymilter \
-      && \
-    git clone https://git.launchpad.net/spf-engine /src/spf-engine && \
-    cd /src/spf-engine && \
-    #export BRANCH_SPF_ENGINE=$(git tag --sort="-creatordate" | head -1) && \
-    git checkout ${BRANCH_SPF_ENGINE} && \
-    #echo "spf-engine ${BRANCH_SPF_ENGINE}" >> /VERSIONS && \
-    # Fix https://bugs.launchpad.net/spf-engine/+bug/1856391
-    sed -i '/from spf_engine.util import own_socketfile/d' spf_engine/milter_spf.py && \
-    # Build & Install spf-engine
-    python3 setup.py install -O2 --single-version-externally-managed --record=/tmp/spf-engine.record && \
-    mkdir -p /run/pyspf-milter && \
-    adduser --system --no-create-home --quiet --disabled-password \
-      --disabled-login --shell /bin/false --group \
-      --home /run/pyspf-milter pyspf-milter && \
+    # Get postfix-policyd-spf-perl
+    git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
+    cd /src/postfix-policyd-spf-perl && \
+    export BRANCH_POSTFIX_POLICYD_SPF_PERL=$(git tag --sort="-creatordate" | head -1) && \
+    git checkout ${BRANCH_POSTFIX_POLICYD_SPF_PERL} && \
+    cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl
+    echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS
     # Get postfix source & signature & author key
     curl --output /src/postfix.tar.gz "${POSTFIX_SOURCE_URL}" && \
     curl --output /src/postfix.tar.gz.gpg2 "${POSTFIX_SIG_URL}" && \
@@ -105,7 +93,6 @@ RUN set -x && \
       libssl-dev \
       m4 \
       make \
-      python3-dev \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \

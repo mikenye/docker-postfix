@@ -12,6 +12,7 @@ This container is still under development.
 |----------------------|-------------------------------------------------------------------------------------------|
 | `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
 | `ENABLE_OPENDKIM`    | Optional. Set to "true" to enable OpenDKIM. Default is "false". If OpenDKIM is enabled, the "OpenDKIM Configuration" variables below will need to be set. |
+| `ENABLE_SPF`         | Optional. Set to "true" to enable policyd-spf. Default is "false". |
 | `TZ`                 | Optional. Set the timezone for the container. Default is `UTC`. |
 
 ### Postfix Configuration
