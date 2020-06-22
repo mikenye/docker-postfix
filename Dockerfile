@@ -80,6 +80,7 @@ RUN set -x && \
       && \
     make && \
     make check && \
+    # Install clamav
     make install && \
     ldconfig && \
     mkdir -p /var/lib/clamav && \
