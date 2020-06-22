@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-echo "Waiting for clamav-milter to become ready..."
-
 EXITCODE=1
 while [ "$EXITCODE" -ne "0" ]; do
+    echo "Waiting for clamav-milter to become ready..."
     cat << EOF | miltertest > /dev/null 2>&1 
         -- Echo that the test is starting 
         mt.echo("*** begin test ***") 
@@ -60,3 +59,5 @@ EOF
     EXITCODE=$?
     sleep 1
 done
+
+echo "clamav-milter is ready!"
