@@ -1,6 +1,7 @@
 FROM debian:stable-slim
 
 ENV ENABLE_OPENDKIM="false" \
+    CLAMAV_DOWNLOAD_URL=https://www.clamav.net/downloads/production/clamav-0.102.3.tar.gz \
     POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp \
@@ -13,6 +14,7 @@ RUN set -x && \
       ca-certificates \
       curl \
       file \
+      g++ \
       gcc \
       git \
       gnupg2 \
@@ -35,9 +37,44 @@ RUN set -x && \
       libsys-hostname-long-perl \
       libunix-syslog-perl \
       busybox-syslogd \
+      libxml2 \
+      libxml2-dev \
+      zlib1g \
+      zlib1g-dev \
+      check \
+      libmilter1.0.1 \
+      libmilter-dev \
+      libncurses5-dev \
+      libncurses5 \
+      libjson-c-dev \
+      libbz2-dev \
+      libbz2-1.0 \
+      libpcre2-dev \
+      libpcre2-16-0 \
+      libpcre2-32-0 \
+      libpcre2-8-0 \
+      libpcre2-posix0 \
       && \
-    mkdir -p /src/postfix && \
+    # Get clamav
+    mkdir -p /src/clamav && \
+    curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
+    tar xzf clamav.tar.gz -C /src/clamav && \
+    cd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
+    ./configure \
+      --enable-check \
+      --enable-milter \
+      --enable-clamdtop \
+      --enable-clamsubmit \
+      --enable-clamonacc \
+      && \
+    make && \
+    make check && \
+    make install && \
+    ldconfig && \
+    mkdir -p /var/lib/clamav && \
+    mkdir -p /run/freshclam && \
     # Get postfix-policyd-spf-perl
+    mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
     cd /src/postfix-policyd-spf-perl && \
     export BRANCH_POSTFIX_POLICYD_SPF_PERL=$(git tag --sort="-creatordate" | head -1) && \
@@ -45,9 +82,10 @@ RUN set -x && \
     cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
     echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
     # Get postfix source & signature & author key
-    curl --output /src/postfix.tar.gz "${POSTFIX_SOURCE_URL}" && \
-    curl --output /src/postfix.tar.gz.gpg2 "${POSTFIX_SIG_URL}" && \
-    curl --output /src/wietse.pgp "${WIETSE_PGP_KEY_URL}" && \
+    mkdir -p /src/postfix && \
+    curl --location --output /src/postfix.tar.gz "${POSTFIX_SOURCE_URL}" && \
+    curl --location --output /src/postfix.tar.gz.gpg2 "${POSTFIX_SIG_URL}" && \
+    curl --location --output /src/wietse.pgp "${WIETSE_PGP_KEY_URL}" && \
     # Verify postfix download
     gpg2 --import /src/wietse.pgp && \
     gpg2 --verify /src/postfix.tar.gz.gpg2 /src/postfix.tar.gz || exit 1 && \
@@ -57,9 +95,10 @@ RUN set -x && \
     cd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     make makefiles pie=yes shared=yes dynamicmaps=yes CCARGS="-DUSE_TLS" AUXLIBS="-lssl -lcrypto" && \
     make && \
-    # Create user/group
+    # Create users/groups
     groupadd --system postdrop && \
     useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
+    useradd --user-group --no-create-home --system --shell=/bin/false clamav && \
     # Install postfix
     POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} -non-interactive" && \
@@ -81,11 +120,12 @@ RUN set -x && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
     # Install s6-overlay
-    curl -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
+    curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
     apt-get remove -y \
       curl \
       file \
+      g++ \
       gcc \
       git \
       gnupg2 \
@@ -94,6 +134,14 @@ RUN set -x && \
       libssl-dev \
       m4 \
       make \
+      libxml2-dev \
+      zlib1g-dev \
+      check \
+      libncurses5-dev \
+      libjson-c-dev \
+      libmilter-dev \
+      libbz2-dev \
+      libpcre2-dev \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \

@@ -12,7 +12,8 @@ This container is still under development.
 |----------------------|-------------------------------------------------------------------------------------------|
 | `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
 | `ENABLE_OPENDKIM`    | Optional. Set to "true" to enable OpenDKIM. Default is "false". If OpenDKIM is enabled, the "OpenDKIM Configuration" variables below will need to be set. |
-| `ENABLE_SPF`         | Optional. Set to "true" to enable policyd-spf. Default is "false". |
+| `ENABLE_SPF`         | Optional. Set to "true" to enable [policyd-spf](https://launchpad.net/postfix-policyd-spf-perl/). Default is "false". |
+| `ENABLE_CLAMAV`      | Optional. Set to "true" to enable [ClamAV](https://www.clamav.net). Default is "false". |
 | `TZ`                 | Optional. Set the timezone for the container. Default is `UTC`. |
 
 ### Postfix Configuration
@@ -47,10 +48,11 @@ This container is still under development.
 | `OPENDKIM_SELECTOR`                | Set to the selector specified when creating the Key File. |
 | `OPENDKIM_SUBDOMAINS`              | Set to `true` to sign subdomains of those listed by the Domain parameter as well as the actual domains. |
 
-### SPF Configuration
+### ClamAV Configuration
 
 | Environment Variable               | Detail                                                                  |
 |------------------------------------|-------------------------------------------------------------------------|
+| `FRESHCLAM_CHECKS_PER_DAY`         | Optional. Number of database checks per day. Default: 12 (every two hours). |
 
 
 ## Generating a DKIM key

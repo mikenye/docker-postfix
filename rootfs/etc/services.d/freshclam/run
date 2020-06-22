@@ -1,0 +1,15 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+set -eo pipefail
+
+# Do we enable & configure spf-engine
+if [ "${ENABLE_CLAMAV}" = "true" ]; then
+    freshclam \
+        --stdout \
+        --foreground \
+        --daemon \
+        | awk -W Interactive '{print "[freshclam] " $0}'
+else
+    sleep 3600
+    exit 0
+fi
