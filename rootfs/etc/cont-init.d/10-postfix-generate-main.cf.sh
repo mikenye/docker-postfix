@@ -123,6 +123,6 @@ if [ "${ENABLE_CLAMAV}" = "true" ]; then
 fi
 
 # Write milters
-if [ "$SMTPDMILTERS" -ne "" ]; then
+if [ "$SMTPDMILTERS" != "" ]; then
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
