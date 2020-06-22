@@ -4,7 +4,7 @@
 POSTFIX_MAINCF_FILE="/etc/postfix/main.cf"
 echo "" > "${POSTFIX_MAINCF_FILE}"
 
-SMTPDMILTERS = ""
+SMTPDMILTERS=""
 
 # Logging to stdout: http://www.postfix.org/MAILLOG_README.html
 echo "maillog_file = /dev/stdout" >> "${POSTFIX_MAINCF_FILE}"
@@ -107,18 +107,18 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   echo "milter_protocol = 2" >> "${POSTFIX_MAINCF_FILE}"
   echo "non_smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
   if [ "$SMTPDMILTERS" = "" ]; then
-    SMTPDMILTERS = "inet:localhost:8891"
+    SMTPDMILTERS="inet:localhost:8891"
   else
-    SMTPDMILTERS = "$SMTPDMILTERS, inet:localhost:8891"
+    SMTPDMILTERS="$SMTPDMILTERS, inet:localhost:8891"
   fi
 fi
 
 # Do we enable & configure ClamAV?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
   if [ "$SMTPDMILTERS" = "" ]; then
-    SMTPDMILTERS = "unix:/run/clamav-milter/clamav-milter.socket"
+    SMTPDMILTERS="unix:/run/clamav-milter/clamav-milter.socket"
   else
-    SMTPDMILTERS = "$SMTPDMILTERS, unix:/run/clamav-milter/clamav-milter.socket"
+    SMTPDMILTERS="$SMTPDMILTERS, unix:/run/clamav-milter/clamav-milter.socket"
   fi
 fi
 
