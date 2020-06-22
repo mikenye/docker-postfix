@@ -41,8 +41,8 @@ RUN set -x && \
     cd /src/postfix-policyd-spf-perl && \
     export BRANCH_POSTFIX_POLICYD_SPF_PERL=$(git tag --sort="-creatordate" | head -1) && \
     git checkout ${BRANCH_POSTFIX_POLICYD_SPF_PERL} && \
-    cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl
-    echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS
+    cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
+    echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
     # Get postfix source & signature & author key
     curl --output /src/postfix.tar.gz "${POSTFIX_SOURCE_URL}" && \
     curl --output /src/postfix.tar.gz.gpg2 "${POSTFIX_SIG_URL}" && \
