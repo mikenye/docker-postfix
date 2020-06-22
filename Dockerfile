@@ -44,12 +44,12 @@ RUN set -x && \
       && \
     git clone https://git.launchpad.net/spf-engine /src/spf-engine && \
     cd /src/spf-engine && \
-    export BRANCH_SPF_ENGINE=$(git tag --sort="-creatordate" | head -1) && \
+    #export BRANCH_SPF_ENGINE=$(git tag --sort="-creatordate" | head -1) && \
     git checkout ${BRANCH_SPF_ENGINE} && \
-    echo "spf-engine ${BRANCH_SPF_ENGINE}" >> /VERSIONS && \
+    #echo "spf-engine ${BRANCH_SPF_ENGINE}" >> /VERSIONS && \
     # Fix https://bugs.launchpad.net/spf-engine/+bug/1856391
     sed -i '/from spf_engine.util import own_socketfile/d' spf_engine/milter_spf.py && \
-    # Install spf-engine
+    # Build & Install spf-engine
     python3 setup.py install -O2 --single-version-externally-managed --record=/tmp/spf-engine.record && \
     mkdir -p /run/pyspf-milter && \
     adduser --system --no-create-home --quiet --disabled-password \
@@ -111,7 +111,8 @@ RUN set -x && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
-    postconf mail_version
+    echo "postfix $(postconf mail_version | cut -d "=" -f 2 | tr -d " ")" >> /VERSIONS && \
+    cat /VERSIONS
 
 COPY rootfs/ /
 
