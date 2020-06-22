@@ -58,7 +58,7 @@ RUN set -x && \
     # Get clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
-    tar xzf clamav.tar.gz -C /src/clamav && \
+    tar xzf /src/clamav.tar.gz -C /src/clamav && \
     cd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
     ./configure \
       --enable-check \
