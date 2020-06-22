@@ -55,6 +55,7 @@ RUN set -x && \
       libpcre2-8-0 \
       libpcre2-posix0 \
       && \
+    ldconfig && \
     # Get clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
