@@ -106,7 +106,7 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   echo "milter_default_action = accept" >> "${POSTFIX_MAINCF_FILE}"
   echo "milter_protocol = 2" >> "${POSTFIX_MAINCF_FILE}"
   echo "non_smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
-  if [ "$SMTPDMILTERS" -ne "" ]; then
+  if [ "$SMTPDMILTERS" = "" ]; then
     SMTPDMILTERS = "inet:localhost:8891"
   else
     SMTPDMILTERS = "$SMTPDMILTERS, inet:localhost:8891"
@@ -115,7 +115,7 @@ fi
 
 # Do we enable & configure ClamAV?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
-  if [ "$SMTPDMILTERS" -ne "" ]; then
+  if [ "$SMTPDMILTERS" = "" ]; then
     SMTPDMILTERS = "unix:/run/clamav-milter/clamav-milter.socket"
   else
     SMTPDMILTERS = "$SMTPDMILTERS, unix:/run/clamav-milter/clamav-milter.socket"
