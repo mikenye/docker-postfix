@@ -56,6 +56,7 @@ RUN set -x && \
       openssl \
       perl \
       procps \
+      socat \
       zlib1g \
       zlib1g-dev \
       && \
@@ -87,6 +88,7 @@ RUN set -x && \
     mkdir -p /run/freshclam && \
     mkdir -p /run/clamav-milter && \
     mkdir -p /run/clamd && \
+    /usr/local/sbin/clamd --version >> /VERSIONS && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
