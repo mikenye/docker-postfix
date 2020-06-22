@@ -5,6 +5,7 @@
 chown -R clamav:clamav /var/lib/clamav
 chown -R clamav:clamav /run/freshclam
 chown -R clamav:clamav /run/clamav-milter
+chown -R clamav:clamav /run/clamd
 
 # Postfix
 chown root:root /var/spool/postfix

@@ -86,6 +86,7 @@ RUN set -x && \
     mkdir -p /var/lib/clamav && \
     mkdir -p /run/freshclam && \
     mkdir -p /run/clamav-milter && \
+    mkdir -p /run/clamd && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
