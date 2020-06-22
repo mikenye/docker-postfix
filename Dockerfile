@@ -12,17 +12,41 @@ ENV ENABLE_OPENDKIM="false" \
 RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
+      busybox-syslogd \
       ca-certificates \
+      check \
       curl \
       file \
       g++ \
       gcc \
       git \
       gnupg2 \
+      libbz2-1.0 \
+      libbz2-dev \
       libc6-dev \
+      libcurl4 \
+      libcurl4-openssl-dev \
       libdb5.3-dev \
+      libjson-c-dev \
+      libjson-c3 \
+      libmail-spf-perl \
+      libmilter-dev \
+      libmilter1.0.1 \
+      libncurses5 \
+      libncurses5-dev \
+      libnetaddr-ip-perl \
+      libpcre2-16-0 \
+      libpcre2-32-0 \
+      libpcre2-8-0 \
+      libpcre2-dev \
+      libpcre2-posix0 \
+      libperl-version-perl \
       libssl-dev \
       libssl1.1 \
+      libsys-hostname-long-perl \
+      libunix-syslog-perl \
+      libxml2 \
+      libxml2-dev \
       m4 \
       make \
       net-tools \
@@ -30,34 +54,10 @@ RUN set -x && \
       opendkim \
       opendkim-tools \
       openssl \
-      procps \
       perl \
-      libperl-version-perl \
-      libnetaddr-ip-perl \
-      libmail-spf-perl \
-      libsys-hostname-long-perl \
-      libunix-syslog-perl \
-      busybox-syslogd \
-      libxml2 \
-      libxml2-dev \
+      procps \
       zlib1g \
       zlib1g-dev \
-      check \
-      libmilter1.0.1 \
-      libmilter-dev \
-      libncurses5-dev \
-      libncurses5 \
-      libjson-c-dev \
-      libbz2-dev \
-      libbz2-1.0 \
-      libpcre2-dev \
-      libpcre2-16-0 \
-      libpcre2-32-0 \
-      libpcre2-8-0 \
-      libpcre2-posix0 \
-      libcurl4-openssl-dev \
-      libcurl4 \
-      libjson-c3 \
       && \
     ldconfig && \
     # Download clamav
@@ -135,26 +135,26 @@ RUN set -x && \
     curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
     apt-get remove -y \
+      check \
       curl \
       file \
       g++ \
       gcc \
       git \
       gnupg2 \
+      libbz2-dev \
       libc6-dev \
+      libcurl4-openssl-dev \
       libdb5.3-dev \
-      libssl-dev \
-      m4 \
-      make \
-      libxml2-dev \
-      zlib1g-dev \
-      check \
-      libncurses5-dev \
       libjson-c-dev \
       libmilter-dev \
-      libbz2-dev \
+      libncurses5-dev \
       libpcre2-dev \
-      libcurl4-openssl-dev \
+      libssl-dev \
+      libxml2-dev \
+      m4 \
+      make \
+      zlib1g-dev \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \
