@@ -5,6 +5,7 @@ ENV ENABLE_OPENDKIM="false" \
     CLAMAV_SIG_URL=https://www.clamav.net/downloads/production/clamav-0.102.3.tar.gz.sig \
     POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
+    POSTGREY_SOURCE_URL=http://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz \    
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2
     #POSTFIX_POLICY_SPF_TIME_LIMIT=3600s
@@ -21,6 +22,7 @@ RUN set -x && \
       gcc \
       git \
       gnupg2 \
+      libberkeleydb-perl \
       libbz2-1.0 \
       libbz2-dev \
       libc6-dev \
@@ -34,6 +36,7 @@ RUN set -x && \
       libmilter1.0.1 \
       libncurses5 \
       libncurses5-dev \
+      libnet-server-perl \
       libnetaddr-ip-perl \
       libpcre2-16-0 \
       libpcre2-32-0 \
@@ -61,6 +64,12 @@ RUN set -x && \
       zlib1g-dev \
       && \
     ldconfig && \
+    # Download postgrey
+    mkdir -p /src/postgrey && \
+    curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
+    # Extract postgrey
+    tar xzf /src/postgrey.tar.gz -C /src/postgrey && \
+    cd $(find /src/postgrey -maxdepth 1 -type d | tail -1) && \
     # Download clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
