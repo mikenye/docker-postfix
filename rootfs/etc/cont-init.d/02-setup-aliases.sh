@@ -21,7 +21,7 @@ echo "postfix:    ${POSTMASTER_EMAIL}" >> /etc/aliases
 echo "clamav:     ${POSTMASTER_EMAIL}" >> /etc/aliases
 
 # Implement local aliases
-if [ -f "/etc/postfix/aliases/aliases" ]; then
+if [ -f "/etc/postfix/local_aliases/aliases" ]; then
   cat /etc/postfix/local_aliases/aliases >> /etc/aliases
 fi
 
