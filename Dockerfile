@@ -129,7 +129,16 @@ RUN set -x && \
     tar xzf /src/postfix.tar.gz -C /src/postfix && \
     # Build postfix
     cd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
-    make makefiles pie=yes shared=yes dynamicmaps=yes CCARGS="-DUSE_TLS" AUXLIBS="-lssl -lcrypto" && \
+    make \
+      Makefile.init \
+      makefiles \
+      pie=yes \
+      shared=yes \
+      dynamicmaps=yes \
+      CCARGS="-DUSE_TLS -DHAS_PCRE $(pcre-config --cflags)" \
+      AUXLIBS="-lssl -lcrypto" \
+      AUXLIBS_PCRE="$(pcre-config --libs)" \
+      && \
     make && \
     # Create users/groups
     groupadd --system postdrop && \
