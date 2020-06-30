@@ -57,6 +57,7 @@ RUN set -x && \
       opendkim \
       opendkim-tools \
       openssl \
+      pcre2-utils \
       perl \
       procps \
       socat \
