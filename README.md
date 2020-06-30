@@ -77,7 +77,7 @@ This container is still under development.
 | Path | Access | Detail |
 |------|--------|--------|
 | `/var/lib/clamav` | `rw` | ClamAV anti-virus database. Recommended to map if using ClamAV. |
-| `/etc/postfix/aliases` | `rw` | A file named `aliases` should be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. |
+| `/etc/postfix/local_aliases` | `rw` | A file named `aliases` should be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. |
 | `/etc/postfix/certs` | `ro` | Postfix TLS chain files should be placed in here. |
 | `/etc/postgrey` | `ro` | Postgrey local whitelists should be placed in here. |
 | `/etc/postfix/tables` | `rw` | Postfix's tables should be placed in here. |

@@ -22,7 +22,7 @@ echo "clamav:     ${POSTMASTER_EMAIL}" >> /etc/aliases
 
 # Implement local aliases
 if [ -f "/etc/postfix/aliases/aliases" ]; then
-  cat /etc/postfix/aliases/aliases >> /etc/aliases
+  cat /etc/postfix/local_aliases/aliases >> /etc/aliases
 fi
 
 # Run newaliases

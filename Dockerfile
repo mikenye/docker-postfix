@@ -167,7 +167,7 @@ RUN set -x && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
     # Make directories
     mkdir -p /etc/postfix/tables && \
-    mkdir -p /etc/postfix/aliases && \
+    mkdir -p /etc/postfix/local_aliases && \
     # Install s6-overlay
     curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
