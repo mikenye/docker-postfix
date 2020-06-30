@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 unset EXITCODE
-while [ "$EXITCODE" -ne "0" ]; do
+while [ "$EXITCODE" -ne 0 ]; do
     echo "Waiting for postgrey to become ready..."
     echo "" | socat TCP-CONNECT:127.0.0.1:10023 -
     EXITCODE=$?
