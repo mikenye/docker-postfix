@@ -1,6 +1,10 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
+# Make dirs
+mkdir -p /var/spool/postfix/postgrey
+mkdir -p /var/spool/postfix
+
 # ClamAV
 chown -R clamav:clamav /var/lib/clamav
 chown -R clamav:clamav /run/freshclam
