@@ -11,6 +11,10 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
     bash /wait_for_opendkim_milter.sh | awk -W Interactive '{print "[startup] " $0}'
 fi
 
+if [ "${ENABLE_POSTGREY}" = "true" ]; then
+    bash /wait_for_postgrey.sh | awk -W Interactive '{print "[startup] " $0}'
+fi
+
 echo "Dependent processes are ready, starting postfix..." | awk -W Interactive '{print "[startup] " $0}'
 
 exec \
