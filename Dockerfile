@@ -74,8 +74,6 @@ RUN set -x && \
     mkdir -p /opt/postgrey && \
     cp -Rv * /opt/postgrey && \
     mkdir -p /etc/postgrey && \
-    mv -v /opt/postgrey/postgrey_whitelist_clients /etc/postgrey/postgrey_whitelist_clients && \
-    mv -v /opt/postgrey/postgrey_whitelist_recipients /etc/postgrey/postgrey_whitelist_recipients && \
     touch /etc/postgrey/postgrey_whitelist_clients.local && \
     touch /etc/postgrey/postgrey_whitelist_recipients.local && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
