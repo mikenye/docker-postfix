@@ -160,6 +160,14 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
 # ========== END smtpd_recipient_restrictions ==========
 
+# ========== START smtpd_data_restrictions ==========
+
+echo "smtpd_data_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
+  echo "    reject_unauth_pipelining,"  >> "${POSTFIX_MAINCF_FILE}"
+  echo "    permit"  >> "${POSTFIX_MAINCF_FILE}"
+
+# ========== END smtpd_data_restrictions ==========
+
 # Do we enable & configure DKIM?
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   echo "milter_default_action = accept" >> "${POSTFIX_MAINCF_FILE}"
@@ -185,3 +193,4 @@ fi
 if [ "$SMTPDMILTERS" != "" ]; then
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
