@@ -43,6 +43,7 @@ RUN set -x && \
       libpcre2-8-0 \
       libpcre2-dev \
       libpcre2-posix0 \
+      libpcre3-dev \
       libperl-version-perl \
       libssl-dev \
       libssl1.1 \
