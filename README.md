@@ -10,10 +10,15 @@ This container is still under development.
 
 | Environment Variable | Description                                                                               |
 |----------------------|-------------------------------------------------------------------------------------------|
-| `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
-| `ENABLE_OPENDKIM`    | Optional. Set to "true" to enable OpenDKIM. Default is "false". If OpenDKIM is enabled, the "OpenDKIM Configuration" variables below will need to be set. |
-| `ENABLE_SPF`         | Optional. Set to "true" to enable [policyd-spf](https://launchpad.net/postfix-policyd-spf-perl/). Default is "false". |
 | `ENABLE_CLAMAV`      | Optional. Set to "true" to enable [ClamAV](https://www.clamav.net). Default is "false". |
+| `ENABLE_OPENDKIM`    | Optional. Set to "true" to enable OpenDKIM. If OpenDKIM is enabled, the "OpenDKIM Configuration" variables below will need to be set. Default is "false". |
+| `ENABLE_POSTGREY`    | Optional. Set to "true" to enable [postgrey](https://postgrey.schweikert.ch). Default is "false". |
+| `ENABLE_RBL_CBL_ABUSEAT` | Optional. Set to "true" to enable [`cbl.abuseat.org`](https://www.abuseat.org). Adds `reject_rbl_client cbl.abuseat.org=127.0.0.2` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
+| `ENABLE_RBL_HOSTKARMA_JUNKEMAILFILTER` | Optional. Set to "true" to enable [`hostkarma.junkemailfilter.com`](http://wiki.junkemailfilter.com/index.php/Spam_DNS_Lists) blacklist. Adds `reject_rbl_client hostkarma.junkemailfilter.com=127.0.0.2` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
+| `ENABLE_RBL_SPAMCOP` | Optional. Set to "true" to enable [`bl.spamcop.net`](https://www.spamcop.net/bl.shtml). Adds `reject_rbl_client bl.spamcop.net` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
+| `ENABLE_RBL_SPAMHAUS_ZEN` | Optional. Set to "true" to enable [zen.spamhaus.org](https://www.spamhaus.org/zen/). Adds `reject_rbl_client zen.spamhaus.org` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
+| `ENABLE_SPF`         | Optional. Set to "true" to enable [policyd-spf](https://launchpad.net/postfix-policyd-spf-perl/). Default is "false". |
+| `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
 | `TZ`                 | Optional. Set the timezone for the container. Default is `UTC`. |
 
 ### Postfix Configuration
@@ -27,15 +32,18 @@ This container is still under development.
 | `POSTFIX_MYNETWORKS`               | <http://www.postfix.org/postconf.5.html#mynetworks> |
 | `POSTFIX_MYORIGIN`                 | <http://www.postfix.org/postconf.5.html#myorigin> |
 | `POSTFIX_PROXY_INTERFACES`         | <http://www.postfix.org/postconf.5.html#proxy_interfaces> |
+| `POSTFIX_RELAY_DOMAINS`            | <http://www.postfix.org/postconf.5.html#relay_domains> |
+| `POSTFIX_RELAYHOST`                | <http://www.postfix.org/postconf.5.html#relayhost> |
 | `POSTFIX_SMTP_TLS_CHAIN_FILES`     | <http://www.postfix.org/postconf.5.html#smtp_tls_chain_files> |
+| `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS` | Set to `true` to include `check_sender_access` in `smtpd_recipient_restrictions`. Postfix will use `hash:/etc/postfix/tables/sender_access`, so make sure you perform a volume mapping and that `sender_access` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#check_sender_access> |
+| `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. <http://www.postfix.org/postconf.5.html#permit_sasl_authenticated> |
 | `POSTFIX_SMTPD_TLS_CERT_FILE`      | <http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file> |
 | `POSTFIX_SMTPD_TLS_CHAIN_FILES`    | <http://www.postfix.org/postconf.5.html#smtpd_tls_chain_files> |
 | `POSTFIX_SMTPD_TLS_KEY_FILE`       | <http://www.postfix.org/postconf.5.html#smtpd_tls_key_file> |
 | `POSTFIX_SMTPD_TLS_LOGLEVEL`       | <http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel> |
 | `POSTFIX_SMTPD_TLS_SECURITY_LEVEL` | <http://www.postfix.org/postconf.5.html#smtpd_tls_security_level> |
 | `POSTFIX_SMTPD_USE_TLS`            | <http://www.postfix.org/postconf.5.html#smtpd_use_tls> |
-| `POSTFIX_RELAYHOST`                | <http://www.postfix.org/postconf.5.html#relayhost> |
-| `POSTFIX_RELAY_DOMAINS`            | <http://www.postfix.org/postconf.5.html#relay_domains> |
+| `POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS` | Set to `true` to include `check_helo_access` in `smtpd_helo_restrictions`. Postfix will use `hash:/etc/postfix/tables/helo_access`, so make sure you perform a volume mapping and that `helo_access` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#check_helo_access> |
 
 ### OpenDKIM Configuration
 

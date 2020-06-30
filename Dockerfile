@@ -70,6 +70,16 @@ RUN set -x && \
     # Extract postgrey
     tar xzf /src/postgrey.tar.gz -C /src/postgrey && \
     cd $(find /src/postgrey -maxdepth 1 -type d | tail -1) && \
+    # Install postgrey
+    mkdir -p /opt/postgrey && \
+    cp -Rv * /opt/postgrey && \
+    mkdir -p /etc/postgrey && \
+    mv -v /opt/postgrey/postgrey_whitelist_clients /etc/postgrey/postgrey_whitelist_clients && \
+    mv -v /opt/postgrey/postgrey_whitelist_recipients /etc/postgrey/postgrey_whitelist_recipients && \
+    touch /etc/postgrey/postgrey_whitelist_clients.local && \
+    touch /etc/postgrey/postgrey_whitelist_recipients.local && \
+    ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
+    mkdir -p /var/spool/postfix/postgrey && \
     # Download clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
@@ -124,6 +134,7 @@ RUN set -x && \
     groupadd --system postdrop && \
     useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
     useradd --user-group --no-create-home --system --shell=/bin/false clamav && \
+    useradd --user-group --no-create-home --system --shell=/bin/false postgrey && \
     # Install postfix
     POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} -non-interactive" && \
@@ -144,6 +155,8 @@ RUN set -x && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} meta_directory=/etc/postfix" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
+    # Make directories
+    mkdir -p /etc/postfix/tables && \
     # Install s6-overlay
     curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
@@ -171,6 +184,7 @@ RUN set -x && \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \
+    cd / && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
     echo "postfix $(postconf mail_version | cut -d "=" -f 2 | tr -d " ")" >> /VERSIONS && \

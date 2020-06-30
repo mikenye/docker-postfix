@@ -95,11 +95,70 @@ if [ ! -z "${POSTFIX_RELAY_DOMAINS}" ]; then
   echo "relay_domains = ${POSTFIX_RELAY_DOMAINS}" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
-# Do we enable & configure spf-engine
-if [ "${ENABLE_SPF}" = "true" ]; then
-  #echo "policy-spf_time_limit = ${POSTFIX_POLICY_SPF_TIME_LIMIT}" >> "${POSTFIX_MAINCF_FILE}"
-  echo "smtpd_recipient_restrictions = permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination,check_policy_service unix:private/policy" >> "${POSTFIX_MAINCF_FILE}"
+echo "disable_vrfy_command = yes" >> "${POSTFIX_MAINCF_FILE}"
+
+# ========== START smtpd_helo_restrictions ==========
+echo "smtpd_helo_required = yes" >> "${POSTFIX_MAINCF_FILE}"
+
+echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
+
+if [ "${POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS}" = "true" ]; then
+  echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    check_helo_access = hash:/etc/postfix/tables/helo_access," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    reject_unknown_helo_hostname" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# ========== END smtpd_helo_restrictions ==========
+
+# ========== START smtpd_recipient_restrictions ==========
+
+echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
+  echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
+
+  if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED}" = "true" ]; then
+    echo "    permit_sasl_authenticated," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  echo "    reject_unauth_destination," >> "${POSTFIX_MAINCF_FILE}"
+
+  if [ "${ENABLE_SPF}" = "true" ]; then
+    echo "   check_policy_service unix:private/policy," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  echo "    reject_non_fqdn_recipient," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    reject_non_fqdn_sender," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    reject_unknown_sender_domain," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    reject_unknown_recipient_domain," >> "${POSTFIX_MAINCF_FILE}"
+
+  if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS}" = "true" ]; then
+    echo "    check_sender_access hash:/etc/postfix/tables/sender_access," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${ENABLE_RBL_HOSTKARMA_JUNKEMAILFILTER}" = "true" ]; then
+    echo "    reject_rbl_client hostkarma.junkemailfilter.com=127.0.0.2," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${ENABLE_RBL_SPAMCOP}" = "true" ]; then
+    echo "    reject_rbl_client bl.spamcop.net," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${ENABLE_RBL_CBL_ABUSEAT}" = "true" ]; then
+    echo "    reject_rbl_client cbl.abuseat.org=127.0.0.2," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${ENABLE_RBL_SPAMHAUS_ZEN}" = "true" ]; then
+    echo "    reject_rbl_client zen.spamhaus.org," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${ENABLE_POSTGREY}" = "true" ]; then
+    echo "    check_policy_service inet:127.0.0.1:10023," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  echo "    permit" >> "${POSTFIX_MAINCF_FILE}"
+
+# ========== END smtpd_recipient_restrictions ==========
 
 # Do we enable & configure DKIM?
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
