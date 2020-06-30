@@ -118,7 +118,6 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_helo_hostname" >> "${POSTFIX_MAINCF_FILE}"
-fi
 
 # ========== END smtpd_helo_restrictions ==========
 
