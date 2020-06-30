@@ -99,14 +99,22 @@ echo "disable_vrfy_command = yes" >> "${POSTFIX_MAINCF_FILE}"
 
 echo "smtpd_hard_error_limit = 1" >> "${POSTFIX_MAINCF_FILE}"
 
+if [ "${POSTFIX_HEADER_CHECKS}" = "true" ]; then
+  echo "header_checks = pcre:/etc/postfix/tables/header_checks" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
 # ========== START smtpd_helo_restrictions ==========
 
 echo "smtpd_helo_required = yes" >> "${POSTFIX_MAINCF_FILE}"
 echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
-if [ "${POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS}" = "true" ]; then
   echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
-  echo "    check_helo_access = hash:/etc/postfix/tables/helo_access," >> "${POSTFIX_MAINCF_FILE}"
+
+  if [ "${POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS}" = "true" ]; then
+    postmap /etc/postfix/tables/helo_access
+    echo "    check_helo_access = hash:/etc/postfix/tables/helo_access," >> "${POSTFIX_MAINCF_FILE}"
+  fi    
+  
   echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_helo_hostname" >> "${POSTFIX_MAINCF_FILE}"
@@ -135,6 +143,7 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_recipient_domain," >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS}" = "true" ]; then
+    postmap /etc/postfix/tables/sender_access
     echo "    check_sender_access hash:/etc/postfix/tables/sender_access," >> "${POSTFIX_MAINCF_FILE}"
   fi
 

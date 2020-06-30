@@ -44,6 +44,7 @@ This container is still under development.
 | `POSTFIX_SMTPD_TLS_LOGLEVEL`       | <http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel> |
 | `POSTFIX_SMTPD_TLS_SECURITY_LEVEL` | <http://www.postfix.org/postconf.5.html#smtpd_tls_security_level> |
 | `POSTFIX_SMTPD_USE_TLS`            | <http://www.postfix.org/postconf.5.html#smtpd_use_tls> |
+| `POSTFIX_HEADER_CHECKS`            | Set to `true` to include `header_checks = pcre:/etc/postfix/tables/header_checks`. Make sure you perform a volume mapping and that `header_checks` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#header_checks> |
 
 ### OpenDKIM Configuration
 
