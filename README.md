@@ -35,6 +35,7 @@ This container is still under development.
 | `POSTFIX_RELAY_DOMAINS`            | <http://www.postfix.org/postconf.5.html#relay_domains> |
 | `POSTFIX_RELAYHOST`                | <http://www.postfix.org/postconf.5.html#relayhost> |
 | `POSTFIX_SMTP_TLS_CHAIN_FILES`     | <http://www.postfix.org/postconf.5.html#smtp_tls_chain_files> |
+| `POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS` | Set to `true` to include `check_helo_access` in `smtpd_helo_restrictions`. Postfix will use `hash:/etc/postfix/tables/helo_access`, so make sure you perform a volume mapping and that `helo_access` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#check_helo_access> |
 | `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS` | Set to `true` to include `check_sender_access` in `smtpd_recipient_restrictions`. Postfix will use `hash:/etc/postfix/tables/sender_access`, so make sure you perform a volume mapping and that `sender_access` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#check_sender_access> |
 | `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. <http://www.postfix.org/postconf.5.html#permit_sasl_authenticated> |
 | `POSTFIX_SMTPD_TLS_CERT_FILE`      | <http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file> |
@@ -43,7 +44,6 @@ This container is still under development.
 | `POSTFIX_SMTPD_TLS_LOGLEVEL`       | <http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel> |
 | `POSTFIX_SMTPD_TLS_SECURITY_LEVEL` | <http://www.postfix.org/postconf.5.html#smtpd_tls_security_level> |
 | `POSTFIX_SMTPD_USE_TLS`            | <http://www.postfix.org/postconf.5.html#smtpd_use_tls> |
-| `POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS` | Set to `true` to include `check_helo_access` in `smtpd_helo_restrictions`. Postfix will use `hash:/etc/postfix/tables/helo_access`, so make sure you perform a volume mapping and that `helo_access` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#check_helo_access> |
 
 ### OpenDKIM Configuration
 
