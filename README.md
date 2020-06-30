@@ -28,6 +28,7 @@ This container is still under development.
 | `POSTFIX_HEADER_CHECKS`            | Set to `true` to include `header_checks = pcre:/etc/postfix/tables/header_checks`. Make sure you perform a volume mapping and that `header_checks` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#header_checks> |
 | `POSTFIX_INET_PROTOCOLS`           | <http://www.postfix.org/postconf.5.html#inet_protocols> |
 | `POSTFIX_MAIL_NAME`                | <http://www.postfix.org/postconf.5.html#mail_name> |
+| `POSTFIX_MESSAGE_SIZE_LIMIT` | <http://www.postfix.org/postconf.5.html#message_size_limit> |
 | `POSTFIX_MYDOMAIN`                 | <http://www.postfix.org/postconf.5.html#mydomain> |
 | `POSTFIX_MYHOSTNAME`               | <http://www.postfix.org/postconf.5.html#myhostname> |
 | `POSTFIX_MYNETWORKS`               | <http://www.postfix.org/postconf.5.html#mynetworks> |
