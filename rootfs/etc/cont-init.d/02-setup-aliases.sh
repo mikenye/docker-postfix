@@ -20,5 +20,9 @@ echo "root:       ${POSTMASTER_EMAIL}" >> /etc/aliases
 echo "postfix:    ${POSTMASTER_EMAIL}" >> /etc/aliases
 echo "clamav:     ${POSTMASTER_EMAIL}" >> /etc/aliases
 
+# Implement local aliases
+touch /etc/postfix/aliases/aliases
+cat /etc/postfix/aliases/aliases >> /etc/aliases
+
 # Run newaliases
 newaliases

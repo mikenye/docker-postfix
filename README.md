@@ -64,6 +64,25 @@ This container is still under development.
 | `FRESHCLAM_CHECKS_PER_DAY`         | Optional. Number of database checks per day. Default: 12 (every two hours). |
 | `CLAMAV_MILTER_REPORT_HOSTNAME`    | Optional. The hostname ClamAV will report in the `X-Virus-Scanned` header. If unset, defaults to the container's hostname. |
 
+## Paths
+
+### Required to be mapped
+
+| Path | Access | Detail |
+|------|--------|--------|
+| `/var/spool/postfix` | `rw` | Required. Mail queue & postgrey database. |
+
+### Optional
+
+| Path | Access | Detail |
+|------|--------|--------|
+| `/var/lib/clamav` | `rw` | ClamAV anti-virus database. Recommended to map if using ClamAV. |
+| `/etc/postfix/aliases` | `rw` | A file named `aliases` should be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. |
+| `/etc/postfix/certs` | `ro` | Postfix TLS chain files should be placed in here. |
+| `/etc/postgrey` | `ro` | Postgrey local whitelists should be placed in here. |
+| `/etc/postfix/tables` | `rw` | Postfix's tables should be placed in here. |
+
+
 
 ## Generating a DKIM key
 
