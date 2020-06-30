@@ -97,9 +97,11 @@ fi
 
 echo "disable_vrfy_command = yes" >> "${POSTFIX_MAINCF_FILE}"
 
-# ========== START smtpd_helo_restrictions ==========
-echo "smtpd_helo_required = yes" >> "${POSTFIX_MAINCF_FILE}"
+echo "smtpd_hard_error_limit = 1" >> "${POSTFIX_MAINCF_FILE}"
 
+# ========== START smtpd_helo_restrictions ==========
+
+echo "smtpd_helo_required = yes" >> "${POSTFIX_MAINCF_FILE}"
 echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
 if [ "${POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS}" = "true" ]; then
