@@ -112,7 +112,7 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS}" = "true" ]; then
     postmap /etc/postfix/tables/helo_access
-    echo "    check_helo_access = hash:/etc/postfix/tables/helo_access," >> "${POSTFIX_MAINCF_FILE}"
+    echo "    check_helo_access hash:/etc/postfix/tables/helo_access," >> "${POSTFIX_MAINCF_FILE}"
   fi    
   
   echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
