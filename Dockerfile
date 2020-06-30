@@ -80,6 +80,7 @@ RUN set -x && \
     touch /etc/postgrey/postgrey_whitelist_recipients.local && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
     mkdir -p /var/spool/postfix/postgrey && \
+    postgrey --version >> /VERSIONS && \
     # Download clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
