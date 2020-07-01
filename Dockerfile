@@ -168,6 +168,7 @@ RUN set -x && \
     # Make directories
     mkdir -p /etc/postfix/tables && \
     mkdir -p /etc/postfix/local_aliases && \
+    mkdir -p /etc/mail/dkim && \
     # Install s6-overlay
     curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
