@@ -7,9 +7,12 @@ if [ "${ENABLE_POSTGREY}" = "true" ]; then
   set -e
 
   # Download latest file
-  curl --location --output "${POSTGREY_SYSTEM_WHITELIST_FILE}.new" "${POSTGREY_SOURCE_URL}"
+  curl --location --output "/tmp/postgrey_whitelist_client.new.gz" "${POSTGREY_SOURCE_URL}"
+
+  # Unzip
+  gunzip /tmp/postgrey_whitelist_client.new.gz
 
   # Move downloaded file to final location
-  mv "${POSTGREY_SYSTEM_WHITELIST_FILE}.new" "${POSTGREY_SYSTEM_WHITELIST_FILE}"
+  mv "/tmp/postgrey_whitelist_client.new" "${POSTGREY_SYSTEM_WHITELIST_FILE}"
 
 fi
