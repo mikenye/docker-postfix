@@ -82,8 +82,7 @@ RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
     git checkout "${FAIL2BAN_VERSION}" && \
     # Fix fail2ban (see https://github.com/fail2ban/fail2ban/issues/1694)
-    sed -i "s/for name, num in signal.__dict__.iteritems() if name.startswith(\"SIG\"))/for name, num in signal.__dict__.items() if name.startswith(\"SIG\"))/" \
-      /src/fail2ban/fail2ban/server/utils.py && \
+    sed "s/.iteritems()/.iter()/g" -i $(grep -Rl "\.iteritems()") && \
     # Build & install fail2ban
     python setup.py build && \
     python setup.py install && \
