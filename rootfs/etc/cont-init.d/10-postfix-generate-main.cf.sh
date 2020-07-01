@@ -140,22 +140,6 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_sender_domain," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_recipient_domain," >> "${POSTFIX_MAINCF_FILE}"
 
-  if [ "${ENABLE_RBL_HOSTKARMA_JUNKEMAILFILTER}" = "true" ]; then
-    echo "    reject_rbl_client hostkarma.junkemailfilter.com=127.0.0.2," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
-  if [ "${ENABLE_RBL_SPAMCOP}" = "true" ]; then
-    echo "    reject_rbl_client bl.spamcop.net," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
-  if [ "${ENABLE_RBL_CBL_ABUSEAT}" = "true" ]; then
-    echo "    reject_rbl_client cbl.abuseat.org=127.0.0.2," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
-  if [ "${ENABLE_RBL_SPAMHAUS_ZEN}" = "true" ]; then
-    echo "    reject_rbl_client zen.spamhaus.org," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
   if [ "${ENABLE_POSTGREY}" = "true" ]; then
     echo "    check_policy_service inet:127.0.0.1:10023," >> "${POSTFIX_MAINCF_FILE}"
   fi

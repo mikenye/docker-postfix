@@ -13,10 +13,6 @@ This container is still under development.
 | `ENABLE_CLAMAV`      | Optional. Set to "true" to enable [ClamAV](https://www.clamav.net). Default is "false". |
 | `ENABLE_OPENDKIM`    | Optional. Set to "true" to enable OpenDKIM. If OpenDKIM is enabled, the "OpenDKIM Configuration" variables below will need to be set. Default is "false". |
 | `ENABLE_POSTGREY`    | Optional. Set to "true" to enable [postgrey](https://postgrey.schweikert.ch). Default is "false". |
-| `ENABLE_RBL_CBL_ABUSEAT` | Optional. Set to "true" to enable [`cbl.abuseat.org`](https://www.abuseat.org). Adds `reject_rbl_client cbl.abuseat.org=127.0.0.2` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
-| `ENABLE_RBL_HOSTKARMA_JUNKEMAILFILTER` | Optional. Set to "true" to enable [`hostkarma.junkemailfilter.com`](http://wiki.junkemailfilter.com/index.php/Spam_DNS_Lists) blacklist. Adds `reject_rbl_client hostkarma.junkemailfilter.com=127.0.0.2` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
-| `ENABLE_RBL_SPAMCOP` | Optional. Set to "true" to enable [`bl.spamcop.net`](https://www.spamcop.net/bl.shtml). Adds `reject_rbl_client bl.spamcop.net` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
-| `ENABLE_RBL_SPAMHAUS_ZEN` | Optional. Set to "true" to enable [zen.spamhaus.org](https://www.spamhaus.org/zen/). Adds `reject_rbl_client zen.spamhaus.org` to `smtpd_recipient_restrictions`. Should only be used for incoming mail. Default is "false". |
 | `ENABLE_SPF`         | Optional. Set to "true" to enable [policyd-spf](https://launchpad.net/postfix-policyd-spf-perl/). Default is "false". |
 | `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
 | `TZ`                 | Optional. Set the timezone for the container. Default is `UTC`. |
