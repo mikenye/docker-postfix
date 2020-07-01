@@ -5,7 +5,7 @@ OPENDKIM_CONF_FILE="/etc/opendkim.conf"
 echo "" > "${OPENDKIM_CONF_FILE}"
 
 # Don't log to syslog (there is no syslog in this container)
-echo "Syslog false" >> "${OPENDKIM_CONF_FILE}"
+echo "Syslog true" >> "${OPENDKIM_CONF_FILE}"
 
 # Listen on localhost:8891
 echo "Socket inet:8891@127.0.0.1" >> "${OPENDKIM_CONF_FILE}"
