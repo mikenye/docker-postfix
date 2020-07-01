@@ -6,8 +6,10 @@ if [ "${ENABLE_POSTGREY}" = "true" ]; then
   # Fail on error
   set -e
 
+  echo "Updating ${POSTGREY_SYSTEM_WHITELIST_FILE}..."
+
   # Download latest file
-  curl --location --output "/tmp/postgrey_whitelist_client.new" "${POSTGREY_WHITELIST_URL}"
+  curl --location --silent --output "/tmp/postgrey_whitelist_client.new" "${POSTGREY_WHITELIST_URL}"
   
   # Move downloaded file to final location
   mv "/tmp/postgrey_whitelist_client.new" "${POSTGREY_SYSTEM_WHITELIST_FILE}"

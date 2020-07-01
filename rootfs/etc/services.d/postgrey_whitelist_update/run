@@ -5,7 +5,7 @@ set -eo pipefail
 # Do we run freshclam?
 if [ "${ENABLE_POSTGREY}" = "true" ]; then
     sleep 86400
-    /usr/local/bin/update_postgrey_whitelist
+    /usr/local/bin/update_postgrey_whitelist | awk -W Interactive '{print "[postgrey_whitelist_update] " $0}'
     exit $?
 else
     sleep 86400
