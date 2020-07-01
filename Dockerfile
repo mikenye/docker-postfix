@@ -64,6 +64,7 @@ RUN set -x && \
       perl \
       procps \
       python3 \
+      python3-distutils \
       python3-pip \
       python3-setuptools \
       python3-wheel \
@@ -75,9 +76,6 @@ RUN set -x && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     ln -s /usr/bin/pip3 /usr/bin/pip && \
     # Install fail2ban
-    pip3 install \
-      distutils \
-      && \
     git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     pushd /src/fail2ban && \
     FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
