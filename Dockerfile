@@ -17,6 +17,7 @@ SHELL ["/bin/bash", "-c"]
 RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
+      2to3 \
       busybox-syslogd \
       ca-certificates \
       check \
@@ -194,14 +195,13 @@ RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     pushd /src/fail2ban && \
     FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
     git checkout "${FAIL2BAN_VERSION}" && \
-    # Fix fail2ban (see https://github.com/fail2ban/fail2ban/issues/1694)
-    # Replace all instances of .iteritems() with .iter()
-    sed "s/.iteritems()/.iter()/g" -i $(grep -Rl "\.iteritems()") && \
     # Build & install fail2ban
+    ./fail2ban-2to3 && \
+    ./fail2ban-testcases-all-python3 && \
     python setup.py build && \
     python setup.py install && \
-    fail2ban-server --version >> /VERSIONS && \
-    popd
+    popd && \
+    fail2ban-client --version >> /VERSIONS
 
     # Make directories
 RUN mkdir -p /etc/postfix/tables && \
@@ -211,6 +211,7 @@ RUN mkdir -p /etc/postfix/tables && \
     curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
     apt-get remove -y \
+      2to3 \
       check \
       file \
       g++ \
