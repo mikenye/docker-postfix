@@ -66,12 +66,20 @@ RUN set -x && \
       zlib1g-dev \
       && \
     ldconfig && \
+    # Install fail2ban
+    git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
+    pushd /src/fail2ban && \
+    FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
+    git checkout "${FAIL2BAN_VERSION}" && \
+    python setup.py build && \
+    python setup.py install && \
+    popd && \
     # Download postgrey
     mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
     # Extract postgrey
     tar xzf /src/postgrey.tar.gz -C /src/postgrey && \
-    cd $(find /src/postgrey -maxdepth 1 -type d | tail -1) && \
+    pushd $(find /src/postgrey -maxdepth 1 -type d | tail -1) && \
     # Install postgrey
     mkdir -p /opt/postgrey && \
     cp -Rv * /opt/postgrey && \
@@ -81,6 +89,7 @@ RUN set -x && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
     mkdir -p /var/spool/postfix/postgrey && \
     postgrey --version >> /VERSIONS && \
+    popd && \
     # Download clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
@@ -91,7 +100,7 @@ RUN set -x && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     # Extract clamav download
     tar xzf /src/clamav.tar.gz -C /src/clamav && \
-    cd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
+    pushd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
     # Build clamav
     ./configure \
       --enable-milter \
@@ -109,14 +118,16 @@ RUN set -x && \
     mkdir -p /run/clamav-milter && \
     mkdir -p /run/clamd && \
     echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
+    popd && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
-    cd /src/postfix-policyd-spf-perl && \
+    pushd /src/postfix-policyd-spf-perl && \
     export BRANCH_POSTFIX_POLICYD_SPF_PERL=$(git tag --sort="-creatordate" | head -1) && \
     git checkout ${BRANCH_POSTFIX_POLICYD_SPF_PERL} && \
     cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
     echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
+    popd && \
     # Get postfix source & signature & author key
     mkdir -p /src/postfix && \
     curl --location --output /src/postfix.tar.gz "${POSTFIX_SOURCE_URL}" && \
@@ -128,7 +139,7 @@ RUN set -x && \
     # Extract postfix download
     tar xzf /src/postfix.tar.gz -C /src/postfix && \
     # Build postfix
-    cd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
+    pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     make \
       Makefile.init \
       makefiles \
@@ -140,6 +151,7 @@ RUN set -x && \
       AUXLIBS_PCRE="$(pcre-config --libs)" \
       && \
     make && \
+    popd && \
     # Create users/groups
     groupadd --system postdrop && \
     useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
@@ -197,7 +209,6 @@ RUN set -x && \
       && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    cd / && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
     echo "postfix $(postconf mail_version | cut -d "=" -f 2 | tr -d " ")" >> /VERSIONS && \
