@@ -7,6 +7,16 @@ echo "" > "${OPENDKIM_CONF_FILE}"
 # Don't log to syslog (there is no syslog in this container)
 echo "Syslog true" >> "${OPENDKIM_CONF_FILE}"
 
+# LogResults
+if [ ! -z "${OPENDKIM_LOGRESULTS}" ]; then
+    echo "LogResults true" >> "${OPENDKIM_CONF_FILE}"
+fi
+
+# LogWhy
+if [ ! -z "${OPENDKIM_LOGWHY}" ]; then
+    echo "LogWhy true" >> "${OPENDKIM_CONF_FILE}"
+fi
+
 # Listen on localhost:8891
 echo "Socket inet:8891@127.0.0.1" >> "${OPENDKIM_CONF_FILE}"
 
