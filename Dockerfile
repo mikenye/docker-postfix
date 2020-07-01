@@ -64,12 +64,16 @@ RUN set -x && \
       perl \
       procps \
       python3 \
+      python3-pip \
+      python3-setuptools \
+      python3-wheel \
       socat \
       zlib1g \
       zlib1g-dev \
       && \
     ldconfig && \
     ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -s /usr/bin/pip3 /usr/bin/pip && \
     # Install fail2ban
     git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     pushd /src/fail2ban && \
