@@ -214,6 +214,10 @@ RUN set -x && \
       libxml2-dev \
       m4 \
       make \
+      python3-distutils \
+      python3-pip \
+      python3-setuptools \
+      python3-wheel \
       zlib1g-dev \
       && \
     apt-get autoremove -y && \
