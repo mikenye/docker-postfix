@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+if [ "${ENABLE_POSTGREY}" = "true" ]; then
+
+  # Fail on error
+  set -e
+
+  # Download latest file
+  curl --location --output "${POSTGREY_SYSTEM_WHITELIST_FILE}.new" "${POSTGREY_SOURCE_URL}"
+
+  # Move downloaded file to final location
+  mv "${POSTGREY_SYSTEM_WHITELIST_FILE}.new" "${POSTGREY_SYSTEM_WHITELIST_FILE}"
+
+fi

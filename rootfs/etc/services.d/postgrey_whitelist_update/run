@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+set -eo pipefail
+
+# Do we run freshclam?
+if [ "${ENABLE_POSTGREY}" = "true" ]; then
+    sleep 86400
+    /usr/local/bin/update_postgrey_whitelist
+    exit $?
+else
+    sleep 86400
+    exit 0
+fi
