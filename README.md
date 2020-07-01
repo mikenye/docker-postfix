@@ -71,8 +71,10 @@ This container is still under development.
 | Table File (with respect to container) | Format | If this file is present... |
 |-----|-----|-----|
 | `/etc/postfix/tables/client_access.cidr` | [cidr](http://www.postfix.org/cidr_table.5.html) | It is automatically added to postfix's [`check_client_access`](http://www.postfix.org/postconf.5.html#check_client_access). |
+| `/etc/postfix/tables/dnsbl_reply.texthash` | [texthash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`postscreen_dnsbl_reply_map`](http://www.postfix.org/postconf.5.html#postscreen_dnsbl_reply_map). |
 | `/etc/postfix/tables/header_checks.pcre` | [pcre](http://www.postfix.org/pcre_table.5.html) | It is automatically added to postfix's [`header_checks`](http://www.postfix.org/postconf.5.html#header_checks). |
 | `/etc/postfix/tables/helo_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_helo_access`](http://www.postfix.org/postconf.5.html#check_helo_access). |
+| `/etc/postfix/tables/postscreen_access.cidr` | [cidr](http://www.postfix.org/cidr_table.5.html) | It is automatically added to postfix's ['postscreen_access_list'](http://www.postfix.org/postconf.5.html#postscreen_access_list) (after [`permit_mynetworks`](http://www.postfix.org/postconf.5.html#permit_mynetworks)). |
 | `/etc/postfix/tables/sender_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_sender_access`](http://www.postfix.org/postconf.5.html#check_sender_access). |
 
 ## Paths
