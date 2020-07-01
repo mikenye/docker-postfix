@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-# shellcheck shell=bash
-
-set -x
-
-postmap /etc/postfix/tables/helo_access
-postmap /etc/postfix/tables/sender_access
-postfix reload

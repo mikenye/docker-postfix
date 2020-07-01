@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+SENDER_ACCESS_HASH_FILE="/etc/postfix/sender_access.hash"
+SENDER_ACCESS_HASH_FILE_LOCAL="/etc/postfix/tables/sender_access.hash"
+
+# Remove existing sender_access.hash
+rm "${SENDER_ACCESS_HASH_FILE}" > /dev/null 2>&1
+touch "${SENDER_ACCESS_HASH_FILE}"
+
+# Import local entries into sender_access.hash
+if [ -f "${SENDER_ACCESS_HASH_FILE_LOCAL}" ]; then
+  echo "" >> "${SENDER_ACCESS_HASH_FILE}"
+  echo "## Entries from ${SENDER_ACCESS_HASH_FILE_LOCAL}" >> "${SENDER_ACCESS_HASH_FILE}"
+  cat "${SENDER_ACCESS_HASH_FILE_LOCAL}" >> "${SENDER_ACCESS_HASH_FILE}"
+  echo "" >> "${SENDER_ACCESS_HASH_FILE}"
+fi
+
+# Run postmap
+postmap "${SENDER_ACCESS_HASH_FILE}"
+
+# If postfix is running, update
+postfix status > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+  postfix reload
+fi

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+HELO_ACCESS_HASH_FILE="/etc/postfix/helo_access.hash"
+HELO_ACCESS_HASH_FILE_LOCAL="/etc/postfix/tables/helo_access.hash"
+
+# Remove existing helo_access.hash
+rm "${HELO_ACCESS_HASH_FILE}" > /dev/null 2>&1
+touch "${HELO_ACCESS_HASH_FILE}"
+
+# Import local entries into helo_access.hash
+if [ -f "${HELO_ACCESS_HASH_FILE_LOCAL}" ]; then
+  echo "" >> "${HELO_ACCESS_HASH_FILE}"
+  echo "## Entries from ${HELO_ACCESS_HASH_FILE_LOCAL}" >> "${HELO_ACCESS_HASH_FILE}"
+  cat "${HELO_ACCESS_HASH_FILE_LOCAL}" >> "${HELO_ACCESS_HASH_FILE}"
+  echo "" >> "${HELO_ACCESS_HASH_FILE}"
+fi
+
+# Run postmap
+postmap "${HELO_ACCESS_HASH_FILE}"
+
+# If postfix is running, update
+postfix status > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+  postfix reload
+fi

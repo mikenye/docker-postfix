@@ -25,7 +25,6 @@ This container is still under development.
 
 | Environment Variable               | Documentation Link                                                      |
 |------------------------------------|-------------------------------------------------------------------------|
-| `POSTFIX_HEADER_CHECKS`            | Set to `true` to include `header_checks = pcre:/etc/postfix/tables/header_checks`. Make sure you perform a volume mapping and that `header_checks` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#header_checks> |
 | `POSTFIX_INET_PROTOCOLS`           | <http://www.postfix.org/postconf.5.html#inet_protocols> |
 | `POSTFIX_MAIL_NAME`                | <http://www.postfix.org/postconf.5.html#mail_name> |
 | `POSTFIX_MESSAGE_SIZE_LIMIT` | <http://www.postfix.org/postconf.5.html#message_size_limit> |
@@ -37,8 +36,6 @@ This container is still under development.
 | `POSTFIX_RELAY_DOMAINS`            | <http://www.postfix.org/postconf.5.html#relay_domains> |
 | `POSTFIX_RELAYHOST`                | <http://www.postfix.org/postconf.5.html#relayhost> |
 | `POSTFIX_SMTP_TLS_CHAIN_FILES`     | <http://www.postfix.org/postconf.5.html#smtp_tls_chain_files> |
-| `POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS` | Set to `true` to include `check_helo_access` in `smtpd_helo_restrictions`. Postfix will use `hash:/etc/postfix/tables/helo_access`, so make sure you perform a volume mapping and that `helo_access` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#check_helo_access> |
-| `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS` | Set to `true` to include `check_sender_access` in `smtpd_recipient_restrictions`. Postfix will use `hash:/etc/postfix/tables/sender_access`, so make sure you perform a volume mapping and that `sender_access` exists at `/etc/postfix/tables` within the container. <http://www.postfix.org/postconf.5.html#check_sender_access> |
 | `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. <http://www.postfix.org/postconf.5.html#permit_sasl_authenticated> |
 | `POSTFIX_SMTPD_TLS_CERT_FILE`      | <http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file> |
 | `POSTFIX_SMTPD_TLS_CHAIN_FILES`    | <http://www.postfix.org/postconf.5.html#smtpd_tls_chain_files> |
@@ -69,6 +66,17 @@ This container is still under development.
 | `FRESHCLAM_CHECKS_PER_DAY`         | Optional. Number of database checks per day. Default: 12 (every two hours). |
 | `CLAMAV_MILTER_REPORT_HOSTNAME`    | Optional. The hostname ClamAV will report in the `X-Virus-Scanned` header. If unset, defaults to the container's hostname. |
 
+## Postfix Tables
+
+### Supported table files
+
+| Table File (with respect to container) | Format | If this file is present... |
+|-----|-----|-----|
+| `/etc/postfix/tables/client_access.cidr` | [cidr](http://www.postfix.org/cidr_table.5.html) | It is automatically added to postfix's [`check_client_access`](http://www.postfix.org/postconf.5.html#check_client_access). |
+| `/etc/postfix/tables/header_checks.pcre` | [pcre](http://www.postfix.org/pcre_table.5.html) | It is automatically added to postfix's [`header_checks`](http://www.postfix.org/postconf.5.html#header_checks). |
+| `/etc/postfix/tables/helo_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_helo_access`](http://www.postfix.org/postconf.5.html#check_helo_access). |
+| `/etc/postfix/tables/sender_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_sender_access`](http://www.postfix.org/postconf.5.html#check_sender_access). |
+
 ## Paths
 
 ### Required to be mapped
@@ -85,7 +93,7 @@ This container is still under development.
 | `/etc/postfix/local_aliases` | `rw` | A file named `aliases` should be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. |
 | `/etc/postfix/certs` | `ro` | Postfix TLS chain files should be placed in here. |
 | `/etc/postgrey` | `ro` | Postgrey local whitelists should be placed in here. |
-| `/etc/postfix/tables` | `rw` | Postfix's tables should be placed in here. |
+| `/etc/postfix/tables` | `ro` | Postfix's tables should be placed in here. |
 
 ## Generating a DKIM key
 
@@ -117,11 +125,24 @@ As for a selector name, an example may be: “sales-201309-1024”. This example
 
 ## Helper Commands
 
-| Script | Purpose |
+These commands can be executed in the context of the container, for example:
+
+```
+docker exec <container> <command>
+```
+
+| Command | Purpose |
 |--------|---------|
-| `docker exec <container> postmap_reload` | Performs a `postmap` on `/etc/postfix/tables/helo_access` & `/etc/postfix/tables/sender_access`, then performs a `postfix reload`. |
-| `docker exec <container> postgrey_reload` | Performs a reload of `postgrey` (should be done if whitelists are updated). |
-| `docker exec <container> postfix reload` | Performs a `postfix reload` (should be done if SSL certs are updated, etc). |
+| `update_client_access` | TODO |
+| `update_header_checks` | Rebuilds files used by `header_checks`, runs `postmap`, reloads postfix. |
+| `update_helo_access` | Rebuilds files used by `check_helo_access`, runs `postmap`, reloads postfix. |
+| `update_sender_access` | Rebuilds files used by `check_sender_access`, runs `postmap`, reloads postfix. |
+| `postgrey_reload` | Performs a reload of `postgrey` (should be done if whitelists are updated). |
+| `postfix reload` | Performs a `postfix reload` (should be done if SSL certs are updated, etc). |
+
+## Order of operations
+
+TODO, need to discuss order of sections like `smtpd_recipient_restrictions`...
 
 ## Testing
 

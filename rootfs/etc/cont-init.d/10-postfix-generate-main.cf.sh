@@ -99,9 +99,7 @@ echo "disable_vrfy_command = yes" >> "${POSTFIX_MAINCF_FILE}"
 
 echo "smtpd_hard_error_limit = 1" >> "${POSTFIX_MAINCF_FILE}"
 
-if [ "${POSTFIX_HEADER_CHECKS}" = "true" ]; then
-  echo "header_checks = pcre:/etc/postfix/tables/header_checks" >> "${POSTFIX_MAINCF_FILE}"
-fi
+echo "header_checks = pcre:/etc/postfix/header_checks.pcre" >> "${POSTFIX_MAINCF_FILE}"
 
 # ========== START smtpd_helo_restrictions ==========
 
@@ -110,10 +108,7 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
   echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
 
-  if [ "${POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS}" = "true" ]; then
-    postmap /etc/postfix/tables/helo_access
-    echo "    check_helo_access hash:/etc/postfix/tables/helo_access," >> "${POSTFIX_MAINCF_FILE}"
-  fi    
+  echo "    check_helo_access hash:/etc/postfix/helo_access.hash," >> "${POSTFIX_MAINCF_FILE}"
   
   echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
@@ -126,17 +121,13 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
 
-  /usr/local/bin/build_client_access
-  echo "    check_client_access cidr:/etc/postfix/client_access," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    check_client_access cidr:/etc/postfix/client_access.cidr," >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED}" = "true" ]; then
     echo "    permit_sasl_authenticated," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
-  if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS}" = "true" ]; then
-    postmap /etc/postfix/tables/sender_access
-    echo "    check_sender_access hash:/etc/postfix/tables/sender_access," >> "${POSTFIX_MAINCF_FILE}"
-  fi
+    echo "    check_sender_access hash:/etc/postfix/sender_access.hash," >> "${POSTFIX_MAINCF_FILE}"
 
   echo "    reject_unauth_destination," >> "${POSTFIX_MAINCF_FILE}"
 

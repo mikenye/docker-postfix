@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+CLIENT_ACCESS_CIDR_FILE="/etc/postfix/client_access.cidr"
+CLIENT_ACCESS_CIDR_FILE_LOCAL="/etc/postfix/tables/client_access.cidr"
+
+# Remove existing client_access.cidr
+rm "${CLIENT_ACCESS_CIDR_FILE}" > /dev/null 2>&1
+touch "${CLIENT_ACCESS_CIDR_FILE}"
+
+# Import local entries into client_access.cidr
+if [ -f "${CLIENT_ACCESS_CIDR_FILE_LOCAL}" ]; then
+  echo "" >> "${CLIENT_ACCESS_CIDR_FILE}"
+  echo "## Entries from ${CLIENT_ACCESS_CIDR_FILE_LOCAL}" >> "${CLIENT_ACCESS_CIDR_FILE}"
+  cat "${CLIENT_ACCESS_CIDR_FILE_LOCAL}" >> "${CLIENT_ACCESS_CIDR_FILE}"
+  echo "" >> "${CLIENT_ACCESS_CIDR_FILE}"
+fi
+
+# Run postmap
+postmap "${CLIENT_ACCESS_CIDR_FILE}"
+
+# If postfix is running, update
+postfix status > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+  postfix reload
+fi

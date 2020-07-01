@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+HEADER_CHECKS_PCRE_FILE="/etc/postfix/header_checks.pcre"
+HEADER_CHECKS_PCRE_FILE_LOCAL="/etc/postfix/tables/header_checks.pcre"
+
+# Remove existing client_access.cidr
+rm "${HEADER_CHECKS_PCRE_FILE}" > /dev/null 2>&1
+touch "${HEADER_CHECKS_PCRE_FILE}"
+
+# Import local entries into client_access.cidr
+if [ -f "${HEADER_CHECKS_PCRE_FILE_LOCAL}" ]; then
+  echo "" >> "${HEADER_CHECKS_PCRE_FILE}"
+  echo "## Entries from ${HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${HEADER_CHECKS_PCRE_FILE}"
+  cat "${HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${HEADER_CHECKS_PCRE_FILE}"
+  echo "" >> "${HEADER_CHECKS_PCRE_FILE}"
+fi
+
+# Run postmap
+postmap "${HEADER_CHECKS_PCRE_FILE}"
+
+# If postfix is running, update
+postfix status > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+  postfix reload
+fi
