@@ -182,6 +182,8 @@ if [ "$SMTPDMILTERS" != "" ]; then
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
+# ========== START postscreen config ==========
+
 # http://www.postfix.org/postconf.5.html#message_size_limit
 if [ ! -z "${POSTFIX_MESSAGE_SIZE_LIMIT}" ]; then
   echo "message_size_limit = ${POSTFIX_MESSAGE_SIZE_LIMIT}" >> "${POSTFIX_MAINCF_FILE}"
