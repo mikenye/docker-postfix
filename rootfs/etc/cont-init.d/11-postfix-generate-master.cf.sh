@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 
 POSTFIX_MASTERCF_FILE="/etc/postfix/master.cf"
-POSTFIX_MASTERCF_ORIGINAL_FILE=" /etc/postfix/master.cf.original"
+POSTFIX_MASTERCF_ORIGINAL_FILE="/etc/postfix/master.cf.original"
 
 # Refresh the master.cf. This prevents duplicate entries on container restart
 cp -v ${POSTFIX_MASTERCF_ORIGINAL_FILE} ${POSTFIX_MASTERCF_FILE}
