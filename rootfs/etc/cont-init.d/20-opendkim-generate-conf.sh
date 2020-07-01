@@ -18,9 +18,19 @@ if [ ! -z "${OPENDKIM_DOMAIN}" ]; then
     echo "Domain ${OPENDKIM_DOMAIN}" >> "${OPENDKIM_CONF_FILE}"
 fi
 
+# Specify signing table
+if [ ! -z "${OPENDKIM_SIGNINGTABLE}" ]; then
+    echo "SigningTable refile:${OPENDKIM_SIGNINGTABLE}" >> "${OPENDKIM_CONF_FILE}"
+fi
+
 # Specify key file
 if [ ! -z "${OPENDKIM_KEYFILE}" ]; then
     echo "KeyFile ${OPENDKIM_KEYFILE}" >> "${OPENDKIM_CONF_FILE}"
+fi
+
+# Specify key table
+if [ ! -z "${OPENDKIM_KEYTABLE}" ]; then
+    echo "KeyTable refile:${OPENDKIM_KEYTABLE}" >> "${OPENDKIM_CONF_FILE}"
 fi
 
 # Set selector
