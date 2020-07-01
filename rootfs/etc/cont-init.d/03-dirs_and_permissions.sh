@@ -1,7 +1,27 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
-# Make dirs
+# Make log dirs
+# Create log dir for piaware
+mkdir -p /var/log/clamav-milter
+chown nobody:nogroup /var/log/clamav-milter
+mkdir -p /var/log/clamd
+chown nobody:nogroup /var/log/clamd
+mkdir -p /var/log/freshclam
+chown nobody:nogroup /var/log/freshclam
+mkdir -p /var/log/opendkim
+chown nobody:nogroup /var/log/opendkim
+mkdir -p /var/log/postfix
+chown nobody:nogroup /var/log/postfix
+mkdir -p /var/log/postgrey
+chown nobody:nogroup /var/log/postgrey
+mkdir -p /var/log/postgrey_whitelist_update
+chown nobody:nogroup /var/log/postgrey_whitelist_update
+mkdir -p /var/log/syslogd
+chown nobody:nogroup /var/log/syslogd
+
+# Make postfix dirs
+mkdir -p /var/spool/postfix/postscreen_cache
 mkdir -p /var/spool/postfix/postgrey
 mkdir -p /var/spool/postfix
 
