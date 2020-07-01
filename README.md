@@ -133,12 +133,14 @@ docker exec <container> <command>
 
 | Command | Purpose |
 |--------|---------|
-| `update_client_access` | TODO |
-| `update_header_checks` | Rebuilds files used by `header_checks`, runs `postmap`, reloads postfix. |
-| `update_helo_access` | Rebuilds files used by `check_helo_access`, runs `postmap`, reloads postfix. |
-| `update_sender_access` | Rebuilds files used by `check_sender_access`, runs `postmap`, reloads postfix. |
-| `postgrey_reload` | Performs a reload of `postgrey` (should be done if whitelists are updated). |
 | `postfix reload` | Performs a `postfix reload` (should be done if SSL certs are updated, etc). |
+| `postgrey_reload` | Performs a reload of `postgrey` (should be done if whitelists are updated). |
+| `update_client_access` | Rebuilds files used by `check_client_access`, runs `postmap` if required, reloads postfix. |
+| `update_dnsbl_reply` | Rebuilds files used by `postscreen_dnsbl_reply_map`, runs `postmap` if required, reloads postfix. |
+| `update_header_checks` | Rebuilds files used by `header_checks`, runs `postmap` if required, reloads postfix. |
+| `update_helo_access` | Rebuilds files used by `check_helo_access`, runs `postmap` if required, reloads postfix. |
+| `update_postscreen_access` | Rebuilds files used by `postscreen_access_list`, runs `postmap` if required, reloads postfix. |
+| `update_sender_access` | Rebuilds files used by `check_sender_access`, runs `postmap` if required, reloads postfix. |
 
 ## Order of operations
 
