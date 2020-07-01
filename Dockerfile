@@ -76,20 +76,6 @@ RUN set -x && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     ln -s /usr/bin/pip3 /usr/bin/pip
 
-    # Get fail2ban source
-RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
-    pushd /src/fail2ban && \
-    FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
-    git checkout "${FAIL2BAN_VERSION}" && \
-    # Fix fail2ban (see https://github.com/fail2ban/fail2ban/issues/1694)
-    # Replace all instances of .iteritems() with .iter()
-    sed "s/.iteritems()/.iter()/g" -i $(grep -Rl "\.iteritems()") && \
-    # Build & install fail2ban
-    python setup.py build && \
-    python setup.py install && \
-    fail2ban-server --version >> /VERSIONS && \
-    popd
-
     # Download postgrey
 RUN mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
@@ -197,6 +183,20 @@ RUN pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
     cp /etc/postfix/master.cf /etc/postfix/master.cf.original && \
+    popd
+
+    # Get fail2ban source
+RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
+    pushd /src/fail2ban && \
+    FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
+    git checkout "${FAIL2BAN_VERSION}" && \
+    # Fix fail2ban (see https://github.com/fail2ban/fail2ban/issues/1694)
+    # Replace all instances of .iteritems() with .iter()
+    sed "s/.iteritems()/.iter()/g" -i $(grep -Rl "\.iteritems()") && \
+    # Build & install fail2ban
+    python setup.py build && \
+    python setup.py install && \
+    fail2ban-server --version >> /VERSIONS && \
     popd
 
     # Make directories
