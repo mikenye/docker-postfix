@@ -197,7 +197,7 @@ RUN POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} meta_directory=/etc/postfix" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
-    cp /etc/postfix/master.cf /etc/postfix/master.cf.original
+    cp /etc/postfix/master.cf /etc/postfix/master.cf.original && \
     popd
 
     # Make directories
