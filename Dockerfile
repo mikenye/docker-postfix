@@ -63,11 +63,13 @@ RUN set -x && \
       pcre2-utils \
       perl \
       procps \
+      python \
       socat \
       zlib1g \
       zlib1g-dev \
       && \
     ldconfig && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
     # Install fail2ban
     git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     pushd /src/fail2ban && \
