@@ -74,17 +74,19 @@ RUN set -x && \
       && \
     ldconfig && \
     ln -s /usr/bin/python3 /usr/bin/python && \
-    ln -s /usr/bin/pip3 /usr/bin/pip && \
+    ln -s /usr/bin/pip3 /usr/bin/pip
+
     # Install fail2ban
-    git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
+RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     pushd /src/fail2ban && \
     FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
     git checkout "${FAIL2BAN_VERSION}" && \
     python setup.py build && \
     python setup.py install && \
-    popd && \
+    popd
+
     # Download postgrey
-    mkdir -p /src/postgrey && \
+RUN mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
     # Extract postgrey
     tar xzf /src/postgrey.tar.gz -C /src/postgrey && \
@@ -98,9 +100,10 @@ RUN set -x && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
     mkdir -p /var/spool/postfix/postgrey && \
     postgrey --version >> /VERSIONS && \
-    popd && \
+    popd
+
     # Download clamav
-    mkdir -p /src/clamav && \
+RUN mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
     curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_SIG_URL}" && \
     # Verify clamav download
@@ -127,18 +130,20 @@ RUN set -x && \
     mkdir -p /run/clamav-milter && \
     mkdir -p /run/clamd && \
     echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
-    popd && \
+    popd
+
     # Get postfix-policyd-spf-perl
-    mkdir -p /src/postfix-policyd-spf-perl && \
+RUN mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
     pushd /src/postfix-policyd-spf-perl && \
     export BRANCH_POSTFIX_POLICYD_SPF_PERL=$(git tag --sort="-creatordate" | head -1) && \
     git checkout ${BRANCH_POSTFIX_POLICYD_SPF_PERL} && \
     cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
     echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
-    popd && \
+    popd
+
     # Get postfix source & signature & author key
-    mkdir -p /src/postfix && \
+RUN mkdir -p /src/postfix && \
     curl --location --output /src/postfix.tar.gz "${POSTFIX_SOURCE_URL}" && \
     curl --location --output /src/postfix.tar.gz.gpg2 "${POSTFIX_SIG_URL}" && \
     curl --location --output /src/wietse.pgp "${WIETSE_PGP_KEY_URL}" && \
@@ -146,9 +151,10 @@ RUN set -x && \
     gpg2 --import /src/wietse.pgp && \
     gpg2 --verify /src/postfix.tar.gz.gpg2 /src/postfix.tar.gz || exit 1 && \
     # Extract postfix download
-    tar xzf /src/postfix.tar.gz -C /src/postfix && \
+    tar xzf /src/postfix.tar.gz -C /src/postfix
+
     # Build postfix
-    pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
+RUN pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     make \
       Makefile.init \
       makefiles \
@@ -165,9 +171,10 @@ RUN set -x && \
     groupadd --system postdrop && \
     useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
     useradd --user-group --no-create-home --system --shell=/bin/false clamav && \
-    useradd --user-group --no-create-home --system --shell=/bin/false postgrey && \
+    useradd --user-group --no-create-home --system --shell=/bin/false postgrey
+
     # Install postfix
-    POSTFIX_INSTALL_OPTS="" && \
+RUN POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} -non-interactive" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} install_root=/" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} tempdir=/tmp" && \
@@ -186,9 +193,10 @@ RUN set -x && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} meta_directory=/etc/postfix" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
-    cp /etc/postfix/master.cf /etc/postfix/master.cf.original && \
+    cp /etc/postfix/master.cf /etc/postfix/master.cf.original
+
     # Make directories
-    mkdir -p /etc/postfix/tables && \
+RUN mkdir -p /etc/postfix/tables && \
     mkdir -p /etc/postfix/local_aliases && \
     mkdir -p /etc/mail/dkim && \
     # Install s6-overlay
