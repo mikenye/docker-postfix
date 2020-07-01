@@ -51,6 +51,8 @@ RUN set -x && \
       libssl1.1 \
       libsys-hostname-long-perl \
       libunix-syslog-perl \
+      libwrap0 \
+      libwrap0-dev \
       libxml2 \
       libxml2-dev \
       m4 \
@@ -223,6 +225,7 @@ RUN mkdir -p /etc/postfix/tables && \
       libncurses5-dev \
       libpcre2-dev \
       libssl-dev \
+      libwrap0-dev \
       libxml2-dev \
       m4 \
       make \
