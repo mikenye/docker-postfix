@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+set -eo pipefail
+
+# Do we run clamd?
+if [ "${ENABLE_CLAMAV}" = "true" ]; then
+    /usr/local/sbin/clamd \
+        --foreground 2>&1 \
+    | awk -W Interactive '{print "[clamd] " $0}'
+else
+    sleep 3600
+    exit 0
+fi

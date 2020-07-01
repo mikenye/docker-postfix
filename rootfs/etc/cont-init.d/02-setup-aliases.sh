@@ -17,6 +17,13 @@ set -e
 # Write /etc/aliases
 echo "postmaster: ${POSTMASTER_EMAIL}" > /etc/aliases
 echo "root:       ${POSTMASTER_EMAIL}" >> /etc/aliases
+echo "postfix:    ${POSTMASTER_EMAIL}" >> /etc/aliases
+echo "clamav:     ${POSTMASTER_EMAIL}" >> /etc/aliases
+
+# Implement local aliases
+if [ -f "/etc/postfix/local_aliases/aliases" ]; then
+  cat /etc/postfix/local_aliases/aliases >> /etc/aliases
+fi
 
 # Run newaliases
 newaliases

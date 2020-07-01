@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+set -eo pipefail
+
+# Do we run freshclam?
+if [ "${ENABLE_POSTGREY}" = "true" ]; then
+    postgrey \
+        --hostname="${POSTFIX_MYHOSTNAME}" \
+        --pidfile=/var/run/postgrey.pid \
+        --inet=127.0.0.1:10023 \
+        --user=postgrey \
+        --dbdir=/var/spool/postfix/postgrey \
+        --whitelist-clients=/opt/postgrey/postgrey_whitelist_clients \
+        --whitelist-recipients=/opt/postgrey/postgrey_whitelist_recipients \
+        --whitelist-clients=/etc/postgrey/postgrey_whitelist_clients.local \
+        --whitelist-recipients=/etc/postgrey/postgrey_whitelist_recipients.local \
+        --greylist-text="Service unavailable. Please try again later." \
+        | awk -W Interactive '{print "[postgrey] " $0}'
+else
+    sleep 3600
+    exit 0
+fi
