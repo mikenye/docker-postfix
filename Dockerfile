@@ -10,6 +10,8 @@ ENV ENABLE_OPENDKIM="false" \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2
     #POSTFIX_POLICY_SPF_TIME_LIMIT=3600s
 
+SHELL ["/bin/bash", "-c"]
+
 RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
