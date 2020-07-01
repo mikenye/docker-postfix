@@ -115,11 +115,13 @@ There should now be two files in your current directory, `<selector>.private` an
 
 As for a selector name, an example may be: “sales-201309-1024”. This example indicates that it belongs to the “sales” email stream, is intended to be rotated into active duty in September 2013 and references a 1024-bit key ([reference](https://www.m3aawg.org/sites/default/files/m3aawg-dkim-key-rotation-bp-2019-03.pdf)).
 
-## Helper scripts
+## Helper Commands
 
 | Script | Purpose |
 |--------|---------|
 | `docker exec <container> postmap_reload` | Performs a `postmap` on `/etc/postfix/tables/helo_access` & `/etc/postfix/tables/sender_access`, then performs a `postfix reload`. |
+| `docker exec <container> postgrey_reload` | Performs a reload of `postgrey` (should be done if whitelists are updated). |
+| `docker exec <container> postfix reload` | Performs a `postfix reload` (should be done if SSL certs are updated, etc). |
 
 ## Testing
 
