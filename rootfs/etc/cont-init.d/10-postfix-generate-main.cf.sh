@@ -130,6 +130,11 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
     echo "    permit_sasl_authenticated," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
+  if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS}" = "true" ]; then
+    postmap /etc/postfix/tables/sender_access
+    echo "    check_sender_access hash:/etc/postfix/tables/sender_access," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
   echo "    reject_unauth_destination," >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${ENABLE_SPF}" = "true" ]; then
@@ -140,11 +145,6 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_non_fqdn_sender," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_sender_domain," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_recipient_domain," >> "${POSTFIX_MAINCF_FILE}"
-
-  if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS}" = "true" ]; then
-    postmap /etc/postfix/tables/sender_access
-    echo "    check_sender_access hash:/etc/postfix/tables/sender_access," >> "${POSTFIX_MAINCF_FILE}"
-  fi
 
   if [ "${ENABLE_RBL_HOSTKARMA_JUNKEMAILFILTER}" = "true" ]; then
     echo "    reject_rbl_client hostkarma.junkemailfilter.com=127.0.0.2," >> "${POSTFIX_MAINCF_FILE}"
