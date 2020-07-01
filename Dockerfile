@@ -63,7 +63,7 @@ RUN set -x && \
       pcre2-utils \
       perl \
       procps \
-      python \
+      python3 \
       socat \
       zlib1g \
       zlib1g-dev \
