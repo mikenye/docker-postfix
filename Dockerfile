@@ -175,10 +175,9 @@ RUN pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     groupadd --system postdrop && \
     useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
     useradd --user-group --no-create-home --system --shell=/bin/false clamav && \
-    useradd --user-group --no-create-home --system --shell=/bin/false postgrey
-
+    useradd --user-group --no-create-home --system --shell=/bin/false postgrey && \
     # Install postfix
-RUN POSTFIX_INSTALL_OPTS="" && \
+    POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} -non-interactive" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} install_root=/" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} tempdir=/tmp" && \
