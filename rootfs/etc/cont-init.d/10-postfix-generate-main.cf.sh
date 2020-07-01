@@ -126,6 +126,9 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
 
+  /usr/local/bin/build_client_access
+  echo "    check_client_access cidr:/etc/postfix/client_access," >> "${POSTFIX_MAINCF_FILE}"
+
   if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED}" = "true" ]; then
     echo "    permit_sasl_authenticated," >> "${POSTFIX_MAINCF_FILE}"
   fi
