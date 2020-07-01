@@ -76,4 +76,3 @@ send "QUIT\r"
 
 send_user "\n\n"
 exit
-
