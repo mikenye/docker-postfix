@@ -165,6 +165,7 @@ RUN set -x && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} meta_directory=/etc/postfix" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
+    cp /etc/postfix/master.cf /etc/postfix/master.cf.original && \
     # Make directories
     mkdir -p /etc/postfix/tables && \
     mkdir -p /etc/postfix/local_aliases && \
