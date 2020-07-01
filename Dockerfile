@@ -76,13 +76,18 @@ RUN set -x && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     ln -s /usr/bin/pip3 /usr/bin/pip
 
-    # Install fail2ban
+    # Get fail2ban source
 RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     pushd /src/fail2ban && \
     FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
     git checkout "${FAIL2BAN_VERSION}" && \
+    # Fix fail2ban (see https://github.com/fail2ban/fail2ban/issues/1694)
+    sed -i "s/for name, num in signal.__dict__.iteritems() if name.startswith(\"SIG\"))/for name, num in signal.__dict__.items() if name.startswith(\"SIG\"))/" \
+      /src/fail2ban/fail2ban/server/utils.py && \
+    # Build & install fail2ban
     python setup.py build && \
     python setup.py install && \
+    fail2ban-server --version >> /VERSIONS && \
     popd
 
     # Download postgrey
@@ -166,7 +171,6 @@ RUN pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
       AUXLIBS_PCRE="$(pcre-config --libs)" \
       && \
     make && \
-    popd && \
     # Create users/groups
     groupadd --system postdrop && \
     useradd --groups postdrop --no-create-home --no-user-group --system postfix && \
@@ -194,6 +198,7 @@ RUN POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
     cp /etc/postfix/master.cf /etc/postfix/master.cf.original
+    popd
 
     # Make directories
 RUN mkdir -p /etc/postfix/tables && \
