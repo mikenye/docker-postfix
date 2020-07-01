@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+DNSBL_REPLY_TEXTHASH_FILE="/etc/postfix/dnsbl_reply.texthash"
+DNSBL_REPLY_TEXTHASH_FILE_LOCAL="/etc/postfix/tables/dnsbl_reply.texthash"
+
+# Remove existing client_access.cidr
+rm "${DNSBL_REPLY_TEXTHASH_FILE}" > /dev/null 2>&1
+touch "${DNSBL_REPLY_TEXTHASH_FILE}"
+
+# TODO: add fail2ban file
+
+# Import local entries into client_access.cidr
+if [ -f "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" ]; then
+  echo "" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
+  echo "## Entries from ${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
+  cat "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
+  echo "" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
+fi
+
+# Don't need to run postmap over texthash files
+
+# If postfix is running, update
+postfix status > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+  postfix reload
+fi

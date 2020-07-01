@@ -202,3 +202,32 @@ fi
 if [ ! -z "${POSTFIX_MESSAGE_SIZE_LIMIT}" ]; then
   echo "message_size_limit = ${POSTFIX_MESSAGE_SIZE_LIMIT}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_access_list
+echo "postscreen_access_list = " >> "${POSTFIX_MAINCF_FILE}"
+  echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    cidr:/etc/postfix/postscreen_access.cidr" >> "${POSTFIX_MAINCF_FILE}"
+
+# http://www.postfix.org/postconf.5.html#postscreen_blacklist_action
+# TODO - once postscreen confirmed working properly, change to drop
+echo "postscreen_blacklist_action = ignore" >> "${POSTFIX_MAINCF_FILE}"
+
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites
+if [ ! -z "${POSTFIX_DNSBL_SITES}" ]; then
+  echo "postscreen_dnsbl_sites = ${POSTFIX_DNSBL_SITES}" >> "${POSTFIX_MAINCF_FILE}"
+  echo "postscreen_dnsbl_action = drop"
+fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold
+if [ ! -z "${POSTFIX_DNSBL_THRESHOLD}" ]; then
+  echo "postscreen_dnsbl_threshold = ${POSTFIX_DNSBL_THRESHOLD}" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_reply_map
+if [ -f "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" ]; then
+  echo "postscreen_dnsbl_reply_map = texthash:/etc/postfix/dnsbl_reply.texthash"
+fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_greet_action
+# TODO - once postscreen confirmed working properly, change to drop
+echo "postscreen_greet_action = ignore"

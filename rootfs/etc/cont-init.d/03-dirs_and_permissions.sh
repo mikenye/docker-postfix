@@ -28,6 +28,7 @@ chown -R postfix /var/spool/postfix/public
 chgrp postdrop /var/spool/postfix/public
 chown -R postfix /var/spool/postfix/saved
 chown -R postfix /var/spool/postfix/trace
+chown -R postfix /var/spool/postfix/postscreen_cache
 
 # OpenDKIM
 chown -R opendkim /etc/mail/dkim

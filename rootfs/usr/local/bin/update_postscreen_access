@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+POSTSCREEN_ACCESS_CIDR_FILE="/etc/postfix/postscreen_access.cidr"
+POSTSCREEN_ACCESS_CIDR_FILE_LOCAL="/etc/postfix/tables/postscreen_access.cidr"
+
+# Remove existing client_access.cidr
+rm "${POSTSCREEN_ACCESS_CIDR_FILE}" > /dev/null 2>&1
+touch "${POSTSCREEN_ACCESS_CIDR_FILE}"
+
+# TODO: add fail2ban file
+
+# Import local entries into client_access.cidr
+if [ -f "${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}" ]; then
+  echo "" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
+  echo "## Entries from ${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
+  cat "${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
+  echo "" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
+fi
+
+# Run postmap
+postmap "${POSTSCREEN_ACCESS_CIDR_FILE}"
+
+# If postfix is running, update
+postfix status > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+  postfix reload
+fi
