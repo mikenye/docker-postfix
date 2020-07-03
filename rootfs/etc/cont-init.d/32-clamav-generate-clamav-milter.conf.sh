@@ -21,6 +21,10 @@ fi
 
 echo "LogSyslog yes" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "LogRotate no" >> "${CLAMAV_MILTERCONF_FILE}"
-echo "LogClean Basic" >> "${CLAMAV_MILTERCONF_FILE}"
-echo "LogInfected Basic" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "SupportMultipleRecipients yes" >> "${CLAMAV_MILTERCONF_FILE}"
+
+# Troubleshooting
+echo "ReadTimeout 300" >> "${CLAMAV_MILTERCONF_FILE}"
+echo "LogVerbose yes" >> "${CLAMAV_MILTERCONF_FILE}"
+echo "LogClean Full" >> "${CLAMAV_MILTERCONF_FILE}"
+echo "LogInfected Full" >> "${CLAMAV_MILTERCONF_FILE}"
