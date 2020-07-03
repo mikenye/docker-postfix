@@ -5,10 +5,15 @@ set -eo pipefail
 
 # Do we run opendkim?
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
-    /usr/sbin/opendkim \
-      -f \
-      -x /etc/opendkim.conf \
-      2>&1 | awk -W Interactive '{print "[opendkim] " $0}'
+    s6-notifyoncheck \
+        -s 1000 \
+        -t 1000 \
+        -n 0 \
+        -c "fdmove 1 3 /usr/local/bin/miltertest_opendkim.sh" \
+        /usr/sbin/opendkim \
+            -f \
+            -x /etc/opendkim.conf \
+            2>&1 | awk -W Interactive '{print "[opendkim] " $0}'
 else
     sleep 86400
     exit 0
