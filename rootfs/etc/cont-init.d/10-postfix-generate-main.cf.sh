@@ -168,14 +168,17 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   fi
 fi
 
-# Do we enable & configure ClamAV?
-if [ "${ENABLE_CLAMAV}" = "true" ]; then
-  if [ "$SMTPDMILTERS" = "" ]; then
-    SMTPDMILTERS="inet:localhost:7357"
-  else
-    SMTPDMILTERS="$SMTPDMILTERS, inet:localhost:7357"
-  fi
-fi
+# clamav-milter is broken as of this release - see dockerfile.
+# instead we will use clamsmtpd
+#
+# # Do we enable & configure ClamAV?
+# if [ "${ENABLE_CLAMAV}" = "true" ]; then
+#   if [ "$SMTPDMILTERS" = "" ]; then
+#     SMTPDMILTERS="inet:localhost:7357"
+#   else
+#     SMTPDMILTERS="$SMTPDMILTERS, inet:localhost:7357"
+#   fi
+# fi
 
 # Write milters
 if [ "$SMTPDMILTERS" != "" ]; then
@@ -183,6 +186,11 @@ if [ "$SMTPDMILTERS" != "" ]; then
   echo "milter_command_timeout = 300s" >> "${POSTFIX_MAINCF_FILE}"
   
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# # Do we enable & configure ClamAV?
+if [ "${ENABLE_CLAMAV}" = "true" ]; then
+  echo "content_filter = scan:127.0.0.1:10025"
 fi
 
 # ========== START postscreen config ==========

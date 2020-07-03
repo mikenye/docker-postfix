@@ -6,6 +6,7 @@ ENV ENABLE_OPENDKIM="false" \
     CLAMAV_FRESHCLAMCONF_FILE="/usr/local/etc/freshclam.conf" \
     CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf" \
     CLAMAV_SIG_URL=https://www.clamav.net/downloads/production/clamav-0.102.3.tar.gz.sig \
+    CLAMSMTPD_CONF_FILE="/etc/clamsmtpd.conf" \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
     POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTGREY_SOURCE_URL=http://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz \

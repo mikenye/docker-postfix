@@ -2,16 +2,16 @@
 # shellcheck shell=bash
 set -eo pipefail
 
-# Do we run clamav
-if [ "${ENABLE_CLAMAV}" = "true" ]; then
+# # Do we run clamav
+# if [ "${ENABLE_CLAMAV}" = "true" ]; then
 
-    # Wait for clamd to start
-    bash /wait_for_clamd.sh 2> /dev/null | awk -W Interactive '{print "[startup] " $0}'
+#     # Wait for clamd to start
+#     bash /wait_for_clamd.sh 2> /dev/null | awk -W Interactive '{print "[startup] " $0}'
 
-    clamav-milter \
-      --config-file="${CLAMAV_MILTERCONF_FILE}" \
-    2>&1 | awk -W Interactive '{print "[clamav-milter] " $0}'
-else
+#     clamav-milter \
+#       --config-file="${CLAMAV_MILTERCONF_FILE}" \
+#     2>&1 | awk -W Interactive '{print "[clamav-milter] " $0}'
+# else
     sleep 3600
-    exit 0
-fi
+#     exit 0
+# fi
