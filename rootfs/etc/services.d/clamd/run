@@ -8,7 +8,7 @@ if [ "${ENABLE_CLAMAV}" = "true" ]; then
         -s 1000 \
         -t 1000 \
         -n 0 \
-        -c "clamdscan /VERSIONS" \
+        -c "fdmove 1 3 clamdscan --stdout /VERSIONS" \
         /usr/local/sbin/clamd \
         --config-file="${CLAMAV_CLAMDCONF_FILE}" \
         --foreground 2>&1 \
