@@ -23,8 +23,10 @@ RUN set -x && \
         autoconf \
         automake \
         binutils \
+        busybox-syslogd \
         ca-certificates \
         curl \
+        file \
         g++ \
         gcc \
         git \
@@ -50,11 +52,18 @@ RUN set -x && \
         libxml2-dev \
         m4 \
         make \
+        net-tools \
+        netbase \
+        opendkim \
+        opendkim-tools \
+        openssl \
         perl \
         pkg-config \
+        procps \
         python3 \
         python3-distutils \
         python3-setuptools \
+        socat \
         texinfo \
         xz-utils \
         zlib1g \
