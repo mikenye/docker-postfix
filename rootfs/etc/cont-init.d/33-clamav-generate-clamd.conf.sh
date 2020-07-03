@@ -19,3 +19,4 @@ echo "StreamMaxLength = ${POSTFIX_MESSAGE_SIZE_LIMIT}" >> "${CLAMAV_CLAMDCONF_FI
 echo "LogVerbose yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "ExtendedDetectionInfo yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "BytecodeTimeout = 300000" >> "${CLAMAV_CLAMDCONF_FILE}"
+echo "Debug = yes" >> "${CLAMAV_CLAMDCONF_FILE}"
