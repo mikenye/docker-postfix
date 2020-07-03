@@ -4,7 +4,6 @@
 OPENDKIM_CONF_FILE="/etc/opendkim.conf"
 echo "" > "${OPENDKIM_CONF_FILE}"
 
-# Don't log to syslog (there is no syslog in this container)
 echo "Syslog true" >> "${OPENDKIM_CONF_FILE}"
 
 # LogResults
