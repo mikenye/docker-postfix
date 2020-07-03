@@ -12,6 +12,6 @@ if [ "${ENABLE_CLAMAV}" = "true" ]; then
       --config-file="${CLAMAV_MILTERCONF_FILE}" \
     2>&1 | awk -W Interactive '{print "[clamav-milter] " $0}'
 else
-    sleep 3600
+    sleep 86400
     exit 0
 fi

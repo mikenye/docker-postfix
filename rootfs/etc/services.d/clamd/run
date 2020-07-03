@@ -14,6 +14,6 @@ if [ "${ENABLE_CLAMAV}" = "true" ]; then
         --foreground 2>&1 \
     | awk -W Interactive '{print "[clamd] " $0}'
 else
-    sleep 3600
+    sleep 86400
     exit 0
 fi
