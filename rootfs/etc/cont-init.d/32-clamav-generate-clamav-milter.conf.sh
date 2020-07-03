@@ -19,7 +19,7 @@ if [ ! -z "${CLAMAV_MILTER_REPORT_HOSTNAME}" ]; then
     echo "ReportHostname ${CLAMAV_MILTER_REPORT_HOSTNAME}" >> "${CLAMAV_MILTERCONF_FILE}"
 fi
 
-echo "LogSyslog no" >> "${CLAMAV_MILTERCONF_FILE}"
+echo "LogSyslog yes" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "LogRotate no" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "LogClean Basic" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "LogInfected Basic" >> "${CLAMAV_MILTERCONF_FILE}"

@@ -5,7 +5,7 @@ CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf"
 
 echo "" > "${CLAMAV_CLAMDCONF_FILE}"
 
-echo "LogSyslog no" >> "${CLAMAV_CLAMDCONF_FILE}"
+echo "LogSyslog yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "LogRotate no" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "PidFile /run/clamd/clamd.pid" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "TemporaryDirectory /tmp" >> "${CLAMAV_CLAMDCONF_FILE}"
