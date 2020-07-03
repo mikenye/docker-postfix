@@ -110,9 +110,10 @@ RUN mkdir -p /src/clamav && \
     gpg2 --recv-keys "${CLAMAV_RSA_KEY}" && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     # Extract clamav download
-    tar xzf /src/clamav.tar.gz -C /src/clamav && \
-    pushd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
+    tar xzf /src/clamav.tar.gz -C /src/clamav
+    
     # Build clamav
+RUN pushd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
     ./configure \
       --enable-milter \
       --enable-clamdtop \
