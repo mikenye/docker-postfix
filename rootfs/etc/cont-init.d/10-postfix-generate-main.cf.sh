@@ -201,7 +201,7 @@ echo "postscreen_blacklist_action = ignore" >> "${POSTFIX_MAINCF_FILE}"
 # http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites
 if [ ! -z "${POSTFIX_DNSBL_SITES}" ]; then
   echo "postscreen_dnsbl_sites = ${POSTFIX_DNSBL_SITES}" >> "${POSTFIX_MAINCF_FILE}"
-  echo "postscreen_dnsbl_action = drop"
+  echo "postscreen_dnsbl_action = drop" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
 # http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold
@@ -211,9 +211,11 @@ fi
 
 # http://www.postfix.org/postconf.5.html#postscreen_dnsbl_reply_map
 if [ -f "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" ]; then
-  echo "postscreen_dnsbl_reply_map = texthash:/etc/postfix/dnsbl_reply.texthash"
+  echo "postscreen_dnsbl_reply_map = texthash:/etc/postfix/dnsbl_reply.texthash" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
 # http://www.postfix.org/postconf.5.html#postscreen_greet_action
 # TODO - once postscreen confirmed working properly, change to drop
-echo "postscreen_greet_action = ignore"
+echo "postscreen_greet_action = drop" >> "${POSTFIX_MAINCF_FILE}"
+
+# ========== END postscreen config ==========
