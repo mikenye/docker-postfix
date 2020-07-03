@@ -15,7 +15,9 @@ echo "TCPSocket 7358" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "TCPAddr 127.0.0.1" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "User clamav" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "Foreground yes" >> "${CLAMAV_CLAMDCONF_FILE}"
+echo "StreamMaxLength = ${POSTFIX_MESSAGE_SIZE_LIMIT}" >> "${CLAMAV_CLAMDCONF_FILE}"
 
 # Troubleshooting
 echo "LogVerbose yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "ExtendedDetectionInfo yes" >> "${CLAMAV_CLAMDCONF_FILE}"
+echo "BytecodeTimeout = 300000" >> "${CLAMAV_CLAMDCONF_FILE}"
