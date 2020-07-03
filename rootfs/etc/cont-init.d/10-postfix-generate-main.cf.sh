@@ -179,6 +179,9 @@ fi
 
 # Write milters
 if [ "$SMTPDMILTERS" != "" ]; then
+  # Troubleshooting
+  echo "milter_command_timeout = 300s" >> "${POSTFIX_MAINCF_FILE}"
+  
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
