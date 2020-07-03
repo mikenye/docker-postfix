@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This script will test the opendkim milter
+# It is used for s6-notifyoncheck in service start scripts to bring things up in order
+
 cat << EOF | miltertest > /dev/null 2>&1 
     -- Echo that the test is starting 
     mt.echo("*** begin test ***") 

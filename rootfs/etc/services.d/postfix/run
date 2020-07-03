@@ -8,12 +8,12 @@ if [ "${ENABLE_POSTGREY}" = "true" ]; then
 fi
 
 # Wait for clamd, opendkim, clamav-milter
-s6-svwait -U /run/s6/services/clamd /run/s6/services/opendkim /run/s6/services/clamav-milter
+s6-svwait -U /run/s6/services/clamd /run/s6/services/opendkim /run/s6/services/clamav-milter /run/s6/services/postgrey /run/s6/services/syslog
 
 s6-notifyoncheck \
         -s 1000 \
         -t 1000 \
         -n 0 \
-        -c "fdmove 1 3 postfix status" \
+        -c "/usr/local/bin/check_postfix.sh" \
         /usr/sbin/postfix start-fg \
         2>&1 | awk -W Interactive '{print "[postfix] " $0}'

@@ -9,7 +9,7 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
         -s 1000 \
         -t 1000 \
         -n 0 \
-        -c "fdmove 1 3 /usr/local/bin/miltertest_opendkim.sh" \
+        -c "/usr/local/bin/check_opendkim.sh" \
         /usr/sbin/opendkim \
             -f \
             -x /etc/opendkim.conf \

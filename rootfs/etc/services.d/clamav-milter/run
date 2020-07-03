@@ -5,14 +5,14 @@ set -eo pipefail
 # # Do we run clamav
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
 
-    # Wait for clamav to start
-    s6-svwait -U /run/s6/services/clamd
+    # Wait for clamav & syslog to start
+    s6-svwait -U /run/s6/services/clamd /run/s6/services/syslog
 
     s6-notifyoncheck \
         -s 1000 \
         -t 1000 \
         -n 0 \
-        -c "fdmove 1 3 clamdscan --stdout /VERSIONS" \
+        -c "/usr/local/bin/check_clamd.sh" \
         clamav-milter \
             --config-file="${CLAMAV_MILTERCONF_FILE}" \
             2>&1 | awk -W Interactive '{print "[clamav-milter] " $0}'
