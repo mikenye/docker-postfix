@@ -5,7 +5,7 @@ set -eo pipefail
 # Do we run clamd?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
     /usr/local/sbin/clamd \
-        --config-file="${CLAMAV_MILTERCONF_FILE}" \
+        --config-file="${CLAMAV_CLAMDCONF_FILE}" \
         --foreground 2>&1 \
     | awk -W Interactive '{print "[clamd] " $0}'
 else
