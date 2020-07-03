@@ -118,6 +118,12 @@ RUN mkdir -p /src/clamav && \
       --enable-clamdtop \
       --enable-clamsubmit \
       --enable-clamonacc \
+      --enable-debug \
+      --enable-check \
+      --enable-experimental \
+      --enable-libjson \
+      --enable-xml \
+      --enable-pcre \
       && \
     make && \
     make check && \
