@@ -19,6 +19,8 @@ mkdir -p /var/log/postgrey_whitelist_update
 chown nobody:nogroup /var/log/postgrey_whitelist_update
 mkdir -p /var/log/syslogd
 chown nobody:nogroup /var/log/syslogd
+mkdir -p /var/log/clamsmtpd
+chown nobody:nogroup /var/log/clamsmtpd
 
 # ClamAV
 mkdir -p /var/lib/clamav
