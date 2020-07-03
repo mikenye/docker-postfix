@@ -4,11 +4,11 @@ set -eo pipefail
 
 # Do we run clamd?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
-    s6-notifyoncheck \
-        -s 1000 \
-        -t 1000 \
-        -n 0 \
-        -c clamdscan \
+    #s6-notifyoncheck \
+    #    -s 1000 \
+    #    -t 1000 \
+    #    -n 0 \
+    #    -c clamdscan \
         /usr/local/sbin/clamd \
         --config-file="${CLAMAV_CLAMDCONF_FILE}" \
         --foreground 2>&1 \
