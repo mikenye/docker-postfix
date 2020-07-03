@@ -72,10 +72,9 @@ RUN set -x && \
         zlib1g-dev \
         && \
     mkdir -p /etc/mail/dkim && \
-    ln -s /usr/bin/python3 /usr/bin/python
-
+    ln -s /usr/bin/python3 /usr/bin/python && \
     # Create groups & users
-RUN groupadd --system postdrop && \
+    groupadd --system postdrop && \
     groupadd --system clamav && \
     groupadd --system postgrey && \
     useradd \
@@ -101,25 +100,21 @@ RUN groupadd --system postdrop && \
         --system \
         --shell=/usr/sbin/nologin \
         postgrey \
-        && \
-    echo ""
-    
+        && \    
 # Install clamsmtp - can't find the source for this
-# Using because clamav-milter is broken at time of container creation
-# https://bugzilla.clamav.net/show_bug.cgi?id=12490
-# clamav-milter does not detect EICAR, however clamscan does...
-# May be broken for other viruses too...
-RUN mkdir -p /src/clamsmtp && \
+# Running clamav-milter and clamsmtp im parallel to ensure they both operate identically...
+# Will remove one or the other after a few weeks of testing...
+# https://bugzilla.clamav.net/show_bug.cgi?id=12490.
+    mkdir -p /src/clamsmtp && \
     pushd /src/clamsmtp && \
     apt-get download clamsmtp && \
     ar x *.deb && \
     tar xf ./data.tar.xz && \
     cp ./usr/sbin/clamsmtpd /usr/sbin/clamsmtpd && \
     cp ./etc/clamsmtpd.conf /etc/clamsmtpd.conf.original && \
-    popd 
-
+    popd && \
     # Install postgrey
-RUN mkdir -p /src/postgrey && \
+    mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
     tar xf /src/postgrey.tar.gz -C /src/postgrey && \
     pushd $(find /src/postgrey -maxdepth 1 -type d | tail -1) && \
@@ -130,10 +125,9 @@ RUN mkdir -p /src/postgrey && \
     touch /etc/postgrey/postgrey_whitelist_recipients.local && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
     mkdir -p /var/spool/postfix/postgrey && \
-    popd
-
+    popd && \
     # Download & install libcheck (for clamav)
-RUN mkdir -p /src/libcheck && \
+    mkdir -p /src/libcheck && \
     git clone https://github.com/libcheck/check.git /src/libcheck && \
     pushd /src/libcheck && \
     export BRANCH_LIBCHECK=$(git tag --sort="-creatordate" | head -1) && \
@@ -143,10 +137,9 @@ RUN mkdir -p /src/libcheck && \
     make && \
     make check && \
     make install && \
-    popd
-
+    popd && \
     # Install clamav
-RUN mkdir -p /src/clamav && \
+    mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_DOWNLOAD_URL}" && \
     curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_SIG_URL}" && \
     CLAMAV_RSA_KEY=$(gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz 2>&1 | grep "using RSA key" | tr -s " " | cut -d " " -f 5)  && \
@@ -173,28 +166,25 @@ RUN mkdir -p /src/clamav && \
     mkdir -p /run/freshclam && \
     mkdir -p /run/clamav-milter && \
     mkdir -p /run/clamd && \
-    popd
-
+    popd && \
     # Get postfix-policyd-spf-perl
-RUN mkdir -p /src/postfix-policyd-spf-perl && \
+    mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
     pushd /src/postfix-policyd-spf-perl && \
     export BRANCH_POSTFIX_POLICYD_SPF_PERL=$(git tag --sort="-creatordate" | head -1) && \
     git checkout ${BRANCH_POSTFIX_POLICYD_SPF_PERL} && \
     cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
-    popd
-
+    popd && \
     # Get postfix source & signature & author key
-RUN mkdir -p /src/postfix && \
+    mkdir -p /src/postfix && \
     curl --location --output /src/postfix.tar.gz "${POSTFIX_SOURCE_URL}" && \
     curl --location --output /src/postfix.tar.gz.gpg2 "${POSTFIX_SIG_URL}" && \
     curl --location --output /src/wietse.pgp "${WIETSE_PGP_KEY_URL}" && \
     gpg2 --import /src/wietse.pgp && \
     gpg2 --verify /src/postfix.tar.gz.gpg2 /src/postfix.tar.gz || exit 1 && \
-    tar xf /src/postfix.tar.gz -C /src/postfix
-
+    tar xf /src/postfix.tar.gz -C /src/postfix && \
     # Build postfix
-RUN pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
+    pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     make \
       makefiles \
       pie=yes \
@@ -228,10 +218,9 @@ RUN pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     cp /etc/postfix/master.cf /etc/postfix/master.cf.original && \
     mkdir -p /etc/postfix/tables && \
     mkdir -p /etc/postfix/local_aliases && \
-    popd
-
+    popd && \
     # Install fail2ban 
-RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
+    git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     pushd /src/fail2ban && \
     FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
     git checkout "${FAIL2BAN_VERSION}" && \
@@ -239,14 +228,11 @@ RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     ./fail2ban-testcases-all-python3 && \
     python setup.py build && \
     python setup.py install && \
-    popd
-
+    popd && \
     # Install s6-overlay
-RUN curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
-    echo ""
-
+    curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
      # Clean up
-RUN apt-get remove -y \
+    apt-get remove -y \
         2to3 \
         autoconf \
         automake \
@@ -273,9 +259,8 @@ RUN apt-get remove -y \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
-    find /var/log -type f -iname "*log" -exec truncate --size 0 {} \;
-
-RUN clamsmtpd -v | grep -i version | tr -d '(' | tr -d ')' | sed "s/version //g" >> /VERSIONS && \
+    find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
+    clamsmtpd -v | grep -i version | tr -d '(' | tr -d ')' | sed "s/version //g" >> /VERSIONS && \
     postgrey --version >> /VERSIONS && \
     echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
     echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
