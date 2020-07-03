@@ -117,7 +117,7 @@ RUN set -x && \
     ./configure && \
     make && \
     make check && \
-    make install \
+    make install && \
     popd
 
     # Download clamav
