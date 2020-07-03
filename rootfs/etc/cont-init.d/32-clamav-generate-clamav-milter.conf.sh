@@ -1,8 +1,6 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
-CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf"
-
 echo "" > "${CLAMAV_MILTERCONF_FILE}"
 
 echo "MilterSocket inet:7357@localhost" >> "${CLAMAV_MILTERCONF_FILE}"

@@ -9,6 +9,9 @@ ENV ENABLE_OPENDKIM="false" \
     POSTGREY_WHITELIST_URL=https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients \
     POSTGREY_SYSTEM_WHITELIST_FILE=/opt/postgrey/postgrey_whitelist_clients \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp \
+    CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf" \
+    CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
+    CLAMAV_FRESHCLAMCONF_FILE="/usr/local/etc/freshclam.conf" \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2
     #POSTFIX_POLICY_SPF_TIME_LIMIT=3600s
 

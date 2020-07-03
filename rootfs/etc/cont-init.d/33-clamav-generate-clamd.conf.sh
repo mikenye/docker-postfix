@@ -1,8 +1,6 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
-CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf"
-
 echo "" > "${CLAMAV_CLAMDCONF_FILE}"
 
 echo "LogSyslog yes" >> "${CLAMAV_CLAMDCONF_FILE}"

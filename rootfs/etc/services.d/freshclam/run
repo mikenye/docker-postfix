@@ -5,6 +5,7 @@ set -eo pipefail
 # Do we run freshclam?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
     freshclam \
+        --config-file="${CLAMAV_FRESHCLAMCONF_FILE}" \
         --stdout \
         --foreground \
         --daemon \
