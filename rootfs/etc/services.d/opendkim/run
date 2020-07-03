@@ -5,6 +5,10 @@ set -eo pipefail
 
 # Do we run opendkim?
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
+
+    # Wait for syslog to start
+    s6-svwait -U /run/s6/services/syslogd
+
     s6-notifyoncheck \
         -s 1000 \
         -t 1000 \

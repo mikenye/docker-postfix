@@ -4,7 +4,7 @@
 set -eo pipefail
 
 # Wait for clamd, opendkim, clamav-milter
-s6-svwait -U /run/s6/services/clamd /run/s6/services/opendkim /run/s6/services/clamav-milter /run/s6/services/postgrey /run/s6/services/syslog
+s6-svwait -U /run/s6/services/clamd /run/s6/services/opendkim /run/s6/services/clamav-milter /run/s6/services/postgrey /run/s6/services/syslogd
 
 s6-notifyoncheck \
         -s 1000 \

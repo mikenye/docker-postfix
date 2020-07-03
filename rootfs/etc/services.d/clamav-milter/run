@@ -6,7 +6,7 @@ set -eo pipefail
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
 
     # Wait for clamav & syslog to start
-    s6-svwait -U /run/s6/services/clamd /run/s6/services/syslog
+    s6-svwait -U /run/s6/services/clamd /run/s6/services/syslogd
 
     s6-notifyoncheck \
         -s 1000 \
