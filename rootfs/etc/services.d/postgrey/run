@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 set -eo pipefail
 
-# Do we run freshclam?
+# Do we run postgrey?
 if [ "${ENABLE_POSTGREY}" = "true" ]; then
     s6-notifyoncheck \
         -s 1000 \

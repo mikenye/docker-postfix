@@ -3,9 +3,25 @@
 
 set -eo pipefail
 
-# Wait for clamd, opendkim, clamav-milter
-s6-svwait -U /run/s6/services/clamd /run/s6/services/opendkim /run/s6/services/clamav-milter /run/s6/services/postgrey /run/s6/services/syslogd
+# Wait for clamd & clamav-milter
+if [ "${ENABLE_CLAMAV}" = "true" ]; then
+    s6-svwait -U /run/s6/services/clamd /run/s6/services/clamav-milter
+fi
 
+# Wait for opendkim
+if [ "${ENABLE_OPENDKIM}" = "true" ]; then
+    s6-svwait -U /run/s6/services/opendkim
+fi
+
+# Wait for postgrey
+if [ "${ENABLE_POSTGREY}" = "true" ]; then
+    s6-svwait -U /run/s6/services/postgrey
+fi
+
+# Wait for syslog
+s6-svwait -U /run/s6/services/syslogd
+
+# Start
 s6-notifyoncheck \
         -s 1000 \
         -t 1000 \
