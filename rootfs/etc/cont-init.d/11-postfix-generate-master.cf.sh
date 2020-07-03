@@ -27,6 +27,7 @@ if [ "${ENABLE_SPF}" = "true" ]; then
 fi
 
 # Do we enable & configure clamsmtpd?
+# See: http://www.postfix.org/FILTER_README.html
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
     echo "# clamsmtpd scan filter (used by content_filter)" >> "${POSTFIX_MASTERCF_FILE}"
     echo "scan      unix  -       -       n       -       10      smtp" >> "${POSTFIX_MASTERCF_FILE}"
