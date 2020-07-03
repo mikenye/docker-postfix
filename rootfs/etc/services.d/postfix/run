@@ -3,12 +3,9 @@
 
 set -eo pipefail
 
-#
-# clamav-milter disabled until it works reliably
-#
-# if [ "${ENABLE_CLAMAV}" = "true" ]; then
-#     bash /wait_for_clamav_milter.sh | awk -W Interactive '{print "[startup] " $0}'
-# fi
+if [ "${ENABLE_CLAMAV}" = "true" ]; then
+    bash /wait_for_clamav_milter.sh | awk -W Interactive '{print "[startup] " $0}'
+fi
 
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
     bash /wait_for_opendkim_milter.sh | awk -W Interactive '{print "[startup] " $0}'

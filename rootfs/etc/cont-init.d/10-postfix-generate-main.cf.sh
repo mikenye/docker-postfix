@@ -168,17 +168,17 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   fi
 fi
 
-# clamav-milter is broken as of this release - see dockerfile.
-# instead we will use clamsmtpd
+# currently running clamav-milter and clamsmtpd in parallel for a few weeks
+# to see if there is any difference in detecting virii...
 #
-# # Do we enable & configure ClamAV?
-# if [ "${ENABLE_CLAMAV}" = "true" ]; then
-#   if [ "$SMTPDMILTERS" = "" ]; then
-#     SMTPDMILTERS="inet:localhost:7357"
-#   else
-#     SMTPDMILTERS="$SMTPDMILTERS, inet:localhost:7357"
-#   fi
-# fi
+# Do we enable & configure ClamAV?
+if [ "${ENABLE_CLAMAV}" = "true" ]; then
+  if [ "$SMTPDMILTERS" = "" ]; then
+    SMTPDMILTERS="inet:localhost:7357"
+  else
+    SMTPDMILTERS="$SMTPDMILTERS, inet:localhost:7357"
+  fi
+fi
 
 # Write milters
 if [ "$SMTPDMILTERS" != "" ]; then
