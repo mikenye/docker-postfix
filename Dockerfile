@@ -106,7 +106,7 @@ RUN mkdir -p /src/postgrey && \
 
     # Download & install libcheck
 RUN set -x && \
-    apt-get install --no-install-recommends -y bash-completion && \
+    apt-get install --no-install-recommends -y automake && \
     mkdir -p /src/libcheck && \
     git clone https://github.com/libcheck/check.git /src/libcheck && \
     pushd /src/libcheck && \
