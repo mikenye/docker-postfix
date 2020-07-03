@@ -22,4 +22,4 @@ echo "LogVerbose yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "ExtendedDetectionInfo yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 # TODO: fix below
 #echo "BytecodeTimeout = 300000" >> "${CLAMAV_CLAMDCONF_FILE}"
-echo "Debug = yes" >> "${CLAMAV_CLAMDCONF_FILE}"
+#echo "Debug = yes" >> "${CLAMAV_CLAMDCONF_FILE}"
