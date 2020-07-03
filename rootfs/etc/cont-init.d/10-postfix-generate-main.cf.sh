@@ -191,6 +191,7 @@ fi
 # # Do we enable & configure ClamAV?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
   echo "content_filter = scan:127.0.0.1:10025"
+  echo "receive_override_options = no_address_mappings"
 fi
 
 # ========== START postscreen config ==========
