@@ -21,9 +21,9 @@ RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
       2to3 \
+      autoconf \
       busybox-syslogd \
       ca-certificates \
-      check \
       curl \
       file \
       g++ \
@@ -56,6 +56,7 @@ RUN set -x && \
       libssl-dev \
       libssl1.1 \
       libsys-hostname-long-perl \
+      libtool \
       libunix-syslog-perl \
       libwrap0 \
       libwrap0-dev \
@@ -70,6 +71,7 @@ RUN set -x && \
       openssl \
       pcre2-utils \
       perl \
+      pkg-config \
       procps \
       python3 \
       python3-distutils \
@@ -77,6 +79,7 @@ RUN set -x && \
       python3-setuptools \
       python3-wheel \
       socat \
+      texinfo \
       zlib1g \
       zlib1g-dev \
       && \
@@ -99,6 +102,19 @@ RUN mkdir -p /src/postgrey && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
     mkdir -p /var/spool/postfix/postgrey && \
     postgrey --version >> /VERSIONS && \
+    popd
+
+    # Download & install libcheck
+RUN mkdir -p /src/libcheck && \
+    git clone https://github.com/libcheck/check.git /src/libcheck && \
+    pushd /src/libcheck && \
+    export BRANCH_LIBCHECK=$(git tag --sort="-creatordate" | head -1) && \
+    git checkout ${BRANCH_LIBCHECK} && \
+    autoreconf --install && \
+    ./configure && \
+    make && \
+    make check && \
+    make install \
     popd
 
     # Download clamav
@@ -222,6 +238,7 @@ RUN mkdir -p /etc/postfix/tables && \
     # Clean up
     apt-get remove -y \
       2to3 \
+      autoconf \
       check \
       file \
       g++ \
@@ -241,10 +258,12 @@ RUN mkdir -p /etc/postfix/tables && \
       libxml2-dev \
       m4 \
       make \
+      pkg-config \
       python3-distutils \
       python3-pip \
       python3-setuptools \
       python3-wheel \
+      texinfo \
       zlib1g-dev \
       && \
     apt-get autoremove -y && \
