@@ -6,6 +6,7 @@ set -eo pipefail
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
     /usr/local/sbin/clamd \
         --config-file="${CLAMAV_CLAMDCONF_FILE}" \
+        --debug \
         --foreground 2>&1 \
     | awk -W Interactive '{print "[clamd] " $0}'
 else

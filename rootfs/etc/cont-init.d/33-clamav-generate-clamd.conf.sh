@@ -20,5 +20,3 @@ echo "Foreground yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 # Troubleshooting
 echo "LogVerbose yes" >> "${CLAMAV_CLAMDCONF_FILE}"
 echo "ExtendedDetectionInfo yes" >> "${CLAMAV_CLAMDCONF_FILE}"
-# TODO: fix below
-echo "Debug = yes" >> "${CLAMAV_CLAMDCONF_FILE}"
