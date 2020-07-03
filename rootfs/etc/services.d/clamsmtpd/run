@@ -4,7 +4,7 @@ set -eo pipefail
 
 # Do we run clamd?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
-    /usr/sbin/clamsmtpd -d 4 -f "${CLAMSMTPD_CONF_FILE}" 2>&1 \
+    /usr/sbin/clamsmtpd -d 1 -f "${CLAMSMTPD_CONF_FILE}" 2>&1 \
     | awk -W Interactive '{print "[clamsmtpd] " $0}'
 else
     sleep 3600
