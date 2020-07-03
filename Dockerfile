@@ -45,6 +45,7 @@ RUN set -x && \
         libnet-server-perl \
         libnetaddr-ip-perl \
         libpcre2-dev \
+        libpcre2-8-0 \
         libpcre3-dev \
         libssl-dev \
         libsys-hostname-long-perl \
