@@ -3,10 +3,6 @@
 
 set -eo pipefail
 
-if [ "${ENABLE_POSTGREY}" = "true" ]; then
-    bash /wait_for_postgrey.sh | awk -W Interactive '{print "[startup] " $0}'
-fi
-
 # Wait for clamd, opendkim, clamav-milter
 s6-svwait -U /run/s6/services/clamd /run/s6/services/opendkim /run/s6/services/clamav-milter /run/s6/services/postgrey /run/s6/services/syslog
 
