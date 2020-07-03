@@ -17,6 +17,13 @@ fi
 
 echo "Dependent processes are ready, starting postfix..." | awk -W Interactive '{print "[startup] " $0}'
 
-exec \
-    /usr/sbin/postfix start-fg \
-    2>&1 | awk -W Interactive '{print "[postfix] " $0}'
+echo "Waiting for prerequisite services before starting postfix..."
+#s6-svwait -U /run/s6/services/clamd
+
+#s6-notifyoncheck \
+#        -s 1000 \
+#        -t 1000 \
+#        -n 0 \
+#        -c "postfix status"
+        /usr/sbin/postfix start-fg \
+        2>&1 | awk -W Interactive '{print "[postfix] " $0}'
