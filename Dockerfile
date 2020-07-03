@@ -22,6 +22,7 @@ RUN set -x && \
     apt-get install -y --no-install-recommends \
       2to3 \
       autoconf \
+      automake \
       busybox-syslogd \
       ca-certificates \
       curl \
@@ -85,7 +86,8 @@ RUN set -x && \
       && \
     ldconfig && \
     ln -s /usr/bin/python3 /usr/bin/python && \
-    ln -s /usr/bin/pip3 /usr/bin/pip
+    ln -s /usr/bin/pip3 /usr/bin/pip && \
+    mkdir -p /etc/mail/dkim
 
     # Download postgrey
 RUN mkdir -p /src/postgrey && \
@@ -106,7 +108,6 @@ RUN mkdir -p /src/postgrey && \
 
     # Download & install libcheck
 RUN set -x && \
-    apt-get install --no-install-recommends -y automake && \
     mkdir -p /src/libcheck && \
     git clone https://github.com/libcheck/check.git /src/libcheck && \
     pushd /src/libcheck && \
@@ -216,6 +217,9 @@ RUN pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} readme_directory=/opt/postfix_readme" && \
     make install POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS}" && \
     cp /etc/postfix/master.cf /etc/postfix/master.cf.original && \
+    mkdir -p /etc/postfix/tables && \
+    mkdir -p /etc/postfix/local_aliases && \
+    echo "postfix $(postconf mail_version | cut -d "=" -f 2 | tr -d " ")" >> /VERSIONS && \
     popd
 
     # Get fail2ban source
@@ -231,49 +235,47 @@ RUN git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
     popd && \
     fail2ban-client --version >> /VERSIONS
 
-    # Make directories
-RUN mkdir -p /etc/postfix/tables && \
-    mkdir -p /etc/postfix/local_aliases && \
-    mkdir -p /etc/mail/dkim && \
     # Install s6-overlay
-    curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
-    # Clean up
-    apt-get remove -y \
-      2to3 \
-      autoconf \
-      check \
-      file \
-      g++ \
-      gcc \
-      git \
-      gnupg2 \
-      libbz2-dev \
-      libc6-dev \
-      libcurl4-openssl-dev \
-      libdb5.3-dev \
-      libjson-c-dev \
-      libmilter-dev \
-      libncurses5-dev \
-      libpcre2-dev \
-      libssl-dev \
-      libwrap0-dev \
-      libxml2-dev \
-      m4 \
-      make \
-      pkg-config \
-      python3-distutils \
-      python3-pip \
-      python3-setuptools \
-      python3-wheel \
-      texinfo \
-      zlib1g-dev \
-      && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /src /tmp/* /var/lib/apt/lists/* && \
-    find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
-    echo "postfix $(postconf mail_version | cut -d "=" -f 2 | tr -d " ")" >> /VERSIONS && \
-    cat /VERSIONS
+RUN curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
+    echo ""
+
+#     # Clean up
+# RUN apt-get remove -y \
+#       2to3 \
+#       autoconf \
+#       automake \
+#       check \
+#       file \
+#       g++ \
+#       gcc \
+#       git \
+#       gnupg2 \
+#       libbz2-dev \
+#       libc6-dev \
+#       libcurl4-openssl-dev \
+#       libdb5.3-dev \
+#       libjson-c-dev \
+#       libmilter-dev \
+#       libncurses5-dev \
+#       libpcre2-dev \
+#       libssl-dev \
+#       libwrap0-dev \
+#       libxml2-dev \
+#       m4 \
+#       make \
+#       pkg-config \
+#       python3-distutils \
+#       python3-pip \
+#       python3-setuptools \
+#       python3-wheel \
+#       texinfo \
+#       zlib1g-dev \
+#       && \
+#     apt-get autoremove -y && \
+#     apt-get clean -y && \
+#     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
+#     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
+#     cat /VERSIONS
 
 COPY rootfs/ /
 
