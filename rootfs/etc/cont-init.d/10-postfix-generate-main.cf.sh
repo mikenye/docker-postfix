@@ -147,7 +147,7 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
     echo "    check_policy_service inet:127.0.0.1:10023," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
-  CHECK_RECIPIENT_ACCESS = ""
+  CHECK_RECIPIENT_ACCESS=""
 
   # If ENABLE_LDAP_RECIPIENT_ACCESS, then add ldap to check_recipient_access
   if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
