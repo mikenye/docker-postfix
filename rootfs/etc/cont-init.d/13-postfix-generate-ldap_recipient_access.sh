@@ -14,5 +14,5 @@ if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
   echo "bind_pw = ${POSTFIX_LDAP_BIND_PW}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
   echo "result_attribute = mail" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
   echo "result_format = OK" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
-  echo "debuglevel = 1" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "debuglevel = ${POSTFIX_LDAP_DEBUG_LEVEL}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
 fi
