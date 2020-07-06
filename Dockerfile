@@ -217,16 +217,16 @@ RUN set -x && \
     mkdir -p /etc/postfix/tables && \
     mkdir -p /etc/postfix/local_aliases && \
     popd && \
-    # Install fail2ban 
-    git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
-    pushd /src/fail2ban && \
-    FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
-    git checkout "${FAIL2BAN_VERSION}" && \
-    ./fail2ban-2to3 && \
-    ./fail2ban-testcases-all-python3 && \
-    python setup.py build && \
-    python setup.py install && \
-    popd && \
+    # # Install fail2ban 
+    # git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
+    # pushd /src/fail2ban && \
+    # FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
+    # git checkout "${FAIL2BAN_VERSION}" && \
+    # ./fail2ban-2to3 && \
+    # ./fail2ban-testcases-all-python3 && \
+    # python setup.py build && \
+    # python setup.py install && \
+    # popd && \
     # Install s6-overlay
     curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     # Clean up
@@ -266,7 +266,7 @@ RUN set -x && \
     echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
     echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
     echo "postfix $(postconf mail_version | cut -d "=" -f 2 | tr -d " ")" >> /VERSIONS && \
-    fail2ban-client --version >> /VERSIONS && \
+    # fail2ban-client --version >> /VERSIONS && \
     cat /VERSIONS
 
 COPY rootfs/ /
