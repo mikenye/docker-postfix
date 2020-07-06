@@ -135,7 +135,7 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unauth_destination," >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${ENABLE_SPF}" = "true" ]; then
-    echo "   check_policy_service unix:private/policy," >> "${POSTFIX_MAINCF_FILE}"
+    echo "    check_policy_service unix:private/policy," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
   echo "    reject_non_fqdn_recipient," >> "${POSTFIX_MAINCF_FILE}"
