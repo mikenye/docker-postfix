@@ -48,6 +48,7 @@ This container is still under development.
 | `POSTFIX_LDAP_SEARCH_BASE`         | |
 | `POSTFIX_LDAP_BIND_DN`             | |
 | `POSTFIX_LDAP_BIND_PW`             | |
+| `POSTFIX_LDAP_DEBUG_LEVEL`         | |
 
 ### OpenDKIM Configuration
 

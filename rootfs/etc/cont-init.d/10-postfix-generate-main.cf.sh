@@ -147,8 +147,28 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
     echo "    check_policy_service inet:127.0.0.1:10023," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
+  CHECK_RECIPIENT_ACCESS = ""
+
+  # If ENABLE_LDAP_RECIPIENT_ACCESS, then add ldap to check_recipient_access
   if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
-    echo "    check_recipient_access ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}," >> "${POSTFIX_MAINCF_FILE}"
+    if [ "$CHECK_RECIPIENT_ACCESS" = "" ]; then
+      CHECK_RECIPIENT_ACCESS="ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+    else
+      CHECK_RECIPIENT_ACCESS="$CHECK_RECIPIENT_ACCESS, ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+    fi
+  fi
+
+  # If local recipient_access.hash file exists, add to check_recipient_access 
+  if [ -f "/etc/postfix/tables/recipient_access.hash" ]; then
+    if [ "$CHECK_RECIPIENT_ACCESS" = "" ]; then
+      CHECK_RECIPIENT_ACCESS="hash:/etc/postfix/recipient_access.hash"
+    else
+      CHECK_RECIPIENT_ACCESS="$CHECK_RECIPIENT_ACCESS, hash:/etc/postfix/recipient_access.hash"
+    fi
+  fi
+
+  if [ "${CHECK_RECIPIENT_ACCESS}" != "" ]; then
+    echo "    check_recipient_access ${CHECK_RECIPIENT_ACCESS}," >> "${POSTFIX_MAINCF_FILE}"
     echo "    defer" >> "${POSTFIX_MAINCF_FILE}"
 
   else
@@ -222,7 +242,7 @@ if [ ! -z "${POSTFIX_DNSBL_THRESHOLD}" ]; then
 fi
 
 # http://www.postfix.org/postconf.5.html#postscreen_dnsbl_reply_map
-if [ -f "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" ]; then
+if [ -f "/etc/postfix/tables/dnsbl_reply.texthash" ]; then
   echo "postscreen_dnsbl_reply_map = texthash:/etc/postfix/dnsbl_reply.texthash" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
