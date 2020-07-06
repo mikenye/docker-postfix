@@ -33,6 +33,9 @@ RUN set -x && \
         libdb5.3-dev \
         libjson-c3 \
         libjson-c-dev \
+        libldap2-dev \
+        libldap-2.4-2 \
+        libldap-common \
         libmail-spf-perl \
         libmilter-dev \
         libmilter1.0.1 \
@@ -42,6 +45,8 @@ RUN set -x && \
         libpcre2-dev \
         libpcre2-8-0 \
         libpcre3-dev \
+        libsasl2-dev \
+        libsasl2-2 \
         libssl-dev \
         libsys-hostname-long-perl \
         libtool \
@@ -177,9 +182,15 @@ RUN set -x && \
       pie=yes \
       shared=yes \
       dynamicmaps=yes \
-      CCARGS="-DUSE_TLS -DHAS_PCRE $(pcre-config --cflags)" \
-      AUXLIBS="-lssl -lcrypto" \
+      CCARGS="-DUSE_TLS \
+              -DHAS_PCRE $(pcre-config --cflags) \
+              -DHAS_LDAP \
+              -I/usr/include/sasl \
+              -DUSE_LDAP_SASL \
+              " \
+      AUXLIBS="-lssl -lcrypto -lsasl2" \
       AUXLIBS_PCRE="$(pcre-config --libs)" \
+      AUXLIBS_LDAP="-lldap -llber" \
       && \
     make && \
     # Install postfix
@@ -232,10 +243,12 @@ RUN set -x && \
         libcurl4-openssl-dev \
         libdb5.3-dev \
         libjson-c-dev \
+        libldap2-dev \
         libmilter-dev \
         libncurses5-dev \
         libpcre2-dev \
         libpcre3-dev \
+        libsasl2-dev \
         libssl-dev \
         libtool \
         libxml2-dev \
