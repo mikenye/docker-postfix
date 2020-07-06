@@ -20,7 +20,7 @@ if [ "${ENABLE_POSTGREY}" = "true" ]; then
             --whitelist-clients=/etc/postgrey/postgrey_whitelist_clients.local \
             --whitelist-recipients=/etc/postgrey/postgrey_whitelist_recipients.local \
             --greylist-text="Service unavailable. Please try again later." \
-            | awk -W Interactive '{print "[postgrey] " $0}'
+            2>&1 | awk -W Interactive '{print "[postgrey] " $0}'
 else
     sleep 86400
     exit 0
