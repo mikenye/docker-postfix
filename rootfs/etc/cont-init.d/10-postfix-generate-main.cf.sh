@@ -171,9 +171,6 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   fi
 fi
 
-# currently running clamav-milter and clamsmtpd in parallel for a few weeks
-# to see if there is any difference in detecting virii...
-#
 # Do we enable & configure ClamAV?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
   if [ "$SMTPDMILTERS" = "" ]; then
@@ -191,12 +188,12 @@ if [ "$SMTPDMILTERS" != "" ]; then
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
-# Do we enable & configure ClamAV?
-# See: http://www.postfix.org/FILTER_README.html
-if [ "${ENABLE_CLAMAV}" = "true" ]; then
-  echo "content_filter = scan:127.0.0.1:10025" >> "${POSTFIX_MAINCF_FILE}"
-  echo "receive_override_options = no_address_mappings" >> "${POSTFIX_MAINCF_FILE}"
-fi
+# # Do we enable & configure ClamAV?
+# # See: http://www.postfix.org/FILTER_README.html
+# if [ "${ENABLE_CLAMAV}" = "true" ]; then
+#   echo "content_filter = scan:127.0.0.1:10025" >> "${POSTFIX_MAINCF_FILE}"
+#   echo "receive_override_options = no_address_mappings" >> "${POSTFIX_MAINCF_FILE}"
+# fi
 
 # ========== START postscreen config ==========
 

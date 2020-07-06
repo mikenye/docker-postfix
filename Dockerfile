@@ -6,7 +6,6 @@ ENV ENABLE_OPENDKIM="false" \
     CLAMAV_FRESHCLAMCONF_FILE="/usr/local/etc/freshclam.conf" \
     CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf" \
     CLAMAV_SIG_URL=https://www.clamav.net/downloads/production/clamav-0.102.3.tar.gz.sig \
-    CLAMSMTPD_CONF_FILE="/etc/clamsmtpd.conf" \
     POSTFIX_SIG_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz.gpg2 \
     POSTFIX_SOURCE_URL=http://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.5.3.tar.gz \
     POSTGREY_SOURCE_URL=http://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz \
@@ -14,6 +13,7 @@ ENV ENABLE_OPENDKIM="false" \
     POSTGREY_WHITELIST_URL=https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp
+    # CLAMSMTPD_CONF_FILE="/etc/clamsmtpd.conf" \
 
 SHELL ["/bin/bash", "-c"]
 
@@ -101,18 +101,15 @@ RUN set -x && \
         --shell=/usr/sbin/nologin \
         postgrey \
         && \    
-# Install clamsmtp - can't find the source for this
-# Running clamav-milter and clamsmtp im parallel to ensure they both operate identically...
-# Will remove one or the other after a few weeks of testing...
-# https://bugzilla.clamav.net/show_bug.cgi?id=12490.
-    mkdir -p /src/clamsmtp && \
-    pushd /src/clamsmtp && \
-    apt-get download clamsmtp && \
-    ar x *.deb && \
-    tar xf ./data.tar.xz && \
-    cp ./usr/sbin/clamsmtpd /usr/sbin/clamsmtpd && \
-    cp ./etc/clamsmtpd.conf /etc/clamsmtpd.conf.original && \
-    popd && \
+# # Install clamsmtp - can't find the source for this
+#     mkdir -p /src/clamsmtp && \
+#     pushd /src/clamsmtp && \
+#     apt-get download clamsmtp && \
+#     ar x *.deb && \
+#     tar xf ./data.tar.xz && \
+#     cp ./usr/sbin/clamsmtpd /usr/sbin/clamsmtpd && \
+#     cp ./etc/clamsmtpd.conf /etc/clamsmtpd.conf.original && \
+#     popd && \
     # Install postgrey
     mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
@@ -260,7 +257,7 @@ RUN set -x && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
-    clamsmtpd -v | grep -i version | tr -d '(' | tr -d ')' | sed "s/version //g" >> /VERSIONS && \
+    # clamsmtpd -v | grep -i version | tr -d '(' | tr -d ')' | sed "s/version //g" >> /VERSIONS && \
     postgrey --version >> /VERSIONS && \
     echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
     echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
