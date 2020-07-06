@@ -152,7 +152,7 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
     echo "    reject_unverified_recipient," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
-  echo "    permit" >> "${POSTFIX_MAINCF_FILE}"
+  echo "    defer" >> "${POSTFIX_MAINCF_FILE}"
 
 # ========== END smtpd_recipient_restrictions ==========
 
