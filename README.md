@@ -41,6 +41,13 @@ This container is still under development.
 | `POSTFIX_SMTPD_USE_TLS`            | <http://www.postfix.org/postconf.5.html#smtpd_use_tls> |
 | `POSTFIX_DNSBL_SITES`              | <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites> |
 | `POSTFIX_DNSBL_THRESHOLD`          | <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold> |
+| `ENABLE_LDAP_RECIPIENT_ACCESS`     | |
+| `POSTFIX_LDAP_SERVERS`             | |
+| `POSTFIX_LDAP_VERSION`             | |
+| `POSTFIX_LDAP_QUERY_FILTER`        | |
+| `POSTFIX_LDAP_SEARCH_BASE`         | |
+| `POSTFIX_LDAP_BIND_DN`             | |
+| `POSTFIX_LDAP_BIND_PW`             | |
 
 ### OpenDKIM Configuration
 

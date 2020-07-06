@@ -1,9 +1,12 @@
 FROM debian:stable-slim
 
-ENV ENABLE_OPENDKIM="false" \
-    CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
+ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     CLAMAV_FRESHCLAMCONF_FILE="/usr/local/etc/freshclam.conf" \
     CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf" \
+    ENABLE_OPENDKIM="false" \
+    POSTFIX_LDAP_QUERY_FILTER = "(&(|(objectclass=person)(objectclass=group))(proxyAddresses=smtp:%s))" \
+    POSTFIX_LDAP_VERSION = 3 \
+    POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE = "/etc/postfix/ldap_recipient_access.cf" \
     POSTGREY_SOURCE_URL=http://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz \
     POSTGREY_SYSTEM_WHITELIST_FILE=/opt/postgrey/postgrey_whitelist_clients \
     POSTGREY_WHITELIST_URL=https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients \

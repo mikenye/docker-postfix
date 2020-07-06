@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+echo "" > "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+
+if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
+  echo "domain = ${POSTFIX_RELAY_DOMAINS}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "server_host = ${POSTFIX_LDAP_SERVERS}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "version = ${POSTFIX_LDAP_VERSION}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "query_filter = ${POSTFIX_LDAP_QUERY_FILTER}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "search_base = ${POSTFIX_LDAP_SEARCH_BASE}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "bind = yes" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "bind_dn = ${POSTFIX_LDAP_BIND_DN}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "bind_pw = ${POSTFIX_LDAP_BIND_PW}" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "result_attribute = mail" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+  echo "result_format = OK" >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+fi
