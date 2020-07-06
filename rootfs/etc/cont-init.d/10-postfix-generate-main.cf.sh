@@ -149,10 +149,11 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
     echo "    check_recipient_access ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}," >> "${POSTFIX_MAINCF_FILE}"
-    echo "    reject_unverified_recipient," >> "${POSTFIX_MAINCF_FILE}"
-  fi
+    echo "    defer" >> "${POSTFIX_MAINCF_FILE}"
 
-  echo "    defer" >> "${POSTFIX_MAINCF_FILE}"
+  else
+    echo "    permit" >> "${POSTFIX_MAINCF_FILE}"
+  fi
 
 # ========== END smtpd_recipient_restrictions ==========
 
