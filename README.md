@@ -130,6 +130,12 @@ There should now be two files in your current directory, `<selector>.private` an
 
 As for a selector name, an example may be: “sales-201309-1024”. This example indicates that it belongs to the “sales” email stream, is intended to be rotated into active duty in September 2013 and references a 1024-bit key ([reference](https://www.m3aawg.org/sites/default/files/m3aawg-dkim-key-rotation-bp-2019-03.pdf)).
 
+## LDAP
+
+TODO: this section
+
+`postmap -q recipient@localdomain ldap:/etc/postfix/ldap_recipient_access.cf`
+
 ## Helper Commands
 
 These commands can be executed in the context of the container, for example:
