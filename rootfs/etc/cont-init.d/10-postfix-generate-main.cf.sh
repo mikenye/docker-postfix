@@ -147,6 +147,11 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
     echo "    check_policy_service inet:127.0.0.1:10023," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
+  if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
+    echo "    check_recipient_access ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}" >> "${POSTFIX_MAINCF_FILE}"
+    echo "    reject_unverified_recipient" >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
   echo "    permit" >> "${POSTFIX_MAINCF_FILE}"
 
 # ========== END smtpd_recipient_restrictions ==========
