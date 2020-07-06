@@ -6,6 +6,9 @@ echo "" > "${POSTFIX_MAINCF_FILE}"
 
 SMTPDMILTERS=""
 
+# http://www.postfix.org/postconf.5.html#enable_long_queue_ids
+echo "enable_long_queue_ids = yes" >> "${POSTFIX_MAINCF_FILE}"
+
 # Logging to stdout: http://www.postfix.org/MAILLOG_README.html
 echo "maillog_file = /dev/stdout" >> "${POSTFIX_MAINCF_FILE}"
 
