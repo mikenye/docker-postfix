@@ -19,8 +19,6 @@ mkdir -p /var/log/postgrey_whitelist_update
 chown nobody:nogroup /var/log/postgrey_whitelist_update
 mkdir -p /var/log/syslogd
 chown nobody:nogroup /var/log/syslogd
-mkdir -p /var/log/clamsmtpd
-chown nobody:nogroup /var/log/clamsmtpd
 
 # ClamAV
 mkdir -p /var/lib/clamav
@@ -64,14 +62,6 @@ mkdir -p /var/spool/postfix/saved
 chown -R postfix /var/spool/postfix/saved
 mkdir -p /var/spool/postfix/trace
 chown -R postfix /var/spool/postfix/trace
-
-# ClamSMTPD
-mkdir -p /var/spool/postfix/clamsmtp
-chown -R clamav:clamav /var/spool/postfix/clamsmtp
-mkdir -p /run/clamsmtpd
-chown -R clamav:clamav /run/clamsmtpd
-mkdir -p /tmp/clamsmtpd
-chown -R clamav:clamav /tmp/clamsmtpd
 
 # OpenDKIM
 mkdir -p /etc/mail/dkim

@@ -9,7 +9,6 @@ ENV ENABLE_OPENDKIM="false" \
     POSTGREY_WHITELIST_URL=https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp
-    # CLAMSMTPD_CONF_FILE="/etc/clamsmtpd.conf" \
 
 SHELL ["/bin/bash", "-c"]
 
@@ -97,15 +96,6 @@ RUN set -x && \
         --shell=/usr/sbin/nologin \
         postgrey \
         && \    
-# # Install clamsmtp - can't find the source for this
-#     mkdir -p /src/clamsmtp && \
-#     pushd /src/clamsmtp && \
-#     apt-get download clamsmtp && \
-#     ar x *.deb && \
-#     tar xf ./data.tar.xz && \
-#     cp ./usr/sbin/clamsmtpd /usr/sbin/clamsmtpd && \
-#     cp ./etc/clamsmtpd.conf /etc/clamsmtpd.conf.original && \
-#     popd && \
     # Install postgrey
     mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
@@ -228,7 +218,7 @@ RUN set -x && \
     popd && \
     # Install s6-overlay
     curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
-     # Clean up
+    # Clean up
     apt-get remove -y \
         2to3 \
         autoconf \
@@ -257,7 +247,7 @@ RUN set -x && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
-    # clamsmtpd -v | grep -i version | tr -d '(' | tr -d ')' | sed "s/version //g" >> /VERSIONS && \
+    # Document versions
     postgrey --version >> /VERSIONS && \
     echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
     echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \

@@ -188,13 +188,6 @@ if [ "$SMTPDMILTERS" != "" ]; then
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
-# # Do we enable & configure ClamAV?
-# # See: http://www.postfix.org/FILTER_README.html
-# if [ "${ENABLE_CLAMAV}" = "true" ]; then
-#   echo "content_filter = scan:127.0.0.1:10025" >> "${POSTFIX_MAINCF_FILE}"
-#   echo "receive_override_options = no_address_mappings" >> "${POSTFIX_MAINCF_FILE}"
-# fi
-
 # ========== START postscreen config ==========
 
 # http://www.postfix.org/postconf.5.html#message_size_limit
