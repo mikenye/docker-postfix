@@ -16,7 +16,6 @@ if [ -f "${HEADER_CHECKS_PCRE_FILE_LOCAL}" ]; then
   echo "" >> "${HEADER_CHECKS_PCRE_FILE}"
 fi
 
-# Run postmap
 # No need to run postmap over PCRE files
 
 # If postfix is running, update
