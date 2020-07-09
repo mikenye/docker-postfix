@@ -4,6 +4,8 @@ ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     CLAMAV_FRESHCLAMCONF_FILE="/usr/local/etc/freshclam.conf" \
     CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf" \
     ENABLE_OPENDKIM="false" \
+    POSTFIX_REJECT_INVALID_HELO_HOSTNAME="true" \
+    POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME="true" \
     POSTFIX_LDAP_DEBUG_LEVEL=0 \
     POSTFIX_LDAP_QUERY_FILTER="(&(|(objectclass=person)(objectclass=group))(proxyAddresses=smtp:%s))" \
     POSTFIX_LDAP_VERSION=3 \

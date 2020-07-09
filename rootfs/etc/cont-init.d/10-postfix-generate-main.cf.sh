@@ -113,9 +113,17 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
   echo "    check_helo_access hash:/etc/postfix/helo_access.hash," >> "${POSTFIX_MAINCF_FILE}"
   
-  echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
-  echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
-  echo "    reject_unknown_helo_hostname" >> "${POSTFIX_MAINCF_FILE}"
+  if [ "${POSTFIX_REJECT_INVALID_HELO_HOSTNAME}" = "true" ]; then
+    echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME}" = "true" ]; then
+    echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${POSTFIX_REJECT_UNKNOWN_HELO_HOSTNAME}" = "true" ]; then
+    echo "    reject_unknown_helo_hostname" >> "${POSTFIX_MAINCF_FILE}"
+  fi
 
 # ========== END smtpd_helo_restrictions ==========
 
@@ -208,9 +216,7 @@ fi
 
 # Write milters
 if [ "$SMTPDMILTERS" != "" ]; then
-  # Troubleshooting
   echo "milter_command_timeout = 300s" >> "${POSTFIX_MAINCF_FILE}"
-  
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
 

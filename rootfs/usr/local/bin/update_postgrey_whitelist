@@ -14,4 +14,7 @@ if [ "${ENABLE_POSTGREY}" = "true" ]; then
   # Move downloaded file to final location
   mv "/tmp/postgrey_whitelist_client.new" "${POSTGREY_SYSTEM_WHITELIST_FILE}"
 
+  # Tell postgrey to reload the whitelist
+  pkill -HUP postgrey
+
 fi
