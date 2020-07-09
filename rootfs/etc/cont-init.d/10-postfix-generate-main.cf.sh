@@ -6,6 +6,9 @@ echo "" > "${POSTFIX_MAINCF_FILE}"
 
 SMTPDMILTERS=""
 
+# http://www.postfix.org/postconf.5.html#enable_long_queue_ids
+echo "enable_long_queue_ids = yes" >> "${POSTFIX_MAINCF_FILE}"
+
 # Logging to stdout: http://www.postfix.org/MAILLOG_README.html
 echo "maillog_file = /dev/stdout" >> "${POSTFIX_MAINCF_FILE}"
 
@@ -14,6 +17,11 @@ echo "compatibility_level = 2" >> "${POSTFIX_MAINCF_FILE}"
 
 # http://www.postfix.org/postconf.5.html#alias_maps
 echo "alias_maps = hash:/etc/aliases" >> "${POSTFIX_MAINCF_FILE}"
+
+# http://www.postfix.org/SMTPUTF8_README.html
+if [ "${POSTFIX_SMTPUTF8_ENABLE}" = "true" ]; then
+  echo "smtputf8_enable = yes" >> "${POSTFIX_MAINCF_FILE}"
+fi
 
 # http://www.postfix.org/postconf.5.html#myorigin
 if [ ! -z "${POSTFIX_MYORIGIN}" ]; then
@@ -87,7 +95,7 @@ fi
 
 # http://www.postfix.org/postconf.5.html#relayhost
 if [ ! -z "${POSTFIX_RELAYHOST}" ]; then
-  echo "relayhost = ${POSTFIX_RELAYHOST}" >> "${POSTFIX_MAINCF_FILE}"
+  echo "relayhost = ${POSTFIX_RELAYHOST}:${POSTFIX_RELAYHOST_PORT}" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
 # http://www.postfix.org/postconf.5.html#relay_domains
@@ -99,9 +107,7 @@ echo "disable_vrfy_command = yes" >> "${POSTFIX_MAINCF_FILE}"
 
 echo "smtpd_hard_error_limit = 1" >> "${POSTFIX_MAINCF_FILE}"
 
-if [ "${POSTFIX_HEADER_CHECKS}" = "true" ]; then
-  echo "header_checks = pcre:/etc/postfix/tables/header_checks" >> "${POSTFIX_MAINCF_FILE}"
-fi
+echo "header_checks = pcre:/etc/postfix/header_checks.pcre" >> "${POSTFIX_MAINCF_FILE}"
 
 # ========== START smtpd_helo_restrictions ==========
 
@@ -110,14 +116,19 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
   echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
 
-  if [ "${POSTFIX_SMTPD_HELO_RESTRICTIONS_CHECK_HELO_ACCESS}" = "true" ]; then
-    postmap /etc/postfix/tables/helo_access
-    echo "    check_helo_access hash:/etc/postfix/tables/helo_access," >> "${POSTFIX_MAINCF_FILE}"
-  fi    
+  echo "    check_helo_access hash:/etc/postfix/helo_access.hash," >> "${POSTFIX_MAINCF_FILE}"
   
-  echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
-  echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
-  echo "    reject_unknown_helo_hostname" >> "${POSTFIX_MAINCF_FILE}"
+  if [ "${POSTFIX_REJECT_INVALID_HELO_HOSTNAME}" = "true" ]; then
+    echo "    reject_invalid_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME}" = "true" ]; then
+    echo "    reject_non_fqdn_helo_hostname," >> "${POSTFIX_MAINCF_FILE}"
+  fi
+
+  if [ "${POSTFIX_REJECT_UNKNOWN_HELO_HOSTNAME}" = "true" ]; then
+    echo "    reject_unknown_helo_hostname" >> "${POSTFIX_MAINCF_FILE}"
+  fi
 
 # ========== END smtpd_helo_restrictions ==========
 
@@ -126,14 +137,18 @@ echo "smtpd_helo_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
 
+  echo "    check_client_access cidr:/etc/postfix/client_access.cidr," >> "${POSTFIX_MAINCF_FILE}"
+
   if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED}" = "true" ]; then
     echo "    permit_sasl_authenticated," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
+    echo "    check_sender_access hash:/etc/postfix/sender_access.hash," >> "${POSTFIX_MAINCF_FILE}"
+
   echo "    reject_unauth_destination," >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${ENABLE_SPF}" = "true" ]; then
-    echo "   check_policy_service unix:private/policy," >> "${POSTFIX_MAINCF_FILE}"
+    echo "    check_policy_service unix:private/policy," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
   echo "    reject_non_fqdn_recipient," >> "${POSTFIX_MAINCF_FILE}"
@@ -141,32 +156,37 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_sender_domain," >> "${POSTFIX_MAINCF_FILE}"
   echo "    reject_unknown_recipient_domain," >> "${POSTFIX_MAINCF_FILE}"
 
-  if [ "${POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_CHECK_SENDER_ACCESS}" = "true" ]; then
-    postmap /etc/postfix/tables/sender_access
-    echo "    check_sender_access hash:/etc/postfix/tables/sender_access," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
-  if [ "${ENABLE_RBL_HOSTKARMA_JUNKEMAILFILTER}" = "true" ]; then
-    echo "    reject_rbl_client hostkarma.junkemailfilter.com=127.0.0.2," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
-  if [ "${ENABLE_RBL_SPAMCOP}" = "true" ]; then
-    echo "    reject_rbl_client bl.spamcop.net," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
-  if [ "${ENABLE_RBL_CBL_ABUSEAT}" = "true" ]; then
-    echo "    reject_rbl_client cbl.abuseat.org=127.0.0.2," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
-  if [ "${ENABLE_RBL_SPAMHAUS_ZEN}" = "true" ]; then
-    echo "    reject_rbl_client zen.spamhaus.org," >> "${POSTFIX_MAINCF_FILE}"
-  fi
-
   if [ "${ENABLE_POSTGREY}" = "true" ]; then
     echo "    check_policy_service inet:127.0.0.1:10023," >> "${POSTFIX_MAINCF_FILE}"
   fi
 
-  echo "    permit" >> "${POSTFIX_MAINCF_FILE}"
+  CHECK_RECIPIENT_ACCESS=""
+
+  # If ENABLE_LDAP_RECIPIENT_ACCESS, then add ldap to check_recipient_access
+  if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
+    if [ "$CHECK_RECIPIENT_ACCESS" = "" ]; then
+      CHECK_RECIPIENT_ACCESS="ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+    else
+      CHECK_RECIPIENT_ACCESS="$CHECK_RECIPIENT_ACCESS, ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+    fi
+  fi
+
+  # If local recipient_access.hash file exists, add to check_recipient_access 
+  if [ -f "/etc/postfix/tables/recipient_access.hash" ]; then
+    if [ "$CHECK_RECIPIENT_ACCESS" = "" ]; then
+      CHECK_RECIPIENT_ACCESS="hash:/etc/postfix/recipient_access.hash"
+    else
+      CHECK_RECIPIENT_ACCESS="$CHECK_RECIPIENT_ACCESS, hash:/etc/postfix/recipient_access.hash"
+    fi
+  fi
+
+  if [ "${CHECK_RECIPIENT_ACCESS}" != "" ]; then
+    echo "    check_recipient_access ${CHECK_RECIPIENT_ACCESS}," >> "${POSTFIX_MAINCF_FILE}"
+    echo "    defer" >> "${POSTFIX_MAINCF_FILE}"
+
+  else
+    echo "    permit" >> "${POSTFIX_MAINCF_FILE}"
+  fi
 
 # ========== END smtpd_recipient_restrictions ==========
 
@@ -201,10 +221,44 @@ fi
 
 # Write milters
 if [ "$SMTPDMILTERS" != "" ]; then
+  echo "milter_command_timeout = 300s" >> "${POSTFIX_MAINCF_FILE}"
   echo "smtpd_milters = $SMTPDMILTERS" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# ========== START postscreen config ==========
 
 # http://www.postfix.org/postconf.5.html#message_size_limit
 if [ ! -z "${POSTFIX_MESSAGE_SIZE_LIMIT}" ]; then
   echo "message_size_limit = ${POSTFIX_MESSAGE_SIZE_LIMIT}" >> "${POSTFIX_MAINCF_FILE}"
 fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_access_list
+echo "postscreen_access_list = " >> "${POSTFIX_MAINCF_FILE}"
+  echo "    permit_mynetworks," >> "${POSTFIX_MAINCF_FILE}"
+  echo "    cidr:/etc/postfix/postscreen_access.cidr" >> "${POSTFIX_MAINCF_FILE}"
+
+# http://www.postfix.org/postconf.5.html#postscreen_blacklist_action
+# TODO - once postscreen confirmed working properly, change to drop
+echo "postscreen_blacklist_action = ignore" >> "${POSTFIX_MAINCF_FILE}"
+
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites
+if [ ! -z "${POSTFIX_DNSBL_SITES}" ]; then
+  echo "postscreen_dnsbl_sites = ${POSTFIX_DNSBL_SITES}" >> "${POSTFIX_MAINCF_FILE}"
+  echo "postscreen_dnsbl_action = drop" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold
+if [ ! -z "${POSTFIX_DNSBL_THRESHOLD}" ]; then
+  echo "postscreen_dnsbl_threshold = ${POSTFIX_DNSBL_THRESHOLD}" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_reply_map
+if [ -f "/etc/postfix/tables/dnsbl_reply.texthash" ]; then
+  echo "postscreen_dnsbl_reply_map = texthash:/etc/postfix/dnsbl_reply.texthash" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
+# http://www.postfix.org/postconf.5.html#postscreen_greet_action
+# TODO - once postscreen confirmed working properly, change to drop
+echo "postscreen_greet_action = drop" >> "${POSTFIX_MAINCF_FILE}"
+
+# ========== END postscreen config ==========

@@ -3,20 +3,29 @@
 
 set -eo pipefail
 
+# Wait for clamd & clamav-milter
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
-    bash /wait_for_clamav_milter.sh | awk -W Interactive '{print "[startup] " $0}'
+    s6-svwait -U /run/s6/services/clamd /run/s6/services/clamav-milter
 fi
 
+# Wait for opendkim
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
-    bash /wait_for_opendkim_milter.sh | awk -W Interactive '{print "[startup] " $0}'
+    s6-svwait -U /run/s6/services/opendkim
 fi
 
+# Wait for postgrey
 if [ "${ENABLE_POSTGREY}" = "true" ]; then
-    bash /wait_for_postgrey.sh | awk -W Interactive '{print "[startup] " $0}'
+    s6-svwait -U /run/s6/services/postgrey
 fi
 
-echo "Dependent processes are ready, starting postfix..." | awk -W Interactive '{print "[startup] " $0}'
+# Wait for syslog
+s6-svwait -U /run/s6/services/syslogd
 
-exec \
-    /usr/sbin/postfix start-fg \
-    2>&1 | awk -W Interactive '{print "[postfix] " $0}'
+# Start
+s6-notifyoncheck \
+        -s 1000 \
+        -t 1000 \
+        -n 0 \
+        -c "/usr/local/bin/check_postfix.sh" \
+        /usr/sbin/postfix start-fg \
+        2>&1 | awk -W Interactive '{print "[postfix] " $0}'

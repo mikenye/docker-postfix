@@ -4,10 +4,16 @@ set -eo pipefail
 
 # Do we run clamd?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
-    /usr/local/sbin/clamd \
-        --foreground 2>&1 \
-    | awk -W Interactive '{print "[clamd] " $0}'
+    s6-notifyoncheck \
+        -s 1000 \
+        -t 1000 \
+        -n 0 \
+        -c "/usr/local/bin/check_clamd.sh" \
+        /usr/local/sbin/clamd \
+            --config-file="${CLAMAV_CLAMDCONF_FILE}" \
+            --foreground 2>&1 \
+            | awk -W Interactive '{print "[clamd] " $0}'
 else
-    sleep 3600
+    sleep 86400
     exit 0
 fi

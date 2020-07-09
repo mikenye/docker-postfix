@@ -5,12 +5,21 @@ set -eo pipefail
 
 # Do we run opendkim?
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
-    /usr/sbin/opendkim \
-      -f \
-      -x /etc/opendkim.conf \
-      2>&1 | awk -W Interactive '{print "[opendkim] " $0}'
+
+    # Wait for syslog to start
+    s6-svwait -U /run/s6/services/syslogd
+
+    s6-notifyoncheck \
+        -s 1000 \
+        -t 1000 \
+        -n 0 \
+        -c "/usr/local/bin/check_opendkim.sh" \
+        /usr/sbin/opendkim \
+            -f \
+            -x /etc/opendkim.conf \
+            2>&1 | awk -W Interactive '{print "[opendkim] " $0}'
 else
-    sleep 3600
+    sleep 86400
     exit 0
 fi
 

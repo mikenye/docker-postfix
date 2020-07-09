@@ -1,8 +1,6 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
-CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf"
-
 echo "" > "${CLAMAV_MILTERCONF_FILE}"
 
 echo "MilterSocket inet:7357@localhost" >> "${CLAMAV_MILTERCONF_FILE}"
@@ -21,6 +19,8 @@ fi
 
 echo "LogSyslog no" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "LogRotate no" >> "${CLAMAV_MILTERCONF_FILE}"
-echo "LogClean Basic" >> "${CLAMAV_MILTERCONF_FILE}"
-echo "LogInfected Basic" >> "${CLAMAV_MILTERCONF_FILE}"
 echo "SupportMultipleRecipients yes" >> "${CLAMAV_MILTERCONF_FILE}"
+
+echo "ReadTimeout 300" >> "${CLAMAV_MILTERCONF_FILE}"
+echo "LogClean Basic" >> "${CLAMAV_MILTERCONF_FILE}"
+echo "LogInfected Full" >> "${CLAMAV_MILTERCONF_FILE}"

@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+set -eo pipefail
+
+# Do we run freshclam?
+if [ "${ENABLE_POSTGREY}" = "true" ]; then
+
+    # Run daily
+    sleep 86400
+
+    # Random sleep for up to an hour
+    sleep $[ ( $RANDOM % 3600 )  + 1 ]s
+
+    /usr/local/bin/update_postgrey_whitelist | awk -W Interactive '{print "[postgrey_whitelist_update] " $0}'
+    exit $?
+else
+    sleep 86400
+    exit 0
+fi

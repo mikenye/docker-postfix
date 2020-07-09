@@ -4,12 +4,17 @@ set -eo pipefail
 
 # Do we run freshclam?
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
+
+    # Random sleep for up to an hour
+    sleep $[ ( $RANDOM % 3600 )  + 1 ]s
+
     freshclam \
+        --config-file="${CLAMAV_FRESHCLAMCONF_FILE}" \
         --stdout \
         --foreground \
         --daemon \
         | awk -W Interactive '{print "[freshclam] " $0}'
 else
-    sleep 3600
+    sleep 86400
     exit 0
 fi
