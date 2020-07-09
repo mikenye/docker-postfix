@@ -31,6 +31,7 @@ This container is still under development.
 | `POSTFIX_PROXY_INTERFACES`         | <http://www.postfix.org/postconf.5.html#proxy_interfaces> |
 | `POSTFIX_RELAY_DOMAINS`            | <http://www.postfix.org/postconf.5.html#relay_domains> |
 | `POSTFIX_RELAYHOST`                | <http://www.postfix.org/postconf.5.html#relayhost> |
+| `POSTFIX_RELAYHOST_PORT`           | Optional port argument for `POSTFIX_RELAYHOST`. Default is `25` so only need to change if you're `relayhost` is running on a different port. |
 | `POSTFIX_SMTP_TLS_CHAIN_FILES`     | <http://www.postfix.org/postconf.5.html#smtp_tls_chain_files> |
 | `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. <http://www.postfix.org/postconf.5.html#permit_sasl_authenticated> |
 | `POSTFIX_SMTPD_TLS_CERT_FILE`      | <http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file> |

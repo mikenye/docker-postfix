@@ -90,7 +90,7 @@ fi
 
 # http://www.postfix.org/postconf.5.html#relayhost
 if [ ! -z "${POSTFIX_RELAYHOST}" ]; then
-  echo "relayhost = ${POSTFIX_RELAYHOST}" >> "${POSTFIX_MAINCF_FILE}"
+  echo "relayhost = ${POSTFIX_RELAYHOST}:${POSTFIX_RELAYHOST_PORT}" >> "${POSTFIX_MAINCF_FILE}"
 fi
 
 # http://www.postfix.org/postconf.5.html#relay_domains

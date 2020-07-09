@@ -8,6 +8,7 @@ ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     POSTFIX_LDAP_QUERY_FILTER="(&(|(objectclass=person)(objectclass=group))(proxyAddresses=smtp:%s))" \
     POSTFIX_LDAP_VERSION=3 \
     POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE="/etc/postfix/ldap_recipient_access.cf" \
+    POSTFIX_RELAYHOST_PORT=25 \
     POSTGREY_SOURCE_URL=http://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz \
     POSTGREY_SYSTEM_WHITELIST_FILE=/opt/postgrey/postgrey_whitelist_clients \
     POSTGREY_WHITELIST_URL=https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients \
