@@ -274,7 +274,7 @@ volumes:
 | `POSTFIX_SMTPD_USE_TLS`            | <http://www.postfix.org/postconf.5.html#smtpd_use_tls> |
 | `POSTFIX_SMTPUTF8_ENABLE`          | <http://www.postfix.org/SMTPUTF8_README.html> |
 
-#### LDAP Recipient Verification
+### LDAP Recipient Verification
 
 See "LDAP" section below.
 
