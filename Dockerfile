@@ -190,8 +190,7 @@ RUN set -x && \
       pie=yes \
       shared=yes \
       dynamicmaps=yes \
-      CCARGS="-DNO_EAI \
-              -DUSE_TLS \
+      CCARGS="-DUSE_TLS \
               -DHAS_PCRE $(pcre-config --cflags) \
               -DHAS_LDAP \
               -I/usr/include/sasl \
