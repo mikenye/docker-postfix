@@ -204,6 +204,32 @@ services:
       - "logs_in:/var/log:rw"
 ```
 
+It is recommended to make your volume mounts somewhere you can access them, so you can edit files, load certificates, view logs easily, etc.
+
+For example, you could map through to a known local path:
+
+```yaml
+volumes:
+  queue_out:
+    driver: local
+      type: 'none'
+      o: 'bind'
+      device: '/opt/mail/queue_out'
+...
+```
+
+...or, another example useing NFS to a filer/server, eg:
+
+```yaml
+volumes:
+  queue_out:
+    driver: local
+      type: nfs
+      o: addr=1.2.3.4,rw
+      device: ":/vol/mail/queue_out"
+...
+```
+
 ## Environment Variables
 
 ### Container configuration
