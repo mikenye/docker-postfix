@@ -53,7 +53,7 @@ In this deployment recipe, two containers (`mail_in` and `mail_out`) are created
 `mail_in` is designed to sit between the internet and a local legacy Exchange server. It handles inbound email, and provides the following:
 
 * Uses `postscreen` to ensure the sending MTA is standards compliant
-* Uses [DNSBL](https://en.wikipedia.org/wiki/Domain_Name_System-based_Blackhole_List)s as an initial anti-spam measure
+* Uses DNSBLs as an initial anti-spam measure
 * Provides up-to-date TLS for incoming clients
 * Performs greylisting as another anti-spam measure
 * Performs SPF & DKIM verification
