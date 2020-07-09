@@ -366,7 +366,7 @@ The system aliases file maps `postmaster`, `root`, `postfix` and `clamav` throug
 | `/etc/postfix/local_aliases` | `rw` | A file named `aliases` can be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. Map if you need to add entries to `/etc/aliases`. |
 | `/etc/postfix/certs` | `ro` | Postfix TLS chain files should be placed in here. Map if using SSL. |
 | `/etc/postgrey` | `ro` | Postgrey local whitelists should be placed in here. Map if using postgrey. |
-| `/etc/postfix/tables` | `ro` | Postfix's tables should be placed in here. Map if you need to use any of the **Supported table files** listed above. |
+| `/etc/postfix/tables` | `ro` | Postfix's tables should be placed in here. Map if you need to use any of the **Postfix Table Files** listed above. |
 | `/etc/mail/dkim` | `rw` | DKIM private keys (and `KeyTable`/`SigningTable` files if used) to be placed here. |
 
 
