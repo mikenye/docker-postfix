@@ -19,6 +19,14 @@ Apart from basic email relaying, the container can optionally:
 
 The container is fully configured via environment variables - each service's configuration files built from environment variables on container start. It also supports some configuration files via volume mappings.
 
+Currently supported docker architectures are `linux/386`, `linux/amd64`, `linux/arm/v7` and `linux/arm64`.
+
+---
+
+**Please note - docker hub cuts off this readme as it is quite long. To view the full readme [click here](https://github.com/mikenye/docker-postfix/blob/master/README.md).**
+
+---
+
 ## Services
 
 This container implement's the excellent [s6-overlay](https://github.com/just-containers/s6-overlay) for process supervision (and a bunch of other handy stuff).
