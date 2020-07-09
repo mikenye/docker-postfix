@@ -38,7 +38,7 @@ This container implement's the excellent [s6-overlay](https://github.com/just-co
 
 ### Wrap a Local Exchange Server
 
-![Wrapping an Exchange Server](deployment_recipe_wrap_exchange.png)
+![Wrapping an Exchange Server](https://github.com/mikenye/docker-postfix/blob/dev/deployment_recipe_wrap_exchange.png?raw=true)
 
 In this deployment recipe, two containers (`mail_in` and `mail_out`) are created.
 
