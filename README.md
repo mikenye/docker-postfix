@@ -416,7 +416,7 @@ With LDAP-based recipient verification:
 * If LDAP finds an email address in your directory, the message will be accepted.
 * If LDAP does not find an email address in your directory, the message will be deferred (status code 450).
 
-This is usually a good idea, because it saves resources on your internal mail server. For example, a client runs MS Exchange & Kaspersky Security for Mail Server. Kaspersky scans all mail that hits the Exchange server, regardless of whether or not there is a recipient for the email. This means that if mail is sent to a non-existent address, you have the overhead of:
+This is usually a good idea, because it saves resources on your internal mail server. For example, a client runs MS Exchange & Kaspersky Security for Mail Server. Kaspersky scans all mail that hits the Exchange server, regardless of whether or not there is a valid recipient for the email. This means that if mail is sent to a non-existent address, you have the overhead of:
 
 * The postfix container processing & scanning the email
 * Kaspersky scanning the email
