@@ -216,6 +216,7 @@ services:
 |------------------------------------|-------------------------------------------------------------------------|
 | `POSTFIX_DNSBL_SITES`              | <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites> |
 | `POSTFIX_DNSBL_THRESHOLD`          | <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold> |
+| `POSTFIX_SMTPUTF8_ENABLE`          | <http://www.postfix.org/SMTPUTF8_README.html> |
 | `POSTFIX_INET_PROTOCOLS`           | <http://www.postfix.org/postconf.5.html#inet_protocols> |
 | `POSTFIX_MAIL_NAME`                | <http://www.postfix.org/postconf.5.html#mail_name> |
 | `POSTFIX_MESSAGE_SIZE_LIMIT` | <http://www.postfix.org/postconf.5.html#message_size_limit> |

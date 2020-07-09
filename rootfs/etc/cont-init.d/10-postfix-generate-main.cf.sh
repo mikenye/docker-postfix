@@ -18,6 +18,11 @@ echo "compatibility_level = 2" >> "${POSTFIX_MAINCF_FILE}"
 # http://www.postfix.org/postconf.5.html#alias_maps
 echo "alias_maps = hash:/etc/aliases" >> "${POSTFIX_MAINCF_FILE}"
 
+# http://www.postfix.org/SMTPUTF8_README.html
+if [ "${POSTFIX_SMTPUTF8_ENABLE}" = "true" ]; then
+  echo "smtputf8_enable = yes" >> "${POSTFIX_MAINCF_FILE}"
+fi
+
 # http://www.postfix.org/postconf.5.html#myorigin
 if [ ! -z "${POSTFIX_MYORIGIN}" ]; then
   echo "myorigin = ${POSTFIX_MYORIGIN}" >> "${POSTFIX_MAINCF_FILE}"

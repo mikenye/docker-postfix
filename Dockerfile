@@ -38,6 +38,7 @@ RUN set -x && \
         libbz2-dev \
         libcurl4-openssl-dev \
         libdb5.3-dev \
+        libicu-dev \
         libjson-c3 \
         libjson-c-dev \
         libldap2-dev \
@@ -189,7 +190,8 @@ RUN set -x && \
       pie=yes \
       shared=yes \
       dynamicmaps=yes \
-      CCARGS="-DUSE_TLS \
+      CCARGS="-DNO_EAI \
+              -DUSE_TLS \
               -DHAS_PCRE $(pcre-config --cflags) \
               -DHAS_LDAP \
               -I/usr/include/sasl \
@@ -249,6 +251,7 @@ RUN set -x && \
         libbz2-dev \
         libcurl4-openssl-dev \
         libdb5.3-dev \
+        libicu-dev \
         libjson-c-dev \
         libldap2-dev \
         libmilter-dev \
