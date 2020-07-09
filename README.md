@@ -68,7 +68,7 @@ From a networking perspective:
 
 An example `docker-compose.yml` file is follows:
 
-```
+```yaml
 version: '3.8'
 
 volumes:
