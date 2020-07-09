@@ -62,7 +62,7 @@ In this deployment recipe, two containers (`mail_in` and `mail_out`) are created
 * Scans the email for viruses with ClamAV
 * Forwards the email to the legacy Exchange server
 
-`mail_out` is designed to site between the local legacy Exchange server and the internet. It handles outbound email, and provides the following:
+`mail_out` is designed to sit between the local legacy Exchange server and the internet. It handles outbound email, and provides the following:
 
 * Provides up-to-date TLS for talking to external MTAs
 * Performs DKIM signing
