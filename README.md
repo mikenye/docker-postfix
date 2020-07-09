@@ -53,7 +53,7 @@ In this deployment recipe, two containers (`mail_in` and `mail_out`) are created
 `mail_in` is designed to sit between the internet and a local legacy Exchange server. It handles inbound email, and provides the following:
 
 * Uses `postscreen` to ensure the sending MTA is standards compliant
-* Uses [DNSBL](https://en.wikipedia.org/wiki/Domain_Name_System-based_Blackhole_List)s as an initial anti-spam measure
+* Uses DNSBLs as an initial anti-spam measure
 * Provides up-to-date TLS for incoming clients
 * Performs greylisting as another anti-spam measure
 * Performs SPF & DKIM verification
@@ -62,7 +62,7 @@ In this deployment recipe, two containers (`mail_in` and `mail_out`) are created
 * Scans the email for viruses with ClamAV
 * Forwards the email to the legacy Exchange server
 
-`mail_out` is designed to site between the local legacy Exchange server and the internet. It handles outbound email, and provides the following:
+`mail_out` is designed to sit between the local legacy Exchange server and the internet. It handles outbound email, and provides the following:
 
 * Provides up-to-date TLS for talking to external MTAs
 * Performs DKIM signing
@@ -71,8 +71,8 @@ In this deployment recipe, two containers (`mail_in` and `mail_out`) are created
 
 From a networking perspective:
 
-* The site's internet router is configured to NAT incoming connections on TCP port 25 through to the docker host running `mail_in` on port 2525.
-* The site's Exchange server is configured to send email (via "smart host") to the docker host.
+* The site's internet router is configured to NAT incoming connections on TCP port 25 through to the docker host running `mail_in` on port TCP 2525.
+* The site's Exchange server is configured to send email (via "smart host") to the docker host (which is hard-coded to TCP port 25)
 
 An example `docker-compose.yml` file is follows:
 
@@ -204,6 +204,32 @@ services:
       - "logs_in:/var/log:rw"
 ```
 
+It is recommended to make your volume mounts somewhere you can access them, so you can edit files, load certificates, view logs easily, etc.
+
+For example, you could map through to a known local path:
+
+```yaml
+volumes:
+  queue_out:
+    driver: local
+      type: 'none'
+      o: 'bind'
+      device: '/opt/mail/queue_out'
+...
+```
+
+...or, another example useing NFS to a filer/server, eg:
+
+```yaml
+volumes:
+  queue_out:
+    driver: local
+      type: nfs
+      o: addr=1.2.3.4,rw
+      device: ":/vol/mail/queue_out"
+...
+```
+
 ## Environment Variables
 
 ### Container configuration
@@ -248,9 +274,11 @@ services:
 | `POSTFIX_SMTPD_USE_TLS`            | <http://www.postfix.org/postconf.5.html#smtpd_use_tls> |
 | `POSTFIX_SMTPUTF8_ENABLE`          | <http://www.postfix.org/SMTPUTF8_README.html> |
 
-#### LDAP Recipient Verification
+### LDAP Recipient Verification
 
 See "LDAP" section below.
+
+If `ENABLE_LDAP_RECIPIENT_ACCESS` is enabled, the final `smtpd_recipient_restrictions` action becomes `defer` (from the default of `permit`).
 
 | Environment Variable               | Documentation Link                                                      |
 |------------------------------------|-------------------------------------------------------------------------|
@@ -300,7 +328,7 @@ If using postfix table files, it is recommened to place all files into a single 
 | `/etc/postfix/tables/helo_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_helo_access`](http://www.postfix.org/postconf.5.html#check_helo_access). | Run helper command `update_helo_access` (see below) |
 | `/etc/postfix/tables/postscreen_access.cidr` | [cidr](http://www.postfix.org/cidr_table.5.html) | It is automatically added to postfix's ['postscreen_access_list'](http://www.postfix.org/postconf.5.html#postscreen_access_list) (after [`permit_mynetworks`](http://www.postfix.org/postconf.5.html#permit_mynetworks)). | Run helper command `update_postscreen_access` (see below) |
 | `/etc/postfix/tables/sender_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_sender_access`](http://www.postfix.org/postconf.5.html#check_sender_access). | Run helper command `update_sender_access` (see below) |
-| `/etc/postfix/tables/recipient_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_recipient_access`](http://www.postfix.org/postconf.5.html#check_recipient_access). | Run helper command `check_recipient_access` (see below) |
+| `/etc/postfix/tables/recipient_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_recipient_access`](http://www.postfix.org/postconf.5.html#check_recipient_access), and the final `smtpd_recipient_restrictions` action becomes `defer` (from the default of `permit`).  | Run helper command `check_recipient_access` (see below) |
 
 ### Postgrey whitelist files
 
@@ -335,10 +363,10 @@ The system aliases file maps `postmaster`, `root`, `postfix` and `clamav` throug
 | Path | Access | Detail |
 |------|--------|--------|
 | `/var/lib/clamav` | `rw` | ClamAV anti-virus database. Map if using ClamAV. |
-| `/etc/postfix/local_aliases` | `rw` | A file named `aliases` should be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. Map if you need to add entries to `/etc/aliases`. |
+| `/etc/postfix/local_aliases` | `rw` | A file named `aliases` can be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. Map if you need to add entries to `/etc/aliases`. |
 | `/etc/postfix/certs` | `ro` | Postfix TLS chain files should be placed in here. Map if using SSL. |
 | `/etc/postgrey` | `ro` | Postgrey local whitelists should be placed in here. Map if using postgrey. |
-| `/etc/postfix/tables` | `ro` | Postfix's tables should be placed in here. Map if you need to use any of the **Supported table files** listed above. |
+| `/etc/postfix/tables` | `ro` | Postfix's tables should be placed in here. Map if you need to use any of the **Postfix Table Files** listed above. |
 | `/etc/mail/dkim` | `rw` | DKIM private keys (and `KeyTable`/`SigningTable` files if used) to be placed here. |
 
 
@@ -388,7 +416,7 @@ With LDAP-based recipient verification:
 * If LDAP finds an email address in your directory, the message will be accepted.
 * If LDAP does not find an email address in your directory, the message will be deferred (status code 450).
 
-This is usually a good idea, because it saves resources on your internal mail server. For example, a client runs MS Exchange & Kaspersky Security for Mail Server. Kaspersky scans all mail that hits the Exchange server, regardless of whether or not there is a recipient for the email. This means that if mail is sent to a non-existent address, you have the overhead of:
+This is usually a good idea, because it saves resources on your internal mail server. For example, a client runs MS Exchange & Kaspersky Security for Mail Server. Kaspersky scans all mail that hits the Exchange server, regardless of whether or not there is a valid recipient for the email. This means that if mail is sent to a non-existent address, you have the overhead of:
 
 * The postfix container processing & scanning the email
 * Kaspersky scanning the email
