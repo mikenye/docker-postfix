@@ -71,8 +71,8 @@ In this deployment recipe, two containers (`mail_in` and `mail_out`) are created
 
 From a networking perspective:
 
-* The site's internet router is configured to NAT incoming connections on TCP port 25 through to the docker host running `mail_in` on port 2525.
-* The site's Exchange server is configured to send email (via "smart host") to the docker host.
+* The site's internet router is configured to NAT incoming connections on TCP port 25 through to the docker host running `mail_in` on port TCP 2525.
+* The site's Exchange server is configured to send email (via "smart host") to the docker host (which is hard-coded to TCP port 25)
 
 An example `docker-compose.yml` file is follows:
 
