@@ -327,6 +327,7 @@ If using postfix table files, it is recommened to place all files into a single 
 | `/etc/postfix/tables/dnsbl_reply.texthash` | [texthash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`postscreen_dnsbl_reply_map`](http://www.postfix.org/postconf.5.html#postscreen_dnsbl_reply_map). | Run helper command `update_dnsbl_reply` (see below) |
 | `/etc/postfix/tables/header_checks.pcre` | [pcre](http://www.postfix.org/pcre_table.5.html) | It is automatically added to postfix's [`header_checks`](http://www.postfix.org/postconf.5.html#header_checks). | Run helper command `update_header_checks` (see below) |
 | `/etc/postfix/tables/helo_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_helo_access`](http://www.postfix.org/postconf.5.html#check_helo_access). | Run helper command `update_helo_access` (see below) |
+| `/etc/postfix/tables/milter_header_checks.pcre` | [pcre](http://www.postfix.org/pcre_table.5.html) | It is automatically added to postfix's [`milter_header_checks`](http://www.postfix.org/postconf.5.html#milter_header_checks). | Run helper command `update_milter_header_checks` (see below) |
 | `/etc/postfix/tables/postscreen_access.cidr` | [cidr](http://www.postfix.org/cidr_table.5.html) | It is automatically added to postfix's ['postscreen_access_list'](http://www.postfix.org/postconf.5.html#postscreen_access_list) (after [`permit_mynetworks`](http://www.postfix.org/postconf.5.html#permit_mynetworks)). | Run helper command `update_postscreen_access` (see below) |
 | `/etc/postfix/tables/sender_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_sender_access`](http://www.postfix.org/postconf.5.html#check_sender_access). | Run helper command `update_sender_access` (see below) |
 | `/etc/postfix/tables/recipient_access.hash` | [hash](http://www.postfix.org/DATABASE_README.html#types) | It is automatically added to postfix's [`check_recipient_access`](http://www.postfix.org/postconf.5.html#check_recipient_access), and the final `smtpd_recipient_restrictions` action becomes `defer` (from the default of `permit`).  | Run helper command `check_recipient_access` (see below) |
@@ -456,6 +457,7 @@ If you edit one of postfix's table files, you must run the appropriate helper co
 | `update_dnsbl_reply` | Rebuilds files used by `postscreen_dnsbl_reply_map`. |
 | `update_header_checks` | Rebuilds files used by `header_checks`. |
 | `update_helo_access` | Rebuilds files used by `check_helo_access`. |
+| `update_milter_header_checks` | Rebuilds files used by `milter_header_checks`. |
 | `update_postgrey_whitelist` | Rebuilds files used by postgrey's `--whitelist-clients`. |
 | `update_postscreen_access` | Rebuilds files used by `postscreen_access_list`. |
 | `update_recipient_access` | Rebuilds files used by `check_recipient_access`. |
