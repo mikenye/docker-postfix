@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# shellcheck shell=bash
+
+MILTER_HEADER_CHECKS_PCRE_FILE="/etc/postfix/milter_header_checks.pcre"
+MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL="/etc/postfix/tables/milter_header_checks.pcre"
+
+# Remove existing client_access.cidr
+rm "${MILTER_HEADER_CHECKS_PCRE_FILE}" > /dev/null 2>&1
+touch "${MILTER_HEADER_CHECKS_PCRE_FILE}"
+
+# Import local entries into client_access.cidr
+if [ -f "${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}" ]; then
+  echo "" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
+  echo "## Entries from ${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
+  cat "${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
+  echo "" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
+fi
+
+# No need to run postmap over PCRE files
+
+# If postfix is running, update
+postfix status > /dev/null 2>&1
+if [ "$?" -eq "0" ]; then
+  postfix reload
+fi

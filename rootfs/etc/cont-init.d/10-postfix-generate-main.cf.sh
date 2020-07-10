@@ -108,6 +108,7 @@ echo "disable_vrfy_command = yes" >> "${POSTFIX_MAINCF_FILE}"
 echo "smtpd_hard_error_limit = 1" >> "${POSTFIX_MAINCF_FILE}"
 
 echo "header_checks = pcre:/etc/postfix/header_checks.pcre" >> "${POSTFIX_MAINCF_FILE}"
+echo "milter_header_checks = pcre:/etc/postfix/milter_header_checks.pcre" >> "${POSTFIX_MAINCF_FILE}"
 
 # ========== START smtpd_helo_restrictions ==========
 
