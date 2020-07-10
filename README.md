@@ -265,6 +265,7 @@ volumes:
 | `POSTFIX_RELAYHOST_PORT`           | Optional port argument for `POSTFIX_RELAYHOST`. Default is `25` so only need to change if you're `relayhost` is running on a different port. |
 | `POSTFIX_RELAYHOST`                | <http://www.postfix.org/postconf.5.html#relayhost> |
 | `POSTFIX_SMTP_TLS_CHAIN_FILES`     | <http://www.postfix.org/postconf.5.html#smtp_tls_chain_files> |
+| `POSTFIX_SMTPD_MILTERS`            | <http://www.postfix.org/postconf.5.html#smtpd_milters> Any milters given here are applied after DKIM & ClamAV. |
 | `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. <http://www.postfix.org/postconf.5.html#permit_sasl_authenticated> |
 | `POSTFIX_SMTPD_TLS_CERT_FILE`      | <http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file> |
 | `POSTFIX_SMTPD_TLS_CHAIN_FILES`    | <http://www.postfix.org/postconf.5.html#smtpd_tls_chain_files> |
@@ -496,6 +497,7 @@ After a message is queued, it is passed through milters:
 
 1. If `ENABLE_DKIM`, the email is sent through `opendkim`. The email is signed/verified by DKIM.
 2. If `ENABLE_CLAMAV`, the email is sent through `clamav-milter`. The email is dropped if a virus is detected.
+3. If any additional milters are defined with `POSTFIX_SMTPD_MILTERS`, they are then applied.
 
 ## Testing
 

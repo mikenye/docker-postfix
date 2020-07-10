@@ -108,6 +108,7 @@ echo "disable_vrfy_command = yes" >> "${POSTFIX_MAINCF_FILE}"
 echo "smtpd_hard_error_limit = 1" >> "${POSTFIX_MAINCF_FILE}"
 
 echo "header_checks = pcre:/etc/postfix/header_checks.pcre" >> "${POSTFIX_MAINCF_FILE}"
+echo "milter_header_checks = pcre:/etc/postfix/milter_header_checks.pcre" >> "${POSTFIX_MAINCF_FILE}"
 
 # ========== START smtpd_helo_restrictions ==========
 
@@ -203,6 +204,7 @@ if [ "${ENABLE_OPENDKIM}" = "true" ]; then
   echo "milter_default_action = accept" >> "${POSTFIX_MAINCF_FILE}"
   echo "milter_protocol = 2" >> "${POSTFIX_MAINCF_FILE}"
   echo "non_smtpd_milters = inet:localhost:8891" >> "${POSTFIX_MAINCF_FILE}"
+
   if [ "$SMTPDMILTERS" = "" ]; then
     SMTPDMILTERS="inet:localhost:8891"
   else
@@ -216,6 +218,15 @@ if [ "${ENABLE_CLAMAV}" = "true" ]; then
     SMTPDMILTERS="inet:localhost:7357"
   else
     SMTPDMILTERS="$SMTPDMILTERS, inet:localhost:7357"
+  fi
+fi
+
+# Are there any extra smtpd milters? If so, write 'em.
+if [ ! -z "${POSTFIX_SMTPD_MILTERS}" ]; then
+  if [ "$SMTPDMILTERS" = "" ]; then
+    SMTPDMILTERS="${POSTFIX_SMTPD_MILTERS}"
+  else
+    SMTPDMILTERS="$SMTPDMILTERS, ${POSTFIX_SMTPD_MILTERS}"
   fi
 fi
 
