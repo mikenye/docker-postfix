@@ -244,6 +244,12 @@ volumes:
 | `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
 | `TZ`                 | Recommended. Set the timezone for the container. Default is `UTC`. |
 
+### Syslog Configuration
+
+| Environment Variable | Description                                                                               |
+|----------------------|-------------------------------------------------------------------------------------------|
+| `SYSLOG_PRIORITY` | Optional. Log only messages more urgent than `SYSLOG_PRIORITY`. `0` = Emergency, `1` = Alert, `2` = Critical, `3` = Error, `4` = Warning, `5` = Notice, `6` = Info (the default), `7` = Debug |
+
 ### Postfix Configuration
 
 | Environment Variable               | Documentation Link                                                      |
