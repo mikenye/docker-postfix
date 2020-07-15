@@ -15,6 +15,7 @@ ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     POSTGREY_SYSTEM_WHITELIST_FILE=/opt/postgrey/postgrey_whitelist_clients \
     POSTGREY_WHITELIST_URL=https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    SYSLOG_PRIORITY=6 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp
 
 SHELL ["/bin/bash", "-c"]

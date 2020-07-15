@@ -244,6 +244,12 @@ volumes:
 | `POSTMASTER_EMAIL`   | Required. Set to the email of your domain's postmaster. Example: `postmaster@domain.tld`. |
 | `TZ`                 | Recommended. Set the timezone for the container. Default is `UTC`. |
 
+### Syslog Configuration
+
+| Environment Variable | Description                                                                               |
+|----------------------|-------------------------------------------------------------------------------------------|
+| `SYSLOG_PRIORITY` | Optional. Log only messages more urgent than `SYSLOG_PRIORITY`. `0` = Emergency, `1` = Alert, `2` = Critical, `3` = Error, `4` = Warning, `5` = Notice, `6` = Info (the default), `7` = Debug |
+
 ### Postfix Configuration
 
 | Environment Variable               | Documentation Link                                                      |
@@ -487,7 +493,7 @@ If you edit one of postfix's table files, you must run the appropriate helper co
   9. `reject_unknown_sender_domain` - see: <http://www.postfix.org/postconf.5.html#reject_unknown_sender_domain>.
   10. `reject_unknown_recipient_domain` - see: <http://www.postfix.org/postconf.5.html#reject_unknown_recipient_domain>.
   11. If `ENABLE_POSTGREY` is enabled, `check_policy_service inet:127.0.0.1:10023` - performs greylisting.
-  12. If `ENABLE_LDAP_RECIPIENT_ACCESS` is enabled, and/or if `/etc/postfix/tables/recipient_access.hash` exists, `check_recipient_access ...` - performs recipient address verification using LDAP and/or the `recipient_acces.hash` file.
+  12. If `ENABLE_LDAP_RECIPIENT_ACCESS` is enabled, and/or if `/etc/postfix/tables/recipient_access.hash` exists, `check_recipient_access ...` - performs recipient address verification using LDAP and/or the `recipient_access.hash` file. The `recipient_access.hash` file is analysed first, allowing this file to override LDAP verification.
   13. Finally:
     * If `check_recipient_access` is used (see above), then: `defer`
     * Else: `permit`

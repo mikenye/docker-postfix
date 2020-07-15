@@ -8,5 +8,9 @@ s6-notifyoncheck \
     -t 1000 \
     -n 0 \
     -c "/usr/local/bin/check_syslog.sh" \
-    /sbin/syslogd -n -O - \
+    /sbin/syslogd \
+        -l ${SYSLOG_PRIORITY} \
+        -n \
+        -O \
+        - \
     2>&1 | awk -W Interactive '{print "[syslogd] " $0}'

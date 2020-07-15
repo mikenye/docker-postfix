@@ -163,21 +163,21 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
   CHECK_RECIPIENT_ACCESS=""
 
-  # If ENABLE_LDAP_RECIPIENT_ACCESS, then add ldap to check_recipient_access
-  if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
-    if [ "$CHECK_RECIPIENT_ACCESS" = "" ]; then
-      CHECK_RECIPIENT_ACCESS="ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
-    else
-      CHECK_RECIPIENT_ACCESS="$CHECK_RECIPIENT_ACCESS, ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
-    fi
-  fi
-
   # If local recipient_access.hash file exists, add to check_recipient_access 
   if [ -f "/etc/postfix/tables/recipient_access.hash" ]; then
     if [ "$CHECK_RECIPIENT_ACCESS" = "" ]; then
       CHECK_RECIPIENT_ACCESS="hash:/etc/postfix/recipient_access.hash"
     else
       CHECK_RECIPIENT_ACCESS="$CHECK_RECIPIENT_ACCESS, hash:/etc/postfix/recipient_access.hash"
+    fi
+  fi
+
+  # If ENABLE_LDAP_RECIPIENT_ACCESS, then add ldap to check_recipient_access
+  if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
+    if [ "$CHECK_RECIPIENT_ACCESS" = "" ]; then
+      CHECK_RECIPIENT_ACCESS="ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+    else
+      CHECK_RECIPIENT_ACCESS="$CHECK_RECIPIENT_ACCESS, ldap:${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
     fi
   fi
 
