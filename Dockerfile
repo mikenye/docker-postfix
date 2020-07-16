@@ -275,7 +275,7 @@ RUN set -x && \
     opendkim -V | grep OpenDKIM | sed "s/OpenDKIM Filter //g" >> /VERSIONS && \
     postgrey --version >> /VERSIONS && \
     echo "ClamAV $(clamconf --version | tr -s " " | cut -d " " -f 5)" >> /VERSIONS && \
-    echo "postfix-policyd-spf-perl ${BRANCH_POSTFIX_POLICYD_SPF_PERL}" >> /VERSIONS && \
+    echo "postfix-policyd-spf-perl $BRANCH_POSTFIX_POLICYD_SPF_PERL" >> /VERSIONS && \
     echo "postfix $(postconf mail_version | cut -d "=" -f 2 | tr -d " ")" >> /VERSIONS && \
     # fail2ban-client --version >> /VERSIONS && \
     cat /VERSIONS
