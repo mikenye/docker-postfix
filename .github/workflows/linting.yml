@@ -1,4 +1,4 @@
-name: Shellcheck (via Docker)
+name: Linting
 
 on:
   push:
