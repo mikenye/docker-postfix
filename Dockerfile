@@ -177,8 +177,8 @@ RUN set -x && \
     # Get postfix source & signature & author key
     mkdir -p /src/postfix && \
     POSTFIX_STABLE_FAMILY="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -oP 'Postfix [\d.]+ stable release' | grep -v candidate | head -1 | grep -oP '[\d.]+')" && \
-    POSTFIX_STABLE_DOWNLOAD_SOURCE_FILE="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href=\"official/postfix-' | grep 3\.5 | grep '.tar.gz\">Source code</a>' | head -1 | cut -d '\"' -f 2)" && \
-    POSTFIX_STABLE_DOWNLOAD_SOURCE_GPG2="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href=\"official/postfix-' | grep 3\.5 | grep '.tar.gz.gpg2\">GPG signature</a>' | head -1 | cut -d '\"' -f 2)" && \
+    POSTFIX_STABLE_DOWNLOAD_SOURCE_FILE="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href=\"official/postfix-' | grep '$POSTFIX_STABLE_FAMILY' | grep '.tar.gz\">Source code</a>' | head -1 | cut -d '\"' -f 2)" && \
+    POSTFIX_STABLE_DOWNLOAD_SOURCE_GPG2="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href=\"official/postfix-' | grep '$POSTFIX_STABLE_FAMILY' | grep '.tar.gz.gpg2\">GPG signature</a>' | head -1 | cut -d '\"' -f 2)" && \
     curl --location --output /src/postfix.tar.gz "http://ftp.porcupine.org/mirrors/postfix-release/${POSTFIX_STABLE_DOWNLOAD_SOURCE_FILE}" && \
     curl --location --output /src/postfix.tar.gz.gpg2 "http://ftp.porcupine.org/mirrors/postfix-release/${POSTFIX_STABLE_DOWNLOAD_SOURCE_GPG2}" && \
     curl --location --output /src/wietse.pgp "${WIETSE_PGP_KEY_URL}" && \
