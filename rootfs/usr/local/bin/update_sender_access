@@ -8,13 +8,15 @@ SENDER_ACCESS_HASH_FILE_LOCAL="/etc/postfix/tables/sender_access.hash"
 rm "${SENDER_ACCESS_HASH_FILE}" > /dev/null 2>&1
 touch "${SENDER_ACCESS_HASH_FILE}"
 
-# Import local entries into sender_access.hash
-if [ -f "${SENDER_ACCESS_HASH_FILE_LOCAL}" ]; then
-  echo "" >> "${SENDER_ACCESS_HASH_FILE}"
-  echo "## Entries from ${SENDER_ACCESS_HASH_FILE_LOCAL}" >> "${SENDER_ACCESS_HASH_FILE}"
-  cat "${SENDER_ACCESS_HASH_FILE_LOCAL}" >> "${SENDER_ACCESS_HASH_FILE}"
-  echo "" >> "${SENDER_ACCESS_HASH_FILE}"
-fi
+{
+  # Import local entries into sender_access.hash
+  if [ -f "${SENDER_ACCESS_HASH_FILE_LOCAL}" ]; then
+    echo ""
+    echo "## Entries from ${SENDER_ACCESS_HASH_FILE_LOCAL}"
+    cat "${SENDER_ACCESS_HASH_FILE_LOCAL}"
+    echo ""
+  fi
+} > "${SENDER_ACCESS_HASH_FILE}"
 
 # Run postmap
 postmap "${SENDER_ACCESS_HASH_FILE}"

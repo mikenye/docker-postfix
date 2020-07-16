@@ -8,13 +8,15 @@ CLIENT_ACCESS_CIDR_FILE_LOCAL="/etc/postfix/tables/client_access.cidr"
 rm "${CLIENT_ACCESS_CIDR_FILE}" > /dev/null 2>&1
 touch "${CLIENT_ACCESS_CIDR_FILE}"
 
-# Import local entries into client_access.cidr
-if [ -f "${CLIENT_ACCESS_CIDR_FILE_LOCAL}" ]; then
-  echo "" >> "${CLIENT_ACCESS_CIDR_FILE}"
-  echo "## Entries from ${CLIENT_ACCESS_CIDR_FILE_LOCAL}" >> "${CLIENT_ACCESS_CIDR_FILE}"
-  cat "${CLIENT_ACCESS_CIDR_FILE_LOCAL}" >> "${CLIENT_ACCESS_CIDR_FILE}"
-  echo "" >> "${CLIENT_ACCESS_CIDR_FILE}"
-fi
+{
+  # Import local entries into client_access.cidr
+  if [ -f "${CLIENT_ACCESS_CIDR_FILE_LOCAL}" ]; then
+    echo ""
+    echo "## Entries from ${CLIENT_ACCESS_CIDR_FILE_LOCAL}"
+    cat "${CLIENT_ACCESS_CIDR_FILE_LOCAL}"
+    echo ""
+  fi
+} > "${CLIENT_ACCESS_CIDR_FILE}"
 
 # Run postmap
 postmap "${CLIENT_ACCESS_CIDR_FILE}"

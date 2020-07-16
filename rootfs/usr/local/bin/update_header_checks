@@ -9,13 +9,13 @@ rm "${HEADER_CHECKS_PCRE_FILE}" > /dev/null 2>&1
 touch "${HEADER_CHECKS_PCRE_FILE}"
 
 {
-# Import local entries into client_access.cidr
-if [ -f "${HEADER_CHECKS_PCRE_FILE_LOCAL}" ]; then
-  echo ""
-  echo "## Entries from ${HEADER_CHECKS_PCRE_FILE_LOCAL}"
-  cat "${HEADER_CHECKS_PCRE_FILE_LOCAL}"
-  echo ""
-fi
+  # Import local entries into client_access.cidr
+  if [ -f "${HEADER_CHECKS_PCRE_FILE_LOCAL}" ]; then
+    echo ""
+    echo "## Entries from ${HEADER_CHECKS_PCRE_FILE_LOCAL}"
+    cat "${HEADER_CHECKS_PCRE_FILE_LOCAL}"
+    echo ""
+  fi
 } > "${HEADER_CHECKS_PCRE_FILE}"
 
 # No need to run postmap over PCRE files

@@ -10,18 +10,19 @@ touch "${DNSBL_REPLY_TEXTHASH_FILE}"
 
 # TODO: add fail2ban file
 
-# Import local entries into client_access.cidr
-if [ -f "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" ]; then
-  echo "" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
-  echo "## Entries from ${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
-  cat "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
-  echo "" >> "${DNSBL_REPLY_TEXTHASH_FILE}"
-fi
+{
+  # Import local entries into client_access.cidr
+  if [ -f "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}" ]; then
+    echo ""
+    echo "## Entries from ${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}"
+    cat "${DNSBL_REPLY_TEXTHASH_FILE_LOCAL}"
+    echo ""
+  fi
+} > "${DNSBL_REPLY_TEXTHASH_FILE}"
 
 # Don't need to run postmap over texthash files
 
 # If postfix is running, update
-postfix status > /dev/null 2>&1
-if [ "$?" -eq "0" ]; then
+if postfix status > /dev/null 2>&1; then
   postfix reload
 fi
