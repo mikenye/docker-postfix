@@ -117,7 +117,7 @@ RUN set -x && \
     tar xf /src/postgrey.tar.gz -C /src/postgrey && \
     pushd "$(find /src/postgrey -maxdepth 1 -type d | tail -1)" && \
     mkdir -p /opt/postgrey && \
-    cp -Rv * /opt/postgrey && \
+    cp -Rv ./* /opt/postgrey && \
     mkdir -p /etc/postgrey && \
     touch /etc/postgrey/postgrey_whitelist_clients.local && \
     touch /etc/postgrey/postgrey_whitelist_recipients.local && \
