@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
 
-echo "" > "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
+{
+  echo ""
 
-if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
-  {
+  if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
     echo "domain = ${POSTFIX_RELAY_DOMAINS}"
     echo "server_host = ${POSTFIX_LDAP_SERVERS}"
     echo "version = ${POSTFIX_LDAP_VERSION}"
@@ -16,5 +16,5 @@ if [ "${ENABLE_LDAP_RECIPIENT_ACCESS}" = "true" ]; then
     echo "result_attribute = mail"
     echo "result_format = OK"
     echo "debuglevel = ${POSTFIX_LDAP_DEBUG_LEVEL}"
-  } >> "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"
-fi
+  fi
+} > "${POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE}"

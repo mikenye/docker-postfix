@@ -12,8 +12,10 @@
     echo "Bytecode yes"
     echo "DatabaseMirror database.clamav.net"
     echo "NotifyClamd /usr/local/etc/clamd.conf"
-} > "${CLAMAV_FRESHCLAMCONF_FILE}"
 
-if [ -n "${FRESHCLAM_CHECKS_PER_DAY}" ]; then
-    echo "Checks ${FRESHCLAM_CHECKS_PER_DAY}" >> "${CLAMAV_FRESHCLAMCONF_FILE}"
-fi
+    if [ -n "${FRESHCLAM_CHECKS_PER_DAY}" ]; then
+        echo "Checks ${FRESHCLAM_CHECKS_PER_DAY}"
+    fi
+
+
+} > "${CLAMAV_FRESHCLAMCONF_FILE}"

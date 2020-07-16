@@ -16,9 +16,10 @@
     echo "ReadTimeout 300"
     echo "LogClean Basic"
     echo "LogInfected Full"
-} > "${CLAMAV_MILTERCONF_FILE}"
 
-# If CLAMAV_MILTER_REPORT_HOSTNAME, then set
-if [ -n "${CLAMAV_MILTER_REPORT_HOSTNAME}" ]; then
-    echo "ReportHostname ${CLAMAV_MILTER_REPORT_HOSTNAME}" >> "${CLAMAV_MILTERCONF_FILE}"
-fi
+    # If CLAMAV_MILTER_REPORT_HOSTNAME, then set
+    if [ -n "${CLAMAV_MILTER_REPORT_HOSTNAME}" ]; then
+        echo "ReportHostname ${CLAMAV_MILTER_REPORT_HOSTNAME}"
+    fi
+
+} > "${CLAMAV_MILTERCONF_FILE}"
