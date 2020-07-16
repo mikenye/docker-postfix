@@ -19,7 +19,7 @@ ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     SYSLOG_PRIORITY=6 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp
 
-SHELL ["/bin/bash", "-c"]
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -x && \
     apt-get update && \
