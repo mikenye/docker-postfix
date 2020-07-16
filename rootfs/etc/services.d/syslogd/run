@@ -9,7 +9,7 @@ s6-notifyoncheck \
     -n 0 \
     -c "/usr/local/bin/check_syslog.sh" \
     /sbin/syslogd \
-        -l ${SYSLOG_PRIORITY} \
+        -l "${SYSLOG_PRIORITY}" \
         -n \
         -O \
         - \
