@@ -170,7 +170,7 @@ RUN set -x && \
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
     pushd /src/postfix-policyd-spf-perl && \
-    export BRANCH_POSTFIX_POLICYD_SPF_PERL="$(git tag --sort='-creatordate' | head -1)" && \
+    BRANCH_POSTFIX_POLICYD_SPF_PERL="$(git tag --sort='-creatordate' | head -1)" && \
     git checkout "${BRANCH_POSTFIX_POLICYD_SPF_PERL}" && \
     cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
     popd && \
