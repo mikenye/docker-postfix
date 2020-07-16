@@ -378,7 +378,7 @@ The system aliases file maps `postmaster`, `root`, `postfix` and `clamav` throug
 |------|--------|--------|
 | `/var/lib/clamav` | `rw` | ClamAV anti-virus database. Map if using ClamAV. |
 | `/etc/postfix/local_aliases` | `rw` | A file named `aliases` can be placed in this folder. The contents of this file will be added to the container's `/etc/aliases` at startup. Map if you need to add entries to `/etc/aliases`. |
-| `/etc/postfix/certs` | `ro` | Postfix TLS chain files should be placed in here. Map if using SSL. |
+| `/etc/postfix/certs` | `ro` | Postfix TLS chain files should be placed in here. Map if using TLS/SSL. |
 | `/etc/postgrey` | `ro` | Postgrey local whitelists should be placed in here. Map if using postgrey. |
 | `/etc/postfix/tables` | `ro` | Postfix's tables should be placed in here. Map if you need to use any of the **Postfix Table Files** listed above. |
 | `/etc/mail/dkim` | `rw` | DKIM private keys (and `KeyTable`/`SigningTable` files if used) to be placed here. |
@@ -501,7 +501,7 @@ If you edit one of postfix's table files, you must run the appropriate helper co
   11. If `ENABLE_POSTGREY` is enabled, `check_policy_service inet:127.0.0.1:10023` - performs greylisting.
   12. If `ENABLE_LDAP_RECIPIENT_ACCESS` is enabled, and/or if `/etc/postfix/tables/recipient_access.hash` exists, `check_recipient_access ...` - performs recipient address verification using LDAP and/or the `recipient_access.hash` file. The `recipient_access.hash` file is analysed first, allowing this file to override LDAP verification.
   13. Finally:
-    * If `check_recipient_access` is used (see above), then: `defer`
+    * If `check_recipient_access` is used (see above), then: `POSTFIX_CHECK_RECIPIENT_ACCESS_FINAL_ACTION` (default: `defer`)
     * Else: `permit`
 * `smtpd_data_restrictions`:
   1. `reject_unauth_pipelining` - see: <http://www.postfix.org/postconf.5.html#reject_unauth_pipelining>
