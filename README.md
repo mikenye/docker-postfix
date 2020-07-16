@@ -254,32 +254,33 @@ volumes:
 
 | Environment Variable               | Documentation Link                                                      |
 |------------------------------------|-------------------------------------------------------------------------|
-| `POSTFIX_DNSBL_SITES`              | <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites> |
-| `POSTFIX_DNSBL_THRESHOLD`          | <http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold> |
-| `POSTFIX_INET_PROTOCOLS`           | <http://www.postfix.org/postconf.5.html#inet_protocols> |
-| `POSTFIX_MAIL_NAME`                | <http://www.postfix.org/postconf.5.html#mail_name> |
-| `POSTFIX_MESSAGE_SIZE_LIMIT` | <http://www.postfix.org/postconf.5.html#message_size_limit> |
-| `POSTFIX_MYDOMAIN`                 | <http://www.postfix.org/postconf.5.html#mydomain> |
-| `POSTFIX_MYHOSTNAME`               | <http://www.postfix.org/postconf.5.html#myhostname> |
-| `POSTFIX_MYNETWORKS`               | <http://www.postfix.org/postconf.5.html#mynetworks> |
-| `POSTFIX_MYORIGIN`                 | <http://www.postfix.org/postconf.5.html#myorigin> |
-| `POSTFIX_PROXY_INTERFACES`         | <http://www.postfix.org/postconf.5.html#proxy_interfaces> |
-| `POSTFIX_REJECT_INVALID_HELO_HOSTNAME`  | <http://www.postfix.org/postconf.5.html#reject_invalid_helo_hostname> |
-| `POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME` | <http://www.postfix.org/postconf.5.html#reject_non_fqdn_helo_hostname> |
-| `POSTFIX_REJECT_UNKNOWN_HELO_HOSTNAME`  | <http://www.postfix.org/postconf.5.html#reject_unknown_helo_hostname> |
-| `POSTFIX_RELAY_DOMAINS`            | <http://www.postfix.org/postconf.5.html#relay_domains> |
+| `POSTFIX_DNSBL_SITES`              | See [documentation link](http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites). |
+| `POSTFIX_DNSBL_THRESHOLD`          | See [documentation link](http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold). |
+| `POSTFIX_INET_PROTOCOLS`           | See [documentation link](http://www.postfix.org/postconf.5.html#inet_protocols). |
+| `POSTFIX_MAIL_NAME`                | See [documentation link](http://www.postfix.org/postconf.5.html#mail_name). |
+| `POSTFIX_MESSAGE_SIZE_LIMIT`       | See [documentation link](http://www.postfix.org/postconf.5.html#message_size_limit). |
+| `POSTFIX_MYDOMAIN`                 | See [documentation link](http://www.postfix.org/postconf.5.html#mydomain). |
+| `POSTFIX_MYHOSTNAME`               | See [documentation link](http://www.postfix.org/postconf.5.html#myhostname). |
+| `POSTFIX_MYNETWORKS`               | See [documentation link](http://www.postfix.org/postconf.5.html#mynetworks). |
+| `POSTFIX_MYORIGIN`                 | See [documentation link](http://www.postfix.org/postconf.5.html#myorigin). |
+| `POSTFIX_PROXY_INTERFACES`         | See [documentation link](http://www.postfix.org/postconf.5.html#proxy_interfaces). |
+| `POSTFIX_REJECT_INVALID_HELO_HOSTNAME`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_invalid_helo_hostname). |
+| `POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME` | See [documentation link](http://www.postfix.org/postconf.5.html#reject_non_fqdn_helo_hostname). |
+| `POSTFIX_REJECT_UNKNOWN_HELO_HOSTNAME`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_unknown_helo_hostname). |
+| `POSTFIX_RELAY_DOMAINS`            | See [documentation link](http://www.postfix.org/postconf.5.html#relay_domains). |
 | `POSTFIX_RELAYHOST_PORT`           | Optional port argument for `POSTFIX_RELAYHOST`. Default is `25` so only need to change if you're `relayhost` is running on a different port. |
-| `POSTFIX_RELAYHOST`                | <http://www.postfix.org/postconf.5.html#relayhost> |
-| `POSTFIX_SMTP_TLS_CHAIN_FILES`     | <http://www.postfix.org/postconf.5.html#smtp_tls_chain_files> |
-| `POSTFIX_SMTPD_MILTERS`            | <http://www.postfix.org/postconf.5.html#smtpd_milters> Any milters given here are applied after DKIM & ClamAV. |
-| `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. <http://www.postfix.org/postconf.5.html#permit_sasl_authenticated> |
-| `POSTFIX_SMTPD_TLS_CERT_FILE`      | <http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file> |
-| `POSTFIX_SMTPD_TLS_CHAIN_FILES`    | <http://www.postfix.org/postconf.5.html#smtpd_tls_chain_files> |
-| `POSTFIX_SMTPD_TLS_KEY_FILE`       | <http://www.postfix.org/postconf.5.html#smtpd_tls_key_file> |
-| `POSTFIX_SMTPD_TLS_LOGLEVEL`       | <http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel> |
-| `POSTFIX_SMTPD_TLS_SECURITY_LEVEL` | <http://www.postfix.org/postconf.5.html#smtpd_tls_security_level> |
-| `POSTFIX_SMTPD_USE_TLS`            | <http://www.postfix.org/postconf.5.html#smtpd_use_tls> |
-| `POSTFIX_SMTPUTF8_ENABLE`          | <http://www.postfix.org/SMTPUTF8_README.html> |
+| `POSTFIX_RELAYHOST`                | See [documentation link](http://www.postfix.org/postconf.5.html#relayhost). |
+| `POSTFIX_SMTP_TLS_CHAIN_FILES`     | See [documentation link](http://www.postfix.org/postconf.5.html#smtp_tls_chain_files). |
+| `POSTFIX_SMTPD_MILTERS`            | Any milters given here are applied after DKIM & ClamAV. See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_milters). |
+| `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. See [documentation link](http://www.postfix.org/postconf.5.html#permit_sasl_authenticated). |
+| `POSTFIX_SMTPD_TLS_CERT_FILE`      | See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file). |
+| `POSTFIX_SMTPD_TLS_CHAIN_FILES`    | See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_tls_chain_files). |
+| `POSTFIX_SMTPD_TLS_KEY_FILE`       | See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_tls_key_file). |
+| `POSTFIX_SMTPD_TLS_LOGLEVEL`       | See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel). |
+| `POSTFIX_SMTPD_TLS_SECURITY_LEVEL` | See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_tls_security_level). |
+| `POSTFIX_SMTPD_USE_TLS`            | See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_use_tls). |
+| `POSTFIX_SMTPUTF8_ENABLE`          | See [documentation link](http://www.postfix.org/SMTPUTF8_README.html). |
+| `POSTFIX_CHECK_RECIPIENT_ACCESS_FINAL_ACTION` | If recipient checks are enabled (via `ENABLE_LDAP_RECIPIENT_ACCESS` and/or `recipient_access.hash`), this is the final action taken after all other checks. Default is `defer`. Usually should be set to either `defer` or `reject`. See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions).|
 
 ### LDAP Recipient Verification
 

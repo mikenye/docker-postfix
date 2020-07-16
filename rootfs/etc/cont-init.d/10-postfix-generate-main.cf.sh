@@ -183,7 +183,7 @@ echo "smtpd_recipient_restrictions = " >> "${POSTFIX_MAINCF_FILE}"
 
   if [ "${CHECK_RECIPIENT_ACCESS}" != "" ]; then
     echo "    check_recipient_access ${CHECK_RECIPIENT_ACCESS}," >> "${POSTFIX_MAINCF_FILE}"
-    echo "    defer" >> "${POSTFIX_MAINCF_FILE}"
+    echo "    $POSTFIX_CHECK_RECIPIENT_ACCESS_FINAL_ACTION" >> "${POSTFIX_MAINCF_FILE}"
 
   else
     echo "    permit" >> "${POSTFIX_MAINCF_FILE}"
