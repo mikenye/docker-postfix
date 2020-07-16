@@ -6,7 +6,7 @@ set -eo pipefail
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
 
     # Random sleep for up to an hour
-    sleep $(( $RANDOM % 3600 ) + 1 ))s
+    sleep $(( ( $RANDOM % 3600 ) + 1 ))s
 
     freshclam \
         --config-file="${CLAMAV_FRESHCLAMCONF_FILE}" \
