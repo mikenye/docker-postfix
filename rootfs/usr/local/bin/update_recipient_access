@@ -8,13 +8,15 @@ RECIPIENT_ACCESS_HASH_FILE_LOCAL="/etc/postfix/tables/recipient_access.hash"
 rm "${RECIPIENT_ACCESS_HASH_FILE}" > /dev/null 2>&1
 touch "${RECIPIENT_ACCESS_HASH_FILE}"
 
-# Import local entries into client_access.cidr
-if [ -f "${RECIPIENT_ACCESS_HASH_FILE_LOCAL}" ]; then
-  echo "" >> "${RECIPIENT_ACCESS_HASH_FILE}"
-  echo "## Entries from ${RECIPIENT_ACCESS_HASH_FILE_LOCAL}" >> "${RECIPIENT_ACCESS_HASH_FILE}"
-  cat "${RECIPIENT_ACCESS_HASH_FILE_LOCAL}" >> "${RECIPIENT_ACCESS_HASH_FILE}"
-  echo "" >> "${RECIPIENT_ACCESS_HASH_FILE}"
-fi
+{
+  # Import local entries into client_access.cidr
+  if [ -f "${RECIPIENT_ACCESS_HASH_FILE_LOCAL}" ]; then
+    echo ""
+    echo "## Entries from ${RECIPIENT_ACCESS_HASH_FILE_LOCAL}"
+    cat "${RECIPIENT_ACCESS_HASH_FILE_LOCAL}"
+    echo ""
+  fi
+} > "${RECIPIENT_ACCESS_HASH_FILE}"
 
 # Run postmap
 postmap "${RECIPIENT_ACCESS_HASH_FILE}"

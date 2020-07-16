@@ -8,13 +8,15 @@ HELO_ACCESS_HASH_FILE_LOCAL="/etc/postfix/tables/helo_access.hash"
 rm "${HELO_ACCESS_HASH_FILE}" > /dev/null 2>&1
 touch "${HELO_ACCESS_HASH_FILE}"
 
-# Import local entries into helo_access.hash
-if [ -f "${HELO_ACCESS_HASH_FILE_LOCAL}" ]; then
-  echo "" >> "${HELO_ACCESS_HASH_FILE}"
-  echo "## Entries from ${HELO_ACCESS_HASH_FILE_LOCAL}" >> "${HELO_ACCESS_HASH_FILE}"
-  cat "${HELO_ACCESS_HASH_FILE_LOCAL}" >> "${HELO_ACCESS_HASH_FILE}"
-  echo "" >> "${HELO_ACCESS_HASH_FILE}"
-fi
+{
+  # Import local entries into helo_access.hash
+  if [ -f "${HELO_ACCESS_HASH_FILE_LOCAL}" ]; then
+    echo ""
+    echo "## Entries from ${HELO_ACCESS_HASH_FILE_LOCAL}"
+    cat "${HELO_ACCESS_HASH_FILE_LOCAL}"
+    echo ""
+  fi
+} > "${HELO_ACCESS_HASH_FILE}"
 
 # Run postmap
 postmap "${HELO_ACCESS_HASH_FILE}"

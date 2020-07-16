@@ -9,14 +9,15 @@ rm "${POSTSCREEN_ACCESS_CIDR_FILE}" > /dev/null 2>&1
 touch "${POSTSCREEN_ACCESS_CIDR_FILE}"
 
 # TODO: add fail2ban file
-
-# Import local entries into client_access.cidr
-if [ -f "${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}" ]; then
-  echo "" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
-  echo "## Entries from ${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
-  cat "${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
-  echo "" >> "${POSTSCREEN_ACCESS_CIDR_FILE}"
-fi
+{
+  # Import local entries into client_access.cidr
+  if [ -f "${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}" ]; then
+    echo ""
+    echo "## Entries from ${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}"
+    cat "${POSTSCREEN_ACCESS_CIDR_FILE_LOCAL}"
+    echo ""
+  fi
+} > "${POSTSCREEN_ACCESS_CIDR_FILE}"
 
 # Run postmap
 postmap "${POSTSCREEN_ACCESS_CIDR_FILE}"

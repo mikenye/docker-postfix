@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 # shellcheck shell=bash
 
-# Write /etc/aliases
-echo "postmaster: ${POSTMASTER_EMAIL}" > /etc/aliases
-echo "root:       ${POSTMASTER_EMAIL}" >> /etc/aliases
-echo "postfix:    ${POSTMASTER_EMAIL}" >> /etc/aliases
-echo "clamav:     ${POSTMASTER_EMAIL}" >> /etc/aliases
+{
+  # Write /etc/aliases
+  echo "postmaster: ${POSTMASTER_EMAIL}"
+  echo "root:       ${POSTMASTER_EMAIL}"
+  echo "postfix:    ${POSTMASTER_EMAIL}"
+  echo "clamav:     ${POSTMASTER_EMAIL}"
 
-# Implement local aliases
-if [ -f "/etc/postfix/local_aliases/aliases" ]; then
-  cat /etc/postfix/local_aliases/aliases >> /etc/aliases
-fi
+  # Implement local aliases
+  if [ -f "/etc/postfix/local_aliases/aliases" ]; then
+    cat /etc/postfix/local_aliases/aliases
+  fi
+} > /etc/aliases
 
 # Run newaliases
 newaliases
