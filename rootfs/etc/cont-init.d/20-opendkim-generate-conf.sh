@@ -4,7 +4,6 @@
 OPENDKIM_CONF_FILE="/etc/opendkim.conf"
 
 {
-    echo "" 
     echo "Syslog true"
 } > "${OPENDKIM_CONF_FILE}"
 
