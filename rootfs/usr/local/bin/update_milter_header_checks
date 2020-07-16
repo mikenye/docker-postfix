@@ -8,13 +8,15 @@ MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL="/etc/postfix/tables/milter_header_checks.p
 rm "${MILTER_HEADER_CHECKS_PCRE_FILE}" > /dev/null 2>&1
 touch "${MILTER_HEADER_CHECKS_PCRE_FILE}"
 
+{
 # Import local entries into client_access.cidr
 if [ -f "${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}" ]; then
-  echo "" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
-  echo "## Entries from ${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
-  cat "${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
-  echo "" >> "${MILTER_HEADER_CHECKS_PCRE_FILE}"
+  echo ""
+  echo "## Entries from ${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}"
+  cat "${MILTER_HEADER_CHECKS_PCRE_FILE_LOCAL}"
+  echo ""
 fi
+} > "${MILTER_HEADER_CHECKS_PCRE_FILE}"
 
 # No need to run postmap over PCRE files
 
