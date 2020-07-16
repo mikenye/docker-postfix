@@ -8,13 +8,15 @@ HEADER_CHECKS_PCRE_FILE_LOCAL="/etc/postfix/tables/header_checks.pcre"
 rm "${HEADER_CHECKS_PCRE_FILE}" > /dev/null 2>&1
 touch "${HEADER_CHECKS_PCRE_FILE}"
 
+{
 # Import local entries into client_access.cidr
 if [ -f "${HEADER_CHECKS_PCRE_FILE_LOCAL}" ]; then
-  echo "" >> "${HEADER_CHECKS_PCRE_FILE}"
-  echo "## Entries from ${HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${HEADER_CHECKS_PCRE_FILE}"
-  cat "${HEADER_CHECKS_PCRE_FILE_LOCAL}" >> "${HEADER_CHECKS_PCRE_FILE}"
-  echo "" >> "${HEADER_CHECKS_PCRE_FILE}"
+  echo ""
+  echo "## Entries from ${HEADER_CHECKS_PCRE_FILE_LOCAL}"
+  cat "${HEADER_CHECKS_PCRE_FILE_LOCAL}"
+  echo ""
 fi
+} > "${HEADER_CHECKS_PCRE_FILE}"
 
 # No need to run postmap over PCRE files
 
