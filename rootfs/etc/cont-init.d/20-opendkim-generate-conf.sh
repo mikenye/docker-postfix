@@ -2,9 +2,11 @@
 # shellcheck shell=bash
 
 OPENDKIM_CONF_FILE="/etc/opendkim.conf"
-echo "" > "${OPENDKIM_CONF_FILE}"
 
-echo "Syslog true" >> "${OPENDKIM_CONF_FILE}"
+{
+    echo "" 
+    echo "Syslog true"
+} > "${OPENDKIM_CONF_FILE}"
 
 # LogResults
 if [ -n "${OPENDKIM_LOGRESULTS}" ]; then
@@ -16,11 +18,12 @@ if [ -n "${OPENDKIM_LOGWHY}" ]; then
     echo "LogWhy true" >> "${OPENDKIM_CONF_FILE}"
 fi
 
-# Listen on localhost:8891
-echo "Socket inet:8891@127.0.0.1" >> "${OPENDKIM_CONF_FILE}"
-
-# Run with same UID as postfix
-echo "UserID opendkim" >> "${OPENDKIM_CONF_FILE}"
+{
+    # Listen on localhost:8891
+    echo "Socket inet:8891@127.0.0.1"
+    # Run with same UID as postfix
+    echo "UserID opendkim"
+} >> "${OPENDKIM_CONF_FILE}"
 
 # Set domains that we sign for
 if [ -n "${OPENDKIM_DOMAIN}" ]; then
@@ -52,11 +55,12 @@ if [ -n "${OPENDKIM_MODE}" ]; then
     echo "Mode ${OPENDKIM_MODE}" >> "${OPENDKIM_CONF_FILE}"
 fi
 
-# Autorestart is handled by s6-overlay, so set to false
-echo "AutoRestart false" >> "${OPENDKIM_CONF_FILE}"
-
-# We want this to stay in foreground for s6-overlay
-echo "Background false" >> "${OPENDKIM_CONF_FILE}"
+{
+    # Autorestart is handled by s6-overlay, so set to false
+    echo "AutoRestart false"
+    # We want this to stay in foreground for s6-overlay
+    echo "Background false"
+} >> "${OPENDKIM_CONF_FILE}"
 
 # Set internalhosts (hosts for which to sign for)
 if [ -n "${OPENDKIM_INTERNALHOSTS}" ]; then
