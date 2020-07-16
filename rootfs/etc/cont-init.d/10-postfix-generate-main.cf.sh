@@ -26,82 +26,82 @@ CHECK_RECIPIENT_ACCESS=""
   fi
 
   # http://www.postfix.org/postconf.5.html#myorigin
-  if [ ! -z "${POSTFIX_MYORIGIN}" ]; then
+  if [ -n "${POSTFIX_MYORIGIN}" ]; then
     echo "myorigin = ${POSTFIX_MYORIGIN}"
   fi
 
   # http://www.postfix.org/postconf.5.html#proxy_interfaces
-  if [ ! -z "${POSTFIX_PROXY_INTERFACES}" ]; then
+  if [ -n "${POSTFIX_PROXY_INTERFACES}" ]; then
     echo "proxy_interfaces = ${POSTFIX_PROXY_INTERFACES}"
   fi
 
   # http://www.postfix.org/postconf.5.html#mynetworks
-  if [ ! -z "${POSTFIX_MYNETWORKS}" ]; then
+  if [ -n "${POSTFIX_MYNETWORKS}" ]; then
     echo "mynetworks = ${POSTFIX_MYNETWORKS}"
   fi
 
   # http://www.postfix.org/postconf.5.html#inet_protocols
-  if [ ! -z "${POSTFIX_INET_PROTOCOLS}" ]; then
+  if [ -n "${POSTFIX_INET_PROTOCOLS}" ]; then
     echo "inet_protocols = ${POSTFIX_INET_PROTOCOLS}"
   fi
 
   # http://www.postfix.org/postconf.5.html#mydomain
-  if [ ! -z "${POSTFIX_MYDOMAIN}" ]; then
+  if [ -n "${POSTFIX_MYDOMAIN}" ]; then
     echo "mydomain = ${POSTFIX_MYDOMAIN}"
   fi
 
   # http://www.postfix.org/postconf.5.html#myhostname
-  if [ ! -z "${POSTFIX_MYHOSTNAME}" ]; then
+  if [ -n "${POSTFIX_MYHOSTNAME}" ]; then
     echo "myhostname = ${POSTFIX_MYHOSTNAME}"
   fi
 
   # http://www.postfix.org/postconf.5.html#mail_name
-  if [ ! -z "${POSTFIX_MAIL_NAME}" ]; then
+  if [ -n "${POSTFIX_MAIL_NAME}" ]; then
     echo "mail_name = ${POSTFIX_MAIL_NAME}"
   fi
 
   # http://www.postfix.org/postconf.5.html#smtpd_tls_cert_file
-  if [ ! -z "${POSTFIX_SMTPD_TLS_CERT_FILE}" ]; then
+  if [ -n "${POSTFIX_SMTPD_TLS_CERT_FILE}" ]; then
     echo "smtpd_tls_cert_file = ${POSTFIX_SMTPD_TLS_CERT_FILE}"
   fi
 
   # http://www.postfix.org/postconf.5.html#smtpd_tls_key_file
-  if [ ! -z "${POSTFIX_SMTPD_TLS_KEY_FILE}" ]; then
+  if [ -n "${POSTFIX_SMTPD_TLS_KEY_FILE}" ]; then
     echo "smtpd_tls_key_file = ${POSTFIX_SMTPD_TLS_KEY_FILE}"
   fi
 
   # http://www.postfix.org/postconf.5.html#smtpd_tls_security_level
-  if [ ! -z "${POSTFIX_SMTPD_TLS_SECURITY_LEVEL}" ]; then
+  if [ -n "${POSTFIX_SMTPD_TLS_SECURITY_LEVEL}" ]; then
     echo "smtpd_tls_security_level = ${POSTFIX_SMTPD_TLS_SECURITY_LEVEL}"
   fi
 
   # http://www.postfix.org/postconf.5.html#smtpd_use_tls
-  if [ ! -z "${POSTFIX_SMTPD_USE_TLS}" ]; then
+  if [ -n "${POSTFIX_SMTPD_USE_TLS}" ]; then
     echo "smtpd_use_tls = ${POSTFIX_SMTPD_USE_TLS}"
   fi
 
   # http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel
-  if [ ! -z "${POSTFIX_SMTPD_TLS_LOGLEVEL}" ]; then
+  if [ -n "${POSTFIX_SMTPD_TLS_LOGLEVEL}" ]; then
     echo "smtpd_tls_loglevel = ${POSTFIX_SMTPD_TLS_LOGLEVEL}"
   fi
 
   # http://www.postfix.org/postconf.5.html#smtp_tls_chain_files
-  if [ ! -z "${POSTFIX_SMTP_TLS_CHAIN_FILES}" ]; then
+  if [ -n "${POSTFIX_SMTP_TLS_CHAIN_FILES}" ]; then
     echo "smtp_tls_chain_files = ${POSTFIX_SMTP_TLS_CHAIN_FILES}"
   fi
 
   # http://www.postfix.org/postconf.5.html#smtpd_tls_chain_files
-  if [ ! -z "${POSTFIX_SMTPD_TLS_CHAIN_FILES}" ]; then
+  if [ -n "${POSTFIX_SMTPD_TLS_CHAIN_FILES}" ]; then
     echo "smtpd_tls_chain_files = ${POSTFIX_SMTPD_TLS_CHAIN_FILES}"
   fi
 
   # http://www.postfix.org/postconf.5.html#relayhost
-  if [ ! -z "${POSTFIX_RELAYHOST}" ]; then
+  if [ -n "${POSTFIX_RELAYHOST}" ]; then
     echo "relayhost = ${POSTFIX_RELAYHOST}:${POSTFIX_RELAYHOST_PORT}"
   fi
 
   # http://www.postfix.org/postconf.5.html#relay_domains
-  if [ ! -z "${POSTFIX_RELAY_DOMAINS}" ]; then
+  if [ -n "${POSTFIX_RELAY_DOMAINS}" ]; then
     echo "relay_domains = ${POSTFIX_RELAY_DOMAINS}"
   fi
 
@@ -220,7 +220,7 @@ CHECK_RECIPIENT_ACCESS=""
   fi
 
   # Are there any extra smtpd milters? If so, write 'em.
-  if [ ! -z "${POSTFIX_SMTPD_MILTERS}" ]; then
+  if [ -n "${POSTFIX_SMTPD_MILTERS}" ]; then
     if [ "$SMTPDMILTERS" = "" ]; then
       SMTPDMILTERS="${POSTFIX_SMTPD_MILTERS}"
     else
@@ -237,7 +237,7 @@ CHECK_RECIPIENT_ACCESS=""
   # ========== START postscreen config ==========
 
   # http://www.postfix.org/postconf.5.html#message_size_limit
-  if [ ! -z "${POSTFIX_MESSAGE_SIZE_LIMIT}" ]; then
+  if [ -n "${POSTFIX_MESSAGE_SIZE_LIMIT}" ]; then
     echo "message_size_limit = ${POSTFIX_MESSAGE_SIZE_LIMIT}"
   fi
 
@@ -251,13 +251,13 @@ CHECK_RECIPIENT_ACCESS=""
   echo "postscreen_blacklist_action = ignore"
 
   # http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites
-  if [ ! -z "${POSTFIX_DNSBL_SITES}" ]; then
+  if [ -n "${POSTFIX_DNSBL_SITES}" ]; then
     echo "postscreen_dnsbl_sites = ${POSTFIX_DNSBL_SITES}"
     echo "postscreen_dnsbl_action = drop"
   fi
 
   # http://www.postfix.org/postconf.5.html#postscreen_dnsbl_threshold
-  if [ ! -z "${POSTFIX_DNSBL_THRESHOLD}" ]; then
+  if [ -n "${POSTFIX_DNSBL_THRESHOLD}" ]; then
     echo "postscreen_dnsbl_threshold = ${POSTFIX_DNSBL_THRESHOLD}"
   fi
 
