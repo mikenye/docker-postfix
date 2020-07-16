@@ -128,7 +128,7 @@ RUN set -x && \
     mkdir -p /src/libcheck && \
     git clone https://github.com/libcheck/check.git /src/libcheck && \
     pushd /src/libcheck && \
-    export BRANCH_LIBCHECK=$(git tag --sort="-creatordate" | head -1) && \
+    BRANCH_LIBCHECK=$(git tag --sort="-creatordate" | head -1) && \
     git checkout "${BRANCH_LIBCHECK}" && \
     autoreconf --install && \
     ./configure && \
