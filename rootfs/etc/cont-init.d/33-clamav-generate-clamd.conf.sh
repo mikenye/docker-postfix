@@ -14,23 +14,23 @@
     echo "User clamav"
     echo "Foreground yes"
 
-    if [ ! -z "${CLAMAV_CLAMD_PHISHING_SIGNATURES}" ]; then
+    if [ -n "${CLAMAV_CLAMD_PHISHING_SIGNATURES}" ]; then
         echo "PhishingSignatures ${CLAMAV_CLAMD_PHISHING_SIGNATURES}"
     fi
 
-    if [ ! -z "${CLAMAV_CLAMD_PHISHING_SCAN_URLS}" ]; then
+    if [ -n "${CLAMAV_CLAMD_PHISHING_SCAN_URLS}" ]; then
         echo "PhishingScanURLs ${CLAMAV_CLAMD_PHISHING_SCAN_URLS}"
     fi
 
-    if [ ! -z "${CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_SSL_MISMATCH}" ]; then
+    if [ -n "${CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_SSL_MISMATCH}" ]; then
         echo "PhishingAlwaysBlockSSLMismatch ${CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_SSL_MISMATCH}"
     fi
 
-    if [ ! -z "${CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_CLOAK}" ]; then
+    if [ -n "${CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_CLOAK}" ]; then
         echo "PhishingAlwaysBlockCloak ${CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_CLOAK}"
     fi
 
-    if [ ! -z "${CLAMAV_CLAMD_HEURISTIC_SCAN_PRECEDENCE}" ]; then
+    if [ -n "${CLAMAV_CLAMD_HEURISTIC_SCAN_PRECEDENCE}" ]; then
         echo "HeuristicScanPrecedence ${CLAMAV_CLAMD_HEURISTIC_SCAN_PRECEDENCE}"
     fi
 } > "${CLAMAV_CLAMDCONF_FILE}"
