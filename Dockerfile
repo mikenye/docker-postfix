@@ -115,7 +115,7 @@ RUN set -x && \
     mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
     tar xf /src/postgrey.tar.gz -C /src/postgrey && \
-    pushd $(find /src/postgrey -maxdepth 1 -type d | tail -1) && \
+    pushd "$(find /src/postgrey -maxdepth 1 -type d | tail -1)" && \
     mkdir -p /opt/postgrey && \
     cp -Rv * /opt/postgrey && \
     mkdir -p /etc/postgrey && \
@@ -129,7 +129,7 @@ RUN set -x && \
     git clone https://github.com/libcheck/check.git /src/libcheck && \
     pushd /src/libcheck && \
     export BRANCH_LIBCHECK=$(git tag --sort="-creatordate" | head -1) && \
-    git checkout ${BRANCH_LIBCHECK} && \
+    git checkout "${BRANCH_LIBCHECK}" && \
     autoreconf --install && \
     ./configure && \
     make && \
@@ -138,14 +138,14 @@ RUN set -x && \
     popd && \
     # Install clamav
     mkdir -p /src/clamav && \
-    CLAMAV_LATEST_STABLE_VERSION=$(curl https://www.clamav.net/downloads | tr -d "\r" | tr -d "\n" | grep -oP "The latest stable release is\s+(<strong>){0,1}[\d\.]+\s*(<\/strong>){0,1}" | grep -oP "[\d\.]+") && \
+    CLAMAV_LATEST_STABLE_VERSION="$(curl https://www.clamav.net/downloads | tr -d '\r' | tr -d '\n' | grep -oP 'The latest stable release is\s+(<strong>){0,1}[\d\.]+\s*(<\/strong>){0,1}' | grep -oP '[\d\.]+')" && \
     curl --location --output /src/clamav.tar.gz "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz" && \
     curl --location --output /src/clamav.tar.gz.sig "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz.sig" && \
-    CLAMAV_RSA_KEY=$(gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz 2>&1 | grep "using RSA key" | tr -s " " | cut -d " " -f 5)  && \
+    CLAMAV_RSA_KEY="$(gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz 2>&1 | grep 'using RSA key' | tr -s ' ' | cut -d ' ' -f 5)" && \
     gpg2 --recv-keys "${CLAMAV_RSA_KEY}" && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     tar xf /src/clamav.tar.gz -C /src/clamav && \
-    pushd $(find /src/clamav -maxdepth 1 -type d | tail -1) && \
+    pushd "$(find /src/clamav -maxdepth 1 -type d | tail -1)" && \
     ./configure \
       --enable-milter \
       --enable-clamdtop \
@@ -170,15 +170,15 @@ RUN set -x && \
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
     pushd /src/postfix-policyd-spf-perl && \
-    export BRANCH_POSTFIX_POLICYD_SPF_PERL=$(git tag --sort="-creatordate" | head -1) && \
-    git checkout ${BRANCH_POSTFIX_POLICYD_SPF_PERL} && \
+    export BRANCH_POSTFIX_POLICYD_SPF_PERL="$(git tag --sort='-creatordate' | head -1)" && \
+    git checkout "${BRANCH_POSTFIX_POLICYD_SPF_PERL}" && \
     cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
     popd && \
     # Get postfix source & signature & author key
     mkdir -p /src/postfix && \
-    POSTFIX_STABLE_FAMILY=$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -oP "Postfix [\d.]+ stable release" | grep -v candidate | head -1 | grep -oP "[\d.]+") && \
-    POSTFIX_STABLE_DOWNLOAD_SOURCE_FILE=$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href="official/postfix-' | grep 3\.5 | grep '.tar.gz">Source code</a>' | head -1 | cut -d '"' -f 2) && \
-    POSTFIX_STABLE_DOWNLOAD_SOURCE_GPG2=$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href="official/postfix-' | grep 3\.5 | grep '.tar.gz.gpg2">GPG signature</a>' | head -1 | cut -d '"' -f 2) && \
+    POSTFIX_STABLE_FAMILY="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -oP 'Postfix [\d.]+ stable release' | grep -v candidate | head -1 | grep -oP '[\d.]+')" && \
+    POSTFIX_STABLE_DOWNLOAD_SOURCE_FILE="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href=\"official/postfix-' | grep 3\.5 | grep '.tar.gz\">Source code</a>' | head -1 | cut -d '\"' -f 2)" && \
+    POSTFIX_STABLE_DOWNLOAD_SOURCE_GPG2="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -P '<a href=\"official/postfix-' | grep 3\.5 | grep '.tar.gz.gpg2\">GPG signature</a>' | head -1 | cut -d '\"' -f 2)" && \
     curl --location --output /src/postfix.tar.gz "http://ftp.porcupine.org/mirrors/postfix-release/${POSTFIX_STABLE_DOWNLOAD_SOURCE_FILE}" && \
     curl --location --output /src/postfix.tar.gz.gpg2 "http://ftp.porcupine.org/mirrors/postfix-release/${POSTFIX_STABLE_DOWNLOAD_SOURCE_GPG2}" && \
     curl --location --output /src/wietse.pgp "${WIETSE_PGP_KEY_URL}" && \
@@ -186,7 +186,7 @@ RUN set -x && \
     gpg2 --verify /src/postfix.tar.gz.gpg2 /src/postfix.tar.gz || exit 1 && \
     tar xf /src/postfix.tar.gz -C /src/postfix && \
     # Build postfix
-    pushd $(find /src/postfix -maxdepth 1 -type d | tail -1) && \
+    pushd "$(find /src/postfix -maxdepth 1 -type d | tail -1)" && \
     make \
       makefiles \
       pie=yes \
