@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  docker-build-test:
+  build:
 
     runs-on: ubuntu-latest
 
