@@ -14,6 +14,6 @@
     echo "NotifyClamd /usr/local/etc/clamd.conf"
 } > "${CLAMAV_FRESHCLAMCONF_FILE}"
 
-if [ ! -z "${FRESHCLAM_CHECKS_PER_DAY}" ]; then
+if [ -n "${FRESHCLAM_CHECKS_PER_DAY}" ]; then
     echo "Checks ${FRESHCLAM_CHECKS_PER_DAY}" >> "${CLAMAV_FRESHCLAMCONF_FILE}"
 fi
