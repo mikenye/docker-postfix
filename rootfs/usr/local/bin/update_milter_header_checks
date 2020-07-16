@@ -21,7 +21,6 @@ fi
 # No need to run postmap over PCRE files
 
 # If postfix is running, update
-postfix status > /dev/null 2>&1
-if [ "$?" -eq "0" ]; then
+if postfix status > /dev/null 2>&1; then
   postfix reload
 fi
