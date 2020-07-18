@@ -244,6 +244,7 @@ RUN set -x && \
         2to3 \
         autoconf \
         automake \
+        bc \
         binutils \
         g++ \
         gcc \
