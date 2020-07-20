@@ -550,6 +550,8 @@ When setting this container up, it is recommended to:
 
 Please feel free to [open an issue on the project's GitHub](https://github.com/mikenye/docker-postfix/issues).
 
+I also have a [Discord channel](https://discord.gg/k8qUEEG), feel free to [join](https://discord.gg/k8qUEEG) and converse.
+
 ## References
 
 * <http://www.postfix.org/documentation.html>: Postfix Documentation.
