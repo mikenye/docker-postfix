@@ -1,5 +1,7 @@
 # mikenye/postfix
 
+![Docker](https://github.com/mikenye/docker-postfix/workflows/Docker/badge.svg) ![Linting](https://github.com/mikenye/docker-postfix/workflows/Linting/badge.svg)
+
 Postfix is Wietse Venema's excellent mail server.
 
 This container attempts to simplify and streamline setting up inbound and outbound mail relays, to protect and enhance self hosted email servers (eg: Microsoft Exchange). However, if you find an alternate use, please let me know so I can add to "Deployment Recipes".
