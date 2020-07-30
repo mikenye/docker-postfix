@@ -271,4 +271,7 @@ CHECK_RECIPIENT_ACCESS=""
   echo "postscreen_greet_action = drop"
 
   # ========== END postscreen config ==========
+
+  echo "body_checks = pcre:/etc/postfix/body_checks.pcre"
+
 } > "${POSTFIX_MAINCF_FILE}"
