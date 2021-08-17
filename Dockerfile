@@ -19,6 +19,8 @@ ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     SYSLOG_PRIORITY=6 \
     WIETSE_PGP_KEY_URL=http://ftp.porcupine.org/mirrors/postfix-release/wietse.pgp
 
+COPY rootfs/ /
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -x && \
@@ -141,8 +143,7 @@ RUN set -x && \
     CLAMAV_LATEST_STABLE_VERSION="$(curl https://www.clamav.net/downloads | tr -d '\r' | tr -d '\n' | grep -oP 'The latest stable release is\s+(<strong>){0,1}[\d\.]+\s*(<\/strong>){0,1}' | grep -oP '[\d\.]+')" && \
     curl --location --output /src/clamav.tar.gz "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz" && \
     curl --location --output /src/clamav.tar.gz.sig "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz.sig" && \
-    CLAMAV_RSA_KEY="$(gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz 2>&1 | grep 'using RSA key' | tr -s ' ' | cut -d ' ' -f 5 || true)" && \
-    gpg2 --recv-keys "${CLAMAV_RSA_KEY}" && \
+    gpg2 --import /vrt.gpg && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     tar xf /src/clamav.tar.gz -C /src/clamav && \
     pushd "$(find /src/clamav -maxdepth 1 -type d | tail -1)" && \
@@ -279,8 +280,6 @@ RUN set -x && \
     echo "postfix $(postconf mail_version | cut -d '=' -f 2 | tr -d ' ')" >> /VERSIONS && \
     # fail2ban-client --version >> /VERSIONS && \
     cat /VERSIONS
-
-COPY rootfs/ /
 
 EXPOSE 25/tcp
 
