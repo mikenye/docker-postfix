@@ -98,7 +98,7 @@ jobs:
         name: Get latest image version
         run: |
           docker pull "${{ env.REPO }}/${{ env.IMAGE }}:latest"
-          echo "VERSION_TAG=$(docker run --rm --entrypoint cat "${{ env.REPO }}/${{ env.IMAGE }}:latest" /VERSION  | grep "postfix " | cut -d " " -f 2)" >> $GITHUB_ENV
+          echo "VERSION_TAG=$(docker run --rm --entrypoint cat "${{ env.REPO }}/${{ env.IMAGE }}:latest" /CONTAINER_VERSION)" >> $GITHUB_ENV
 
       # Show version from "latest"
       -
