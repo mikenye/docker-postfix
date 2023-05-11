@@ -65,8 +65,6 @@ RUN set -x && \
     TEMP_PACKAGES+=(libxml2-dev) && \
     TEMP_PACKAGES+=(zlib1g-dev) && \
     TEMP_PACKAGES+=(cmake) && \
-    TEMP_PACKAGES+=(cargo) && \
-    TEMP_PACKAGES+=(rustc) && \
     TEMP_PACKAGES+=(libdb5.3-dev) && \
     TEMP_PACKAGES+=(libsasl2-dev) && \
     TEMP_PACKAGES+=(libldap2-dev) && \
