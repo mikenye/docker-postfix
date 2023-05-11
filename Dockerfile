@@ -41,6 +41,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(libldap-2.4-2) && \
     KEPT_PACKAGES+=(opendkim) && \
     KEPT_PACKAGES+=(opendkim-tools) && \
+    KEPT_PACKAGES+=(busybox-syslogd) && \
 
     TEMP_PACKAGES+=(autoconf) && \
     TEMP_PACKAGES+=(automake) && \
