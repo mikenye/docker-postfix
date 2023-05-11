@@ -3,14 +3,20 @@
 
 set -eo pipefail
 
+SYSLOG_BINARY="/sbin/syslogd"
+SYSLOG_COMMAND=("-l" "${SYSLOG_PRIORITY}")
+SYSLOG_COMMAND+=("-n")
+SYSLOG_COMMAND+=("-O" "-")
+
+if [[ -n ${SYSLOG_REMOTE_HOST} ]]; then
+    SYSLOG_COMMAND+=("-R" "${SYSLOG_REMOTE_HOST}")
+    SYSLOG_COMMAND+=("-L")
+fi
+
 s6-notifyoncheck \
     -s 1000 \
     -t 1000 \
     -n 0 \
     -c "/usr/local/bin/check_syslog.sh" \
-    /sbin/syslogd \
-        -l "${SYSLOG_PRIORITY}" \
-        -n \
-        -O \
-        - \
+        "${SYSLOG_BINARY}" "${SYSLOG_COMMAND[@]}" \
     2>&1 | awk -W Interactive '{print "[syslogd] " $0}'

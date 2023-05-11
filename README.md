@@ -251,6 +251,7 @@ volumes:
 | Environment Variable | Description                                                                               |
 |----------------------|-------------------------------------------------------------------------------------------|
 | `SYSLOG_PRIORITY` | Optional. Log only messages more urgent than `SYSLOG_PRIORITY`. `0` = Emergency, `1` = Alert, `2` = Critical, `3` = Error, `4` = Warning, `5` = Notice, `6` = Info (the default), `7` = Debug |
+| `SYSLOG_REMOTE_HOST` | Optional. Set this to `HOST[:PORT]` to log to a remote syslog server. |
 
 ### Postfix Configuration
 
