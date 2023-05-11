@@ -140,9 +140,8 @@ RUN set -x && \
     popd && \
     # Install clamav
     mkdir -p /src/clamav && \
-    CLAMAV_LATEST_STABLE_VERSION="$(curl https://www.clamav.net/downloads | tr -d '\r' | tr -d '\n' | grep -oP 'The latest stable release is\s+(<strong>){0,1}[\d\.]+\s*(<\/strong>){0,1}' | grep -oP '[\d\.]+')" && \
-    curl --location --output /src/clamav.tar.gz "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz" && \
-    curl --location --output /src/clamav.tar.gz.sig "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz.sig" && \
+    curl --location --output /src/clamav.tar.gz "https://www.clamav.net/downloads/production/clamav-1.1.0.tar.gz" && \
+    curl --location --output /src/clamav.tar.gz.sig "https://www.clamav.net/downloads/production/clamav-1.1.0.tar.gz.sig" && \
     gpg2 --import /vrt.gpg && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     tar xf /src/clamav.tar.gz -C /src/clamav && \
