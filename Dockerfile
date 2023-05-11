@@ -43,7 +43,7 @@ RUN set -x && \
         libcurl4-openssl-dev \
         libdb5.3-dev \
         libicu-dev \
-        libjson-c3 \
+        libjson-c5 \
         libjson-c-dev \
         libldap2-dev \
         libldap-2.4-2 \
