@@ -39,6 +39,8 @@ RUN set -x && \
     KEPT_PACKAGES+=(libsasl2-2) && \
     KEPT_PACKAGES+=(libpcre3) && \
     KEPT_PACKAGES+=(libldap-2.4-2) && \
+    KEPT_PACKAGES+=(opendkim) && \
+    KEPT_PACKAGES+=(opendkim-tools) && \
 
     TEMP_PACKAGES+=(autoconf) && \
     TEMP_PACKAGES+=(automake) && \
