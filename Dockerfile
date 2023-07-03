@@ -48,6 +48,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(net-tools) && \
     KEPT_PACKAGES+=(opendkim-tools) && \
     KEPT_PACKAGES+=(opendkim) && \
+    KEPT_PACKAGES+=(miltertest) && \
     KEPT_PACKAGES+=(procps) && \
     KEPT_PACKAGES+=(python3) && \
     KEPT_PACKAGES+=(socat) && \
