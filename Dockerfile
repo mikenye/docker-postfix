@@ -1,18 +1,20 @@
-FROM debian:buster-slim
+FROM debian:bullseye-20230502-slim
 
 ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     CLAMAV_FRESHCLAMCONF_FILE="/usr/local/etc/freshclam.conf" \
+    CLAMAV_LATEST_STABLE_SOURCE_URL="https://www.clamav.net/downloads/production/clamav-1.1.0.tar.gz" \
+    CLAMAV_LATEST_STABLE_SOURCE_SIG_URL="https://www.clamav.net/downloads/production/clamav-1.1.0.tar.gz.sig" \
     CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf" \
     ENABLE_OPENDKIM="false" \
     POSTFIX_CHECK_RECIPIENT_ACCESS_FINAL_ACTION="defer" \
     POSTFIX_REJECT_INVALID_HELO_HOSTNAME="true" \
     POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME="true" \
+    POSTFIX_REJECT_UNKNOWN_SENDER_DOMAIN="true" \
     POSTFIX_LDAP_DEBUG_LEVEL=0 \
     POSTFIX_LDAP_QUERY_FILTER="(&(|(objectclass=person)(objectclass=group))(proxyAddresses=smtp:%s))" \
     POSTFIX_LDAP_VERSION=3 \
     POSTFIX_LDAP_RECIPIENT_ACCESS_CONF_FILE="/etc/postfix/ldap_recipient_access.cf" \
     POSTFIX_RELAYHOST_PORT=25 \
-    POSTGREY_SOURCE_URL=http://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz \
     POSTGREY_SYSTEM_WHITELIST_FILE=/opt/postgrey/postgrey_whitelist_clients \
     POSTGREY_WHITELIST_URL=https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients \
     S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
@@ -24,68 +26,71 @@ COPY rootfs/ /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -x && \
+    TEMP_PACKAGES=() && \
+    KEPT_PACKAGES=() && \
+    # Packages to keep
+    KEPT_PACKAGES+=(busybox-syslogd) && \
+    KEPT_PACKAGES+=(bzip2) && \
+    KEPT_PACKAGES+=(ca-certificates) && \
+    KEPT_PACKAGES+=(curl) && \
+    KEPT_PACKAGES+=(gnupg2) && \
+    KEPT_PACKAGES+=(libberkeleydb-perl) && \
+    KEPT_PACKAGES+=(libicu-dev) && \
+    KEPT_PACKAGES+=(libjson-c5) && \
+    KEPT_PACKAGES+=(libldap-2.4-2) && \
+    KEPT_PACKAGES+=(libmail-spf-perl) && \
+    KEPT_PACKAGES+=(libmilter1.0.1) && \
+    KEPT_PACKAGES+=(libncurses6) && \
+    KEPT_PACKAGES+=(libnet-server-perl) && \
+    KEPT_PACKAGES+=(libnetaddr-ip-perl) && \
+    KEPT_PACKAGES+=(libpcre2-posix2) && \
+    KEPT_PACKAGES+=(libpcre3) && \
+    KEPT_PACKAGES+=(libsasl2-2) && \
+    KEPT_PACKAGES+=(libsys-hostname-long-perl) && \
+    KEPT_PACKAGES+=(libxml2) && \
+    KEPT_PACKAGES+=(net-tools) && \
+    KEPT_PACKAGES+=(opendkim-tools) && \
+    KEPT_PACKAGES+=(opendkim) && \
+    KEPT_PACKAGES+=(miltertest) && \
+    KEPT_PACKAGES+=(procps) && \
+    KEPT_PACKAGES+=(python3) && \
+    KEPT_PACKAGES+=(socat) && \
+    KEPT_PACKAGES+=(zlib1g) && \
+    # Packages to remove after image build
+    TEMP_PACKAGES+=(autoconf) && \
+    TEMP_PACKAGES+=(automake) && \
+    TEMP_PACKAGES+=(build-essential) && \
+    TEMP_PACKAGES+=(check) && \
+    TEMP_PACKAGES+=(cmake) && \
+    TEMP_PACKAGES+=(git) && \
+    TEMP_PACKAGES+=(libbz2-dev) && \
+    TEMP_PACKAGES+=(libcurl4-openssl-dev) && \
+    TEMP_PACKAGES+=(libdb5.3-dev) && \
+    TEMP_PACKAGES+=(libjson-c-dev) && \
+    TEMP_PACKAGES+=(libldap2-dev) && \
+    TEMP_PACKAGES+=(libmilter-dev) && \
+    TEMP_PACKAGES+=(libncurses5-dev) && \
+    TEMP_PACKAGES+=(libpcre2-dev) && \
+    TEMP_PACKAGES+=(libpcre3-dev) && \
+    TEMP_PACKAGES+=(libsasl2-dev) && \
+    TEMP_PACKAGES+=(libssl-dev) && \
+    TEMP_PACKAGES+=(libtool-bin) && \
+    TEMP_PACKAGES+=(libtool) && \
+    TEMP_PACKAGES+=(libxml2-dev) && \
+    TEMP_PACKAGES+=(pkg-config) && \
+    TEMP_PACKAGES+=(python3-pip) && \
+    TEMP_PACKAGES+=(python3-pytest) && \
+    TEMP_PACKAGES+=(texinfo) && \
+    TEMP_PACKAGES+=(valgrind) && \
+    TEMP_PACKAGES+=(zlib1g-dev) && \
+    # Install packages.
     apt-get update && \
-    apt-get install --no-install-recommends -y \
-        2to3 \
-        autoconf \
-        automake \
-        binutils \
-        busybox-syslogd \
-        ca-certificates \
-        curl \
-        file \
-        g++ \
-        gcc \
-        git \
-        gnupg2 \
-        libberkeleydb-perl \
-        libbz2-dev \
-        libcurl4-openssl-dev \
-        libdb5.3-dev \
-        libicu-dev \
-        libjson-c3 \
-        libjson-c-dev \
-        libldap2-dev \
-        libldap-2.4-2 \
-        libldap-common \
-        libmail-spf-perl \
-        libmilter-dev \
-        libmilter1.0.1 \
-        libncurses5-dev \
-        libnet-server-perl \
-        libnetaddr-ip-perl \
-        libpcre2-dev \
-        libpcre2-8-0 \
-        libpcre3-dev \
-        libsasl2-dev \
-        libsasl2-2 \
-        libssl-dev \
-        libsys-hostname-long-perl \
-        libtool \
-        libxml2 \
-        libxml2-dev \
-        m4 \
-        make \
-        net-tools \
-        netbase \
-        opendkim \
-        opendkim-tools \
-        openssl \
-        perl \
-        pkg-config \
-        procps \
-        python3 \
-        python3-distutils \
-        python3-setuptools \
-        socat \
-        texinfo \
-        xz-utils \
-        zlib1g \
-        zlib1g-dev \
+    apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y --no-install-recommends \
+        ${KEPT_PACKAGES[@]} \
+        ${TEMP_PACKAGES[@]} \
         && \
+    # Create groups & users & dirs
     mkdir -p /etc/mail/dkim && \
-    ln -s /usr/bin/python3 /usr/bin/python && \
-    # Create groups & users
     groupadd --system postdrop && \
     groupadd --system clamav && \
     groupadd --system postgrey && \
@@ -112,10 +117,10 @@ RUN set -x && \
         --system \
         --shell=/usr/sbin/nologin \
         postgrey \
-        && \    
+        && \
     # Install postgrey
     mkdir -p /src/postgrey && \
-    curl --location --output /src/postgrey.tar.gz "${POSTGREY_SOURCE_URL}" && \
+    curl --location --output /src/postgrey.tar.gz https://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz && \
     tar xf /src/postgrey.tar.gz -C /src/postgrey && \
     pushd "$(find /src/postgrey -maxdepth 1 -type d | tail -1)" && \
     mkdir -p /opt/postgrey && \
@@ -126,46 +131,32 @@ RUN set -x && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
     mkdir -p /var/spool/postfix/postgrey && \
     popd && \
-    # Download & install libcheck (for clamav)
-    mkdir -p /src/libcheck && \
-    git clone https://github.com/libcheck/check.git /src/libcheck && \
-    pushd /src/libcheck && \
-    BRANCH_LIBCHECK="$(git tag --sort='-creatordate' | head -1)" && \
-    git checkout "${BRANCH_LIBCHECK}" && \
-    autoreconf --install && \
-    ./configure && \
-    make && \
-    make check && \
-    make install && \
-    popd && \
+    # Install rust
+    curl --location --output /src/rustup.sh https://sh.rustup.rs && \
+    chmod a+x /src/rustup.sh && \
+    /src/rustup.sh -y && \
+    source "$HOME/.cargo/env" && \
     # Install clamav
     mkdir -p /src/clamav && \
-    CLAMAV_LATEST_STABLE_VERSION="$(curl https://www.clamav.net/downloads | tr -d '\r' | tr -d '\n' | grep -oP 'The latest stable release is\s+(<strong>){0,1}[\d\.]+\s*(<\/strong>){0,1}' | grep -oP '[\d\.]+')" && \
-    curl --location --output /src/clamav.tar.gz "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz" && \
-    curl --location --output /src/clamav.tar.gz.sig "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz.sig" && \
-    gpg2 --import /vrt.gpg && \
+    curl --location --output /src/clamav.tar.gz "${CLAMAV_LATEST_STABLE_SOURCE_URL}" && \
+    curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_LATEST_STABLE_SOURCE_SIG_URL}" && \
+    # /talos.gpg is from clamav downloads > talos pgp public key
+    gpg2 --import /talos.gpg && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     tar xf /src/clamav.tar.gz -C /src/clamav && \
     pushd "$(find /src/clamav -maxdepth 1 -type d | tail -1)" && \
-    ./configure \
-      --enable-milter \
-      --enable-clamdtop \
-      --enable-clamsubmit \
-      --enable-clamonacc \
-      --enable-check \
-      --enable-experimental \
-      --enable-libjson \
-      --enable-xml \
-      --enable-pcre \
-      && \
-    make && \
-    make check && \
-    make install && \
+    mkdir -p ./build && \
+    pushd ./build && \
+    cmake .. && \
+    cmake --build . && \
+    ctest && \
+    cmake --build . --target install && \
     ldconfig && \
     mkdir -p /var/lib/clamav && \
     mkdir -p /run/freshclam && \
     mkdir -p /run/clamav-milter && \
     mkdir -p /run/clamd && \
+    popd && \
     popd && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
@@ -228,46 +219,13 @@ RUN set -x && \
     mkdir -p /etc/postfix/tables && \
     mkdir -p /etc/postfix/local_aliases && \
     popd && \
-    # # Install fail2ban 
-    # git clone https://github.com/fail2ban/fail2ban.git /src/fail2ban && \
-    # pushd /src/fail2ban && \
-    # FAIL2BAN_VERSION=$(git tag --sort="-creatordate" | head -1) && \
-    # git checkout "${FAIL2BAN_VERSION}" && \
-    # ./fail2ban-2to3 && \
-    # ./fail2ban-testcases-all-python3 && \
-    # python setup.py build && \
-    # python setup.py install && \
-    # popd && \
     # Install s6-overlay
-    curl --location -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
+    curl --location --output /src/deploy-s6-overlay.sh https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh && \
+    chmod a+x /src/deploy-s6-overlay.sh && \
+    /src/deploy-s6-overlay.sh && \
     # Clean up
-    apt-get remove -y \
-        2to3 \
-        autoconf \
-        automake \
-        binutils \
-        g++ \
-        gcc \
-        git \
-        gnupg2 \
-        libbz2-dev \
-        libcurl4-openssl-dev \
-        libdb5.3-dev \
-        libicu-dev \
-        libjson-c-dev \
-        libldap2-dev \
-        libmilter-dev \
-        libncurses5-dev \
-        libpcre2-dev \
-        libpcre3-dev \
-        libsasl2-dev \
-        libssl-dev \
-        libtool \
-        libxml2-dev \
-        texinfo \
-        xz-utils \
-        zlib1g-dev \
-        && \
+    rustup self uninstall -y && \
+    apt-get remove -y ${TEMP_PACKAGES[@]} && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \

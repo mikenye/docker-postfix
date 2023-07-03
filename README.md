@@ -269,6 +269,7 @@ volumes:
 | `POSTFIX_REJECT_INVALID_HELO_HOSTNAME`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_invalid_helo_hostname). |
 | `POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME` | See [documentation link](http://www.postfix.org/postconf.5.html#reject_non_fqdn_helo_hostname). |
 | `POSTFIX_REJECT_UNKNOWN_HELO_HOSTNAME`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_unknown_helo_hostname). |
+| `POSTFIX_REJECT_UNKNOWN_SENDER_DOMAIN`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_unknown_sender_domain). |
 | `POSTFIX_RELAY_DOMAINS`            | See [documentation link](http://www.postfix.org/postconf.5.html#relay_domains). |
 | `POSTFIX_RELAYHOST_PORT`           | Optional port argument for `POSTFIX_RELAYHOST`. Default is `25` so only need to change if you're `relayhost` is running on a different port. |
 | `POSTFIX_RELAYHOST`                | See [documentation link](http://www.postfix.org/postconf.5.html#relayhost). |
@@ -321,11 +322,13 @@ If `ENABLE_LDAP_RECIPIENT_ACCESS` is enabled, the final `smtpd_recipient_restric
 |------------------------------------|-------------------------------------------------------------------------|
 | `FRESHCLAM_CHECKS_PER_DAY`         | Optional. Number of database checks per day. Default: `12` (every two hours). |
 | `CLAMAV_MILTER_REPORT_HOSTNAME`    | Optional. The hostname ClamAV Milter will report in the `X-Virus-Scanned` header. If unset, defaults to the container's hostname. |
+| `CLAMAV_MILTER_ALLOWLIST` | Optional. Sets ClamAV Milter's [`Whitelist`](https://linux.die.net/man/5/clamav-milter.conf) option. |
 | `CLAMAV_CLAMD_PHISHING_SIGNATURES`       | Optional. Overrides ClamAV Daemon's default setting for [`PhishingSignatures`](https://linux.die.net/man/5/clamd.conf). |
 | `CLAMAV_CLAMD_PHISHING_SCAN_URLS`        | Optional. Overrides ClamAV Daemon's default setting for [`PhishingScanURLs`](https://linux.die.net/man/5/clamd.conf). |
 | `CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_SSL_MISMATCH` | Optional. Overrides ClamAV Daemon's default setting for [`PhishingAlwaysBlockSSLMismatch`](https://linux.die.net/man/5/clamd.conf). |
 | `CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_CLOAK` | Optional. Overrides ClamAV Daemon's default setting for [`PhishingAlwaysBlockCloak`](https://linux.die.net/man/5/clamd.conf). |
 | `CLAMAV_CLAMD_HEURISTIC_SCAN_PRECEDENCE` | Optional. Overrides ClamAV Daemon's default setting for [`HeuristicScanPrecedence`](https://linux.die.net/man/5/clamd.conf). |
+
 
 ## Configuration Files
 
@@ -517,9 +520,9 @@ After a message is queued, it is passed through milters:
 
 ## Testing
 
-To test your configuration, [an `expect` script is included in the GitHub Repo](https://github.com/mikenye/docker-postfix/blob/master/test_server.expect).
+To test your configuration, [an `expect` script is included in the GitHub Repo](https://github.com/mikenye/docker-postfix/blob/master/testing/test_server.expect).
 
-The script requires `telnet`.
+The script requires `expect` and `telnet`.
 
 The syntax of the file is as follows:
 

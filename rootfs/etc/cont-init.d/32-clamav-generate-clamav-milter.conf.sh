@@ -17,6 +17,11 @@
     echo "LogClean Basic"
     echo "LogInfected Full"
 
+    # If CLAMAV_MILTER_ALLOWLIST, then set
+    if [ -n "${CLAMAV_MILTER_ALLOWLIST}" ]; then
+        echo "Whitelist ${CLAMAV_MILTER_ALLOWLIST}"
+    fi
+
     # If CLAMAV_MILTER_REPORT_HOSTNAME, then set
     if [ -n "${CLAMAV_MILTER_REPORT_HOSTNAME}" ]; then
         echo "ReportHostname ${CLAMAV_MILTER_REPORT_HOSTNAME}"

@@ -5,23 +5,28 @@ set -eo pipefail
 
 # Wait for clamd & clamav-milter
 if [ "${ENABLE_CLAMAV}" = "true" ]; then
+    echo "[postfix] Waiting for clamav..."
     s6-svwait -U /run/s6/services/clamd /run/s6/services/clamav-milter
 fi
 
 # Wait for opendkim
 if [ "${ENABLE_OPENDKIM}" = "true" ]; then
+    echo "[postfix] Waiting for opendkim..."
     s6-svwait -U /run/s6/services/opendkim
 fi
 
 # Wait for postgrey
 if [ "${ENABLE_POSTGREY}" = "true" ]; then
+    echo "[postfix] Waiting for postgrey..."
     s6-svwait -U /run/s6/services/postgrey
 fi
 
 # Wait for syslog
+echo "[postfix] Waiting for syslog..."
 s6-svwait -U /run/s6/services/syslogd
 
 # Start
+echo "[postfix] Starting postfix..."
 s6-notifyoncheck \
         -s 1000 \
         -t 1000 \

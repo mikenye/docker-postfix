@@ -62,6 +62,10 @@ mkdir -p /var/spool/postfix/saved
 chown -R postfix /var/spool/postfix/saved
 mkdir -p /var/spool/postfix/trace
 chown -R postfix /var/spool/postfix/trace
+chown -R root /etc/postfix/tables
+chmod -R g-w,o-w /etc/postfix/tables
+chown -R root /etc/postfix/local_aliases
+chmod -R g-w,o-w /etc/postfix/local_aliases
 
 # OpenDKIM
 mkdir -p /etc/mail/dkim
