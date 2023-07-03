@@ -27,5 +27,5 @@ services:
       CLAMAV_MILTER_REPORT_HOSTNAME: "testdomain.tld"
       ENABLE_POSTGREY: "true"
     volumes:
-      - ./tables_in:/etc/postfix/tables
-      - ./aliases_in:/etc/postfix/aliases
+      - tables_in:/etc/postfix/tables
+      - aliases_in:/etc/postfix/aliases
