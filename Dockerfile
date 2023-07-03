@@ -235,6 +235,10 @@ RUN set -x && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
 
+    # Create directories
+    mkdir -p /etc/postfix/aliases && \
+    mkdir -p /etc/postfix/tables && \
+
     # Document versions
     opendkim -V | grep OpenDKIM | sed "s/OpenDKIM Filter //g" >> /VERSIONS && \
     postgrey --version >> /VERSIONS && \
