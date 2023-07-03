@@ -9,6 +9,7 @@ ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     POSTFIX_CHECK_RECIPIENT_ACCESS_FINAL_ACTION="defer" \
     POSTFIX_REJECT_INVALID_HELO_HOSTNAME="true" \
     POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME="true" \
+    POSTFIX_REJECT_UNKNOWN_SENDER_DOMAIN="true" \
     POSTFIX_LDAP_DEBUG_LEVEL=0 \
     POSTFIX_LDAP_QUERY_FILTER="(&(|(objectclass=person)(objectclass=group))(proxyAddresses=smtp:%s))" \
     POSTFIX_LDAP_VERSION=3 \

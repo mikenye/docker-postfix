@@ -18,6 +18,7 @@ services:
       POSTFIX_MYDOMAIN: "testdomain.tld"
       POSTFIX_MYHOSTNAME: "mail.testdomain.tld"
       POSTFIX_MAIL_NAME: "mail_test"
+      POSTFIX_REJECT_UNKNOWN_SENDER_DOMAIN: false
       ENABLE_OPENDKIM: "true"
       OPENDKIM_MODE: "v"
       OPENDKIM_LOGRESULTS: "true"
