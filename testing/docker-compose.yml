@@ -24,7 +24,7 @@ services:
       OPENDKIM_LOGRESULTS: "true"
       OPENDKIM_LOGWHY: "true"
       ENABLE_SPF: "true"
-      # ENABLE_CLAMAV: "true"
+      ENABLE_CLAMAV: "true"
       CLAMAV_MILTER_REPORT_HOSTNAME: "testdomain.tld"
       ENABLE_POSTGREY: "true"
     volumes:
