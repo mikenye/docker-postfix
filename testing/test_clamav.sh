@@ -14,7 +14,7 @@ timeout 300s ./wait_for_postfix.sh
 echo "Attempt to send email (may fail due to greylisting)"
 ./test_infected.expect 127.0.0.1 2525 remote.tld infectedtester@remote.tld testuser@mail.testdomain.tld || true
 
-echo "Wait 5 mins for greylist timeout"
+echo "Wait 10 mins for greylist timeout"
 sleep 605
 
 echo "Attempt to send email (should succeed)"
