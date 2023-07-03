@@ -11,10 +11,10 @@ jobs:
   buildx:
     name: Test image build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        docker-platform:
-          - linux/amd64
+    # strategy:
+    #   matrix:
+    #     docker-platform:
+    #       - linux/amd64
     steps:
 
       # Check out our code
@@ -46,13 +46,16 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      # Test container build for all supported platforms (defined above)
+      # # Test container build for all supported platforms (defined above)
+      # -
+      #   name: Test Build ${{ matrix.docker-platform }}
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     no-cache: true
+      #     platforms: ${{ matrix.docker-platform }}
+      #     push: false
+      
       -
-        name: Test Build ${{ matrix.docker-platform }}
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          no-cache: true
-          platforms: ${{ matrix.docker-platform }}
-          push: false
+        name: Test Build
