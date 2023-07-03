@@ -7,6 +7,8 @@ on:
     branches: 
       - master
       - main
+      
+  workflow_dispatch:
 
   # Build and deploy the image nightly (to ensure we pick up any security updates)
   schedule:
