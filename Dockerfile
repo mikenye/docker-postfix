@@ -36,6 +36,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(libjson-c5) && \
     KEPT_PACKAGES+=(libmilter1.0.1) && \
     KEPT_PACKAGES+=(libncurses6) && \
+    KEPT_PACKAGES+=(libnetaddr-ip-perl) && \
     KEPT_PACKAGES+=(libpcre2-posix2) && \
     KEPT_PACKAGES+=(zlib1g) && \
     KEPT_PACKAGES+=(libsasl2-2) && \
