@@ -140,34 +140,23 @@ RUN set -x && \
     make check && \
     make install && \
     popd && \
-    # Install clamav
-    mkdir -p /src/clamav && \
-    curl --location --output /src/clamav.tar.gz "${CLAMAV_LATEST_STABLE_SOURCE_URL}" && \
-    curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_LATEST_STABLE_SOURCE_SIG_URL}" && \
-    gpg2 --import /vrt.gpg && \
+    # /talos.gpg is from clamav downloads > talos pgp public key
     gpg2 --import /talos.gpg && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     tar xf /src/clamav.tar.gz -C /src/clamav && \
     pushd "$(find /src/clamav -maxdepth 1 -type d | tail -1)" && \
-    ./configure \
-      --enable-milter \
-      --enable-clamdtop \
-      --enable-clamsubmit \
-      --enable-clamonacc \
-      --enable-check \
-      --enable-experimental \
-      --enable-libjson \
-      --enable-xml \
-      --enable-pcre \
-      && \
-    make && \
-    make check && \
-    make install && \
+    mkdir -p ./build && \
+    pushd ./build && \
+    cmake .. && \
+    cmake --build . && \
+    ctest && \
+    cmake --build . --target install && \
     ldconfig && \
     mkdir -p /var/lib/clamav && \
     mkdir -p /run/freshclam && \
     mkdir -p /run/clamav-milter && \
     mkdir -p /run/clamd && \
+    popd && \
     popd && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
