@@ -27,7 +27,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN set -x && \
     TEMP_PACKAGES=() && \
     KEPT_PACKAGES=() && \
-
+    # Packages to keep
     KEPT_PACKAGES+=(busybox-syslogd) && \
     KEPT_PACKAGES+=(bzip2) && \
     KEPT_PACKAGES+=(ca-certificates) && \
@@ -53,7 +53,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(python3) && \
     KEPT_PACKAGES+=(socat) && \
     KEPT_PACKAGES+=(zlib1g) && \
-
+    # Packages to remove after image build
     TEMP_PACKAGES+=(autoconf) && \
     TEMP_PACKAGES+=(automake) && \
     TEMP_PACKAGES+=(build-essential) && \
@@ -80,14 +80,12 @@ RUN set -x && \
     TEMP_PACKAGES+=(texinfo) && \
     TEMP_PACKAGES+=(valgrind) && \
     TEMP_PACKAGES+=(zlib1g-dev) && \
-
     # Install packages.
     apt-get update && \
     apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y --no-install-recommends \
         ${KEPT_PACKAGES[@]} \
         ${TEMP_PACKAGES[@]} \
         && \
-    
     # Create groups & users & dirs
     mkdir -p /etc/mail/dkim && \
     groupadd --system postdrop && \
@@ -117,7 +115,6 @@ RUN set -x && \
         --shell=/usr/sbin/nologin \
         postgrey \
         && \
-    
     # Install postgrey
     mkdir -p /src/postgrey && \
     curl --location --output /src/postgrey.tar.gz https://postgrey.schweikert.ch/pub/postgrey-latest.tar.gz && \
@@ -131,13 +128,11 @@ RUN set -x && \
     ln -s /opt/postgrey/postgrey /usr/local/bin/postgrey && \
     mkdir -p /var/spool/postfix/postgrey && \
     popd && \
-
     # Install rust
     curl --location --output /src/rustup.sh https://sh.rustup.rs && \
     chmod a+x /src/rustup.sh && \
     /src/rustup.sh -y && \
     source "$HOME/.cargo/env" && \
-
     # Install clamav
     mkdir -p /src/clamav && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_LATEST_STABLE_SOURCE_URL}" && \
@@ -160,7 +155,6 @@ RUN set -x && \
     mkdir -p /run/clamd && \
     popd && \
     popd && \
-
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
@@ -169,7 +163,6 @@ RUN set -x && \
     git checkout "${BRANCH_POSTFIX_POLICYD_SPF_PERL}" && \
     cp -v /src/postfix-policyd-spf-perl/postfix-policyd-spf-perl /usr/local/lib/policyd-spf-perl && \
     popd && \
-
     # Get postfix source & signature & author key
     mkdir -p /src/postfix && \
     POSTFIX_STABLE_FAMILY="$(curl http://ftp.porcupine.org/mirrors/postfix-release/index.html | grep -oP 'Postfix [\d.]+ stable release' | grep -v candidate | head -1 | grep -oP '[\d.]+')" && \
@@ -181,7 +174,6 @@ RUN set -x && \
     gpg2 --import /src/wietse.pgp && \
     gpg2 --verify /src/postfix.tar.gz.gpg2 /src/postfix.tar.gz || exit 1 && \
     tar xf /src/postfix.tar.gz -C /src/postfix && \
-
     # Build postfix
     pushd "$(find /src/postfix -maxdepth 1 -type d | tail -1)" && \
     make \
@@ -200,7 +192,6 @@ RUN set -x && \
       AUXLIBS_LDAP="-lldap -llber" \
       && \
     make && \
-
     # Install postfix
     POSTFIX_INSTALL_OPTS="" && \
     POSTFIX_INSTALL_OPTS="${POSTFIX_INSTALL_OPTS} -non-interactive" && \
@@ -225,12 +216,10 @@ RUN set -x && \
     mkdir -p /etc/postfix/tables && \
     mkdir -p /etc/postfix/local_aliases && \
     popd && \
-
     # Install s6-overlay
     curl --location --output /src/deploy-s6-overlay.sh https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh && \
     chmod a+x /src/deploy-s6-overlay.sh && \
     /src/deploy-s6-overlay.sh && \
-
     # Clean up
     rustup self uninstall -y && \
     apt-get remove -y ${TEMP_PACKAGES[@]} && \
@@ -238,7 +227,6 @@ RUN set -x && \
     apt-get clean -y && \
     rm -rf /src /tmp/* /var/lib/apt/lists/* && \
     find /var/log -type f -iname "*log" -exec truncate --size 0 {} \; && \
-
     # Document versions
     opendkim -V | grep OpenDKIM | sed "s/OpenDKIM Filter //g" >> /VERSIONS && \
     postgrey --version >> /VERSIONS && \
