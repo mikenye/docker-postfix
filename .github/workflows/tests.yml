@@ -68,8 +68,6 @@ jobs:
       - name: Test Functionality
         run:
           pwd
-          pushd testing
-          docker compose up -d
-          echo "wait for container startup"
-          sleep 20
-          
+          pushd ./testing
+          bash -e ./run_test.sh
+          popd
