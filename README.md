@@ -269,6 +269,7 @@ volumes:
 | `POSTFIX_REJECT_INVALID_HELO_HOSTNAME`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_invalid_helo_hostname). |
 | `POSTFIX_REJECT_NON_FQDN_HELO_HOSTNAME` | See [documentation link](http://www.postfix.org/postconf.5.html#reject_non_fqdn_helo_hostname). |
 | `POSTFIX_REJECT_UNKNOWN_HELO_HOSTNAME`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_unknown_helo_hostname). |
+| `POSTFIX_REJECT_UNKNOWN_SENDER_DOMAIN`  | See [documentation link](http://www.postfix.org/postconf.5.html#reject_unknown_sender_domain). |
 | `POSTFIX_RELAY_DOMAINS`            | See [documentation link](http://www.postfix.org/postconf.5.html#relay_domains). |
 | `POSTFIX_RELAYHOST_PORT`           | Optional port argument for `POSTFIX_RELAYHOST`. Default is `25` so only need to change if you're `relayhost` is running on a different port. |
 | `POSTFIX_RELAYHOST`                | See [documentation link](http://www.postfix.org/postconf.5.html#relayhost). |

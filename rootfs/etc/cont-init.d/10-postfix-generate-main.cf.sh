@@ -154,7 +154,11 @@ CHECK_RECIPIENT_ACCESS=""
 
     echo "    reject_non_fqdn_recipient,"
     echo "    reject_non_fqdn_sender,"
-    echo "    reject_unknown_sender_domain,"
+
+    if [ "${POSTFIX_REJECT_UNKNOWN_SENDER_DOMAIN}" = "true" ]; then
+      echo "    reject_unknown_sender_domain,"
+    fi
+
     echo "    reject_unknown_recipient_domain,"
 
     if [ "${ENABLE_POSTGREY}" = "true" ]; then
