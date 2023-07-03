@@ -285,6 +285,12 @@ volumes:
 | `POSTFIX_SMTPUTF8_ENABLE`          | See [documentation link](http://www.postfix.org/SMTPUTF8_README.html). |
 | `POSTFIX_CHECK_RECIPIENT_ACCESS_FINAL_ACTION` | If recipient checks are enabled (via `ENABLE_LDAP_RECIPIENT_ACCESS` and/or `recipient_access.hash`), this is the final action taken after all other checks. Default is `defer`. Usually should be set to either `defer` or `reject`. See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions).|
 
+#### Backwards-Compatibility Safety Net Options
+
+| Environment Variable               | Documentation Link                                                      |
+|------------------------------------|-------------------------------------------------------------------------|
+| `POSTFIX_SMTPD_RELAY_BEFORE_RECIPIENT_RESTRICTIONS`              | See [documentation link](https://www.postfix.org/COMPATIBILITY_README.html#relay_before_rcpt). |
+
 ### LDAP Recipient Verification
 
 See "LDAP" section below.
