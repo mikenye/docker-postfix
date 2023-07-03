@@ -65,9 +65,16 @@ jobs:
           docker compose build
           popd
 
-      - name: Test Functionality
+      - name: Test Basic Functionality
         run:
           pwd
           pushd ./testing
-          bash -e ./run_test.sh
+          bash -e ./test_email_delivery.sh
+          popd
+
+      - name: Test ClamAV
+        run:
+          pwd
+          pushd ./testing
+          bash -e ./test_clamav.sh
           popd
