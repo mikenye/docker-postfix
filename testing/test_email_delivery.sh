@@ -29,7 +29,7 @@ docker exec mail_test cat /tmp/testuser_email | grep 'Received: from remote.tld'
 docker exec mail_test cat /tmp/testuser_email | grep 'From: tester@remote.tld' > /dev/null 2>&1
 docker exec mail_test cat /tmp/testuser_email | grep 'To: testuser@mail.testdomain.tld' > /dev/null 2>&1
 docker exec mail_test cat /tmp/testuser_email | grep 'Subject: Test email sent at' > /dev/null 2>&1
-docker exec mail_test cat /tmp/testuser_email | grep 'This is a test message set at date' > /dev/null 2>&1
+docker exec mail_test cat /tmp/testuser_email | grep 'This is a test message sent at date' > /dev/null 2>&1
 
 echo "Stop test env"
 docker compose down
