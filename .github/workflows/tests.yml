@@ -59,3 +59,17 @@ jobs:
       
       -
         name: Test Build
+        run:
+          pwd
+          pushd testing
+          docker compose build
+          popd
+
+      - name: Test Functionality
+        run:
+          pwd
+          pushd testing
+          docker compose up -d
+          echo "wait for container startup"
+          sleep 20
+          
