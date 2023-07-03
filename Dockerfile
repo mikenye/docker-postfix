@@ -44,6 +44,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(libpcre2-posix2) && \
     KEPT_PACKAGES+=(libpcre3) && \
     KEPT_PACKAGES+=(libsasl2-2) && \
+    KEPT_PACKAGES+=(libxml2) && \
     KEPT_PACKAGES+=(net-tools) && \
     KEPT_PACKAGES+=(opendkim-tools) && \
     KEPT_PACKAGES+=(opendkim) && \
