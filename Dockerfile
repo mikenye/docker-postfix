@@ -145,6 +145,7 @@ RUN set -x && \
     curl --location --output /src/clamav.tar.gz "${CLAMAV_LATEST_STABLE_SOURCE_URL}" && \
     curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_LATEST_STABLE_SOURCE_SIG_URL}" && \
     gpg2 --import /vrt.gpg && \
+    gpg2 --import /talos.gpg && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     tar xf /src/clamav.tar.gz -C /src/clamav && \
     pushd "$(find /src/clamav -maxdepth 1 -type d | tail -1)" && \
