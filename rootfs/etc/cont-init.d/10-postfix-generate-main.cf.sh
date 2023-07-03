@@ -112,6 +112,11 @@ CHECK_RECIPIENT_ACCESS=""
   echo "header_checks = pcre:/etc/postfix/header_checks.pcre"
   echo "milter_header_checks = pcre:/etc/postfix/milter_header_checks.pcre"
 
+  # ========== Backwards Compatibility ==========
+  if [ -n "${POSTFIX_SMTPD_RELAY_BEFORE_RECIPIENT_RESTRICTIONS}" ]; then
+      echo "smtpd_relay_before_recipient_restrictions = ${POSTFIX_SMTPD_RELAY_BEFORE_RECIPIENT_RESTRICTIONS}"
+  fi
+
   # ========== START smtpd_helo_restrictions ==========
 
   echo "smtpd_helo_required = yes"
