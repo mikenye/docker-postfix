@@ -158,8 +158,6 @@ RUN set -x && \
     mkdir -p /run/clamd && \
     popd && \
     popd && \
-    # Update virus definitions
-    freshclam --config-file="${CLAMAV_FRESHCLAMCONF_FILE}" --stdout --foreground && \
     # Get postfix-policyd-spf-perl
     mkdir -p /src/postfix-policyd-spf-perl && \
     git clone git://git.launchpad.net/postfix-policyd-spf-perl /src/postfix-policyd-spf-perl && \
