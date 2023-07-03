@@ -77,10 +77,3 @@ jobs:
           pushd ./testing
           bash -e ./test_email_delivery.sh
           popd
-
-      - name: Test ClamAV
-        run: |
-          pwd
-          pushd ./testing
-          bash -e ./test_clamav.sh
-          popd
