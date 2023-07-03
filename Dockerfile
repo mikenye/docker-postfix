@@ -35,6 +35,7 @@ RUN set -x && \
         busybox-syslogd \
         ca-certificates \
         curl \
+        cmake \
         file \
         g++ \
         gcc \
