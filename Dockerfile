@@ -38,6 +38,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(libncurses6) && \
     KEPT_PACKAGES+=(libnetaddr-ip-perl) && \
     KEPT_PACKAGES+=(libnet-server-perl) && \
+    KEPT_PACKAGES+=(libberkeleydb-perl) && \
     KEPT_PACKAGES+=(libpcre2-posix2) && \
     KEPT_PACKAGES+=(zlib1g) && \
     KEPT_PACKAGES+=(libsasl2-2) && \
