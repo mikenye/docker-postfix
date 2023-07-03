@@ -59,21 +59,21 @@ jobs:
       
       -
         name: Test Build
-        run:
+        run: |
           pwd
           pushd testing
           docker compose build
           popd
 
       - name: Test Basic Functionality
-        run:
+        run: |
           pwd
           pushd ./testing
           bash -e ./test_email_delivery.sh
           popd
 
       - name: Test ClamAV
-        run:
+        run: |
           pwd
           pushd ./testing
           bash -e ./test_clamav.sh
