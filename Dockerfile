@@ -2,6 +2,8 @@ FROM debian:buster-slim
 
 ENV CLAMAV_CLAMDCONF_FILE="/usr/local/etc/clamd.conf" \
     CLAMAV_FRESHCLAMCONF_FILE="/usr/local/etc/freshclam.conf" \
+    CLAMAV_LATEST_STABLE_SOURCE_URL="https://www.clamav.net/downloads/production/clamav-1.1.0.tar.gz" \
+    CLAMAV_LATEST_STABLE_SOURCE_SIG_URL="https://www.clamav.net/downloads/production/clamav-1.1.0.tar.gz.sig" \
     CLAMAV_MILTERCONF_FILE="/usr/local/etc/clamav-milter.conf" \
     ENABLE_OPENDKIM="false" \
     POSTFIX_CHECK_RECIPIENT_ACCESS_FINAL_ACTION="defer" \
@@ -140,9 +142,8 @@ RUN set -x && \
     popd && \
     # Install clamav
     mkdir -p /src/clamav && \
-    CLAMAV_LATEST_STABLE_VERSION="$(curl https://www.clamav.net/downloads | tr -d '\r' | tr -d '\n' | grep -oP 'The latest stable release is\s+(<strong>){0,1}[\d\.]+\s*(<\/strong>){0,1}' | grep -oP '[\d\.]+')" && \
-    curl --location --output /src/clamav.tar.gz "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz" && \
-    curl --location --output /src/clamav.tar.gz.sig "https://www.clamav.net/downloads/production/clamav-${CLAMAV_LATEST_STABLE_VERSION}.tar.gz.sig" && \
+    curl --location --output /src/clamav.tar.gz "${CLAMAV_LATEST_STABLE_SOURCE_URL}" && \
+    curl --location --output /src/clamav.tar.gz.sig "${CLAMAV_LATEST_STABLE_SOURCE_SIG_URL}" && \
     gpg2 --import /vrt.gpg && \
     gpg2 --verify /src/clamav.tar.gz.sig /src/clamav.tar.gz || exit 1 && \
     tar xf /src/clamav.tar.gz -C /src/clamav && \
