@@ -1,0 +1,81 @@
+#!/usr/bin/expect -f
+
+set timeout 60
+set mailserver [lindex $argv 0]
+set mailport [lindex $argv 1]
+set helohost [lindex $argv 2]
+set fromemail [lindex $argv 3]
+set toemail [lindex $argv 4]
+set now [clock seconds]
+set date [clock format $now -format {%Y-%m-%d %H:%M:%S}]
+
+send_user "\n\n"
+spawn telnet $mailserver $mailport
+expect "failed" {
+  send_user "$mailserver: connect failed\n"
+  exit
+} "2?? *" {
+} "4?? *" {
+  send_user "$mailserver: received 4xx response\n"
+  exit
+} "refused" {
+  send_user "$mailserver: connect refused\n"
+  exit
+} "closed " {
+  send_user "$mailserver: connect closed\n"
+  exit
+} timeout {
+  send_user "$mailserver: connection timed out\n"
+  exit
+}
+
+send "HELO $helohost\r"
+expect "2?? *" {
+} "5?? *" {
+  exit
+} "4?? *" {
+  exit
+}
+
+send "MAIL FROM: <$fromemail>\r"
+expect "2?? *" {
+} "5?? *" {
+  exit
+} "4?? *" {
+  exit
+}
+
+send "RCPT TO: <$toemail>\r"
+expect "2?? *" {
+} "5?? *" {
+  exit
+} "4?? *" {
+  exit
+}
+
+send "DATA\r"
+expect "3?? *" {
+} "5?? *" {
+  exit
+} "4?? *" {
+  exit
+}
+
+send "From: $fromemail\r"
+send "To: $toemail\r"
+send "Subject: Infected email sent at $date\r"
+send "This is an infected message sent at $date\r"
+send "See: https://en.wikipedia.org/wiki/EICAR_test_file\r"
+send "X5O!P%@AP[4\PZX54(P^)7CC)7}\$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!\$H+H*\r"
+send "\r"
+send ".\r"
+expect "2?? *" {
+} "5?? *" {
+  exit
+} "4?? *" {
+  exit
+}
+send "QUIT\r"
+
+send_user "\n\n"
+exit

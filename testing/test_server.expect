@@ -64,7 +64,7 @@ expect "3?? *" {
 send "From: $fromemail\r"
 send "To: $toemail\r"
 send "Subject: Test email sent at $date\r"
-send "This is a test message set at date $date\r"
+send "This is a test message sent at $date\r"
 send ".\r"
 expect "2?? *" {
 } "5?? *" {

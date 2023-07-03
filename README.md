@@ -520,9 +520,9 @@ After a message is queued, it is passed through milters:
 
 ## Testing
 
-To test your configuration, [an `expect` script is included in the GitHub Repo](https://github.com/mikenye/docker-postfix/blob/master/test_server.expect).
+To test your configuration, [an `expect` script is included in the GitHub Repo](https://github.com/mikenye/docker-postfix/blob/master/testing/test_server.expect).
 
-The script requires `telnet`.
+The script requires `expect` and `telnet`.
 
 The syntax of the file is as follows:
 

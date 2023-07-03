@@ -9,14 +9,15 @@ docker compose up -d
 echo "Wait for container start (up to 5 mins)"
 timeout 300s ./wait_for_postfix.sh
 
-echo "Attempt to send email (will fail due to greylisting)"
-../test_server.expect 127.0.0.1 2525 remote.tld tester@remote.tld testuser@mail.testdomain.tld || true
+echo "Attempt to send email (may fail due to greylisting)"
+./test_server.expect 127.0.0.1 2525 remote.tld tester@remote.tld testuser@mail.testdomain.tld || true
 
 echo "Wait 5 mins for greylist timeout"
 sleep 605
 
 echo "Attempt to send email (should succeed)"
-../test_server.expect 127.0.0.1 2525 remote.tld tester@remote.tld testuser@mail.testdomain.tld
+./test_server.expect 127.0.0.1 2525 remote.tld tester@remote.tld testuser@mail.testdomain.tld
+sleep 2 # wait for postfix to deliver email
 
 echo "Checking received email"
 echo ""
