@@ -33,6 +33,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(curl) && \
     KEPT_PACKAGES+=(gnupg2) && \
     KEPT_PACKAGES+=(python3) && \
+    KEPT_PACKAGES+=(libicu-dev) && \
     KEPT_PACKAGES+=(libjson-c5) && \
     KEPT_PACKAGES+=(libmilter1.0.1) && \
     KEPT_PACKAGES+=(libncurses6) && \
