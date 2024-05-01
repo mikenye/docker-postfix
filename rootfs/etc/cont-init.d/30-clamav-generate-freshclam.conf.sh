@@ -10,7 +10,7 @@
     echo "DatabaseOwner clamav"
     echo "Foreground yes"
     echo "Bytecode yes"
-    echo "DatabaseMirror database.clamav.net"
+    echo "DatabaseMirror ${FRESHCLAM_DB_MIRROR:-database.clamav.net}"
     echo "NotifyClamd /usr/local/etc/clamd.conf"
 
     if [ -n "${FRESHCLAM_CHECKS_PER_DAY}" ]; then

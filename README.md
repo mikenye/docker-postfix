@@ -38,7 +38,7 @@ This container implement's the excellent [s6-overlay](https://github.com/just-co
 | `postfix` | Runs postfix | Always |
 | `clamav-milter` | Part of ClamAV. Runs the `clamav-milter` for scanning emails for virii. | If `ENABLE_CLAMAV` is set to `true` |
 | `clamd` | Part of ClamAV. Runs `clamd`, the virus scanning engine for `clamav-milter`. |  If `ENABLE_CLAMAV` is set to `true` |
-| `freshclam` | Part of ClamAV. Runs `freshclam` on the schedule defined by `FRESHCLAM_CHECKS_PER_DAY` to keep the ClamAV database updated. | If `ENABLE_CLAMAV` is set to `true` |
+| `freshclam` | Part of ClamAV. Runs `freshclam` against the mirror definedy by `FRESHCLAM_DB_MIRROR` (defaults to `database.clamav.net`) on the schedule defined by `FRESHCLAM_CHECKS_PER_DAY`, to keep the ClamAV database updated. | If `ENABLE_CLAMAV` is set to `true` |
 | `opendkim` | Runs `opendkim` for DKIM signing/verification. | If `ENABLE_OPENDKIM` is set to `true` |
 | `postgrey` | Runs `postgrey` for greylisting. | If `ENABLE_POSTGREY` is set to `true` |
 | `postgrey_whitelist_update` | Runs daily. Fetches the latest system whitelist from <https://postgrey.schweikert.ch/pub/postgrey_whitelist_clients>, merges with any locally defined whitelist, and reloads `postgrey`. | If `ENABLE_POSTGREY` is set to `true` |
