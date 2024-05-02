@@ -121,7 +121,7 @@ jobs:
           tags: ${{ env.REPO }}/${{ env.IMAGE }}:${{ env.VERSION_TAG }}
 
   deploy_ghcrio_single_arch:
-    name: Deploy to DockerHub
+    name: Deploy to GitHub Container Registry
     runs-on: ubuntu-latest
     strategy:
       matrix:
