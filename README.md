@@ -1,6 +1,6 @@
 # mikenye/postfix
 
-![Docker](https://github.com/mikenye/docker-postfix/workflows/Docker/badge.svg) ![Linting](https://github.com/mikenye/docker-postfix/workflows/Linting/badge.svg)
+![Linting](https://github.com/mikenye/docker-postfix/workflows/Linting/badge.svg)
 
 Postfix is Wietse Venema's excellent mail server.
 
@@ -110,7 +110,7 @@ volumes:
 services:
 
   mail_out:
-    image: mikenye/postfix
+    image: ghcr.io/mikenye/postfix:latest
     container_name: mail_out
     restart: always
     logging:
@@ -154,7 +154,7 @@ services:
       - "logs_out:/var/log:rw"
 
   mail_in:
-    image: mikenye/postfix
+    image: ghcr.io/mikenye/postfix:latest
     container_name: mail_in
     restart: always
     logging:
@@ -415,7 +415,7 @@ docker run \
     -it \
     -v $(pwd):/workdir \
     --entrypoint opendkim-genkey \
-    mikenye/postfix \
+    ghcr.io/mikenye/postfix:latest \
     --directory=/workdir \
     --bits=1024 \
     --selector=<selector> \
