@@ -327,6 +327,7 @@ If `ENABLE_LDAP_RECIPIENT_ACCESS` is enabled, the final `smtpd_recipient_restric
 | Environment Variable               | Detail                                                                  |
 |------------------------------------|-------------------------------------------------------------------------|
 | `FRESHCLAM_CHECKS_PER_DAY`         | Optional. Number of database checks per day. Default: `12` (every two hours). |
+| `FRESHCLAM_DB_MIRROR`              | Optional. The hostname to fetch ClamAV updates from. Default: `database.clamav.net`. |
 | `CLAMAV_MILTER_REPORT_HOSTNAME`    | Optional. The hostname ClamAV Milter will report in the `X-Virus-Scanned` header. If unset, defaults to the container's hostname. |
 | `CLAMAV_MILTER_ALLOWLIST` | Optional. Sets ClamAV Milter's [`Whitelist`](https://linux.die.net/man/5/clamav-milter.conf) option. |
 | `CLAMAV_CLAMD_PHISHING_SIGNATURES`       | Optional. Overrides ClamAV Daemon's default setting for [`PhishingSignatures`](https://linux.die.net/man/5/clamd.conf). |
@@ -334,7 +335,6 @@ If `ENABLE_LDAP_RECIPIENT_ACCESS` is enabled, the final `smtpd_recipient_restric
 | `CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_SSL_MISMATCH` | Optional. Overrides ClamAV Daemon's default setting for [`PhishingAlwaysBlockSSLMismatch`](https://linux.die.net/man/5/clamd.conf). |
 | `CLAMAV_CLAMD_PHISHING_ALWAYS_BLOCK_CLOAK` | Optional. Overrides ClamAV Daemon's default setting for [`PhishingAlwaysBlockCloak`](https://linux.die.net/man/5/clamd.conf). |
 | `CLAMAV_CLAMD_HEURISTIC_SCAN_PRECEDENCE` | Optional. Overrides ClamAV Daemon's default setting for [`HeuristicScanPrecedence`](https://linux.die.net/man/5/clamd.conf). |
-
 
 ## Configuration Files
 
