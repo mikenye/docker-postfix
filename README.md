@@ -183,6 +183,7 @@ services:
       POSTFIX_RELAYHOST: "exchange.server.IP.addr"
       POSTFIX_RELAY_DOMAINS: "yourdomain.tld,someotherdomain.tld"
       POSTFIX_DNSBL_SITES: "hostkarma.junkemailfilter.com=127.0.0.2, bl.spamcop.net, cbl.abuseat.org=127.0.0.2, zen.spamhaus.org"
+      ENABLE_SUBMISSION_PORT: "true"
       ENABLE_OPENDKIM: "true"
       OPENDKIM_MODE: "v"
       OPENDKIM_LOGRESULTS: "true"
@@ -273,6 +274,8 @@ volumes:
 | `POSTFIX_RELAY_DOMAINS`            | See [documentation link](http://www.postfix.org/postconf.5.html#relay_domains). |
 | `POSTFIX_RELAYHOST_PORT`           | Optional port argument for `POSTFIX_RELAYHOST`. Default is `25` so only need to change if you're `relayhost` is running on a different port. |
 | `POSTFIX_RELAYHOST`                | See [documentation link](http://www.postfix.org/postconf.5.html#relayhost). |
+| `ENABLE_SUBMISSION_PORT`           | Enable port 587. See [documentation link](https://www.postfix.org/postconf.5.html#service_name). |
+| `ENABLE_SMTPS_PORT`                | Enable legacy port 465. See [documentation link](https://www.postfix.org/postconf.5.html#service_name). |
 | `POSTFIX_SMTP_TLS_CHAIN_FILES`     | See [documentation link](http://www.postfix.org/postconf.5.html#smtp_tls_chain_files). |
 | `POSTFIX_SMTPD_MILTERS`            | Any milters given here are applied after DKIM & ClamAV. See [documentation link](http://www.postfix.org/postconf.5.html#smtpd_milters). |
 | `POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS_PERMIT_SASL_AUTHENTICATED` | Set to `true` to include in `smtpd_recipient_restrictions`. See [documentation link](http://www.postfix.org/postconf.5.html#permit_sasl_authenticated). |
